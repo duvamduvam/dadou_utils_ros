@@ -54,6 +54,13 @@ class AbstractJsonManager:
         return result
 
     @staticmethod
+    def get_dict_from_list(dicts, key, value):
+        for d in dicts:
+            for k, v in d.items():
+                if k == key and value in v:
+                    return d
+
+    @staticmethod
     def get_attribut(json_object, key):
         if key in json_object:
             return json_object[key]
@@ -72,6 +79,13 @@ class AbstractJsonManager:
     def get_config(self) -> []:
         return self.config
 
+    def get_config_item(self, name):
+        item = self.config[name]
+        if item:
+            return item
+        else:
+            logging.error("no item config {}".format(item))
+
     def delete_item(self, items, name):
         for item in items:
             if item['name'] == name:
@@ -83,10 +97,4 @@ class AbstractJsonManager:
         with open(self.json_folder+folder+name, 'w') as outfile:
             json.dump(datas, outfile, indent=4)
 
-    def is_input_ok(self, input):
-        regexp = re.compile('[^0-9a-zA-Z]+')
-        if regexp.search(input):
-            logging.error("wrong input ".format(input))
-            return False
-        else:
-            return True
+
