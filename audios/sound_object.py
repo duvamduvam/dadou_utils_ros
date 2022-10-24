@@ -1,3 +1,4 @@
+import datetime
 import logging
 from enum import Enum, IntEnum
 from timeit import default_timer
@@ -19,11 +20,13 @@ class SoundObject:
     current_state = State.STOP
 
     def __init__(self, audio_folder, audio_name):
+
         self.audio_folder = audio_folder
         self.audio_name = audio_name
         logging.info('load sound ' + audio_folder + audio_name)
         #self.audio_segment = AudioSegment.from_mp3(audio_folder+audio_name)
-        self.audio_segment = AudioSegment.from_file(audio_folder + audio_name)
+        self.audio_segment = AudioSegment.from_mp3(audio_folder + audio_name)
+        self.duration = self.audio_segment.duration_seconds
         self.play_obj = None
         self.pause_duration = 0
         self.pause_time = 0
@@ -45,6 +48,9 @@ class SoundObject:
             bytes_per_sample=self.audio_segment.sample_width,
             sample_rate=self.audio_segment.frame_rate
         )"""
+
+    def is_playing(self):
+        return default_timer() < (self.starting_time+self.duration)
 
     def stop(self):
         self.play_obj.stop()
