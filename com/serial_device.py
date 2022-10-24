@@ -1,3 +1,4 @@
+import re
 from builtins import staticmethod
 from os.path import exists
 
@@ -84,6 +85,13 @@ class SerialDevice:
             self.device.write(str.encode("<{}>".format(msg)))
         else:
             logging.error("device {} open:  or msg empty".format(self.name))
+
+    def get_msg_separator(self):
+        msg = self.get_msg()
+        if msg and len(re.findall('<.+>', msg)) > 0:
+            msg = re.findall('<.+>', msg)[0]
+            if len(msg) > 2:
+                return msg[1:len(msg)-1]
 
     def setPlugedIn(self, connected):
         self.plugged = connected
