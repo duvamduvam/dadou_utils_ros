@@ -4,7 +4,7 @@ class UtilsStatic:
     RPI_NAME = "remotecontrol"
 
     LAPTOP_TYPE = "x86_64"
-    RPI_TYPE = "arm"
+    RPI_TYPE = "armv7l"
 
     NAME = "name"
     TYPE = "type"

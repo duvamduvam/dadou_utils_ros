@@ -3,6 +3,7 @@ import logging
 import os
 import platform
 import re
+import socket
 import subprocess
 from os.path import exists
 
@@ -102,6 +103,19 @@ class Misc:
             return float(str_input)
         except ValueError:
             logging.error("can't cast {} to float".format(str))
+
+    @staticmethod
+    def is_connected():
+        try:
+            # connect to the host -- tells us if the host is actually
+            # reachable
+            sock = socket.create_connection(("www.google.com", 80))
+            if sock is not None:
+                sock.close
+            return True
+        except OSError:
+            pass
+        return False
 
     @staticmethod
     def get_system_type():
