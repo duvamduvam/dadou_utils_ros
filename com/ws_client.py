@@ -1,4 +1,6 @@
 import asyncio
+import json
+
 import websockets
 import uvloop
 
@@ -12,7 +14,7 @@ class WsClient:
     @staticmethod
     async def async_send(msg, url):
         async with websockets.connect(url) as websocket:
-            await websocket.send(msg)
+            await websocket.send(json.dumps(msg))
             response = await websocket.recv()
             print(response)
 
