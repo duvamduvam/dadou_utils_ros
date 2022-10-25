@@ -3,7 +3,7 @@ import logging
 from os.path import exists
 from dadou_utils.com.serial_device import SerialDevice
 from dadou_utils.time.time_utils import TimeUtils
-from dadou_utils.utils_static import UtilsStatic
+from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE
 
 
 class SerialDeviceManager:
@@ -21,17 +21,17 @@ class SerialDeviceManager:
     def update_devices(self):
         self.update_period = TimeUtils.current_milli_time()
         for expected_device in self.expected_devices:
-            expected_device_exist = exists(SerialDevice.USB_ID_PATH+expected_device[UtilsStatic.DEVICE_ID_KEY])
+            expected_device_exist = exists(SerialDevice.USB_ID_PATH+expected_device[SERIAL_ID])
             new_device = True
             for existing_device in self.existing_devices:
-                if expected_device[UtilsStatic.NAME] == existing_device.name:
+                if expected_device[NAME] == existing_device.name:
                     if not expected_device_exist:
                         self.remove_device(existing_device.name)
                     new_device = False
                     break
             if new_device and expected_device_exist:
-                self.add_device(SerialDevice(expected_device[UtilsStatic.NAME], expected_device[UtilsStatic.DEVICE_ID_KEY],
-                                             expected_device[UtilsStatic.TYPE], expected_device[UtilsStatic.DEVICE_MSG_SIZE_KEY]))
+                self.add_device(SerialDevice(expected_device[NAME], expected_device[SERIAL_ID],
+                                             expected_device[TYPE], expected_device[DEVICE_MSG_SIZE]))
 
     def add_device(self, device):
         self.existing_devices.append(device)

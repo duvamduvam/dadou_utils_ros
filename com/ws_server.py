@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 from threading import Thread
 import uvloop
@@ -6,16 +7,17 @@ import uvloop
 import websockets
 from dadou_utils.com.input_messages_list import InputMessagesList
 
+from dadou_utils.singleton import SingletonMeta
+
 
 class WsServer(Thread):
 
-    @staticmethod
     async def handler(websocket):
         async for message in websocket:
-            InputMessagesList().messages.append(message)
+            InputMessagesList().messages.append(json.loads(message))
             logging.info(message)
             print(message)
-            await websocket.send("from ws : "+message)
+            await websocket.send("I recieved : "+message)
 
     @staticmethod
     async def main():
@@ -25,4 +27,3 @@ class WsServer(Thread):
     def run(self):
         uvloop.install()
         asyncio.run(WsServer.main())
-
