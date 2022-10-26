@@ -37,16 +37,18 @@ class SerialDevice:
             logging.error("serial id "+self.name+" not present \n", sys.exc_info()[0])
             pass
 
-    def get_msg(self):
+    def get_msg(self, size='X'):
+        if size == 'X':
+            size = self.msg_size
         if not self.device:
             self.connect()
         if self.plugged and self.device.isOpen() and exists(self.serialPath):
             # logging.info("{} connected!".format(self.arduino.port))
             if self.device.inWaiting() > 0:
-                if self.msg_size == 0:
+                if size == 0:
                     line = self.device.readline()
                 else:
-                    line = self.device.read(self.msg_size)
+                    line = self.device.read(size)
                     self.device.reset_input_buffer()
                 # msg = line.decode('UTF8').strip()
                 msg = line.decode("ascii", errors="replace")
@@ -57,7 +59,7 @@ class SerialDevice:
             # print(self.device.in_waiting)
         return None
 
-    def get_msg2(self):
+    """def get_msg2(self):
         i = self.buf.find(b">")
         if i >= 0:
             r = self.buf[:i+1]
@@ -72,7 +74,7 @@ class SerialDevice:
                 self.buf[0:] = data[i+1:]
                 return r.decode()
             else:
-                self.buf.extend(data)
+                self.buf.extend(data)"""
 
     def send_msg(self, msg, flush=False):
         if not self.device:
