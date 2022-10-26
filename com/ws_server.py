@@ -7,9 +7,6 @@ import uvloop
 import websockets
 from dadou_utils.com.input_messages_list import InputMessagesList
 
-from dadou_utils.singleton import SingletonMeta
-
-
 class WsServer(Thread):
 
     async def handler(websocket):
