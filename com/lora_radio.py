@@ -7,7 +7,7 @@ import board
 
 
 class LoraRadio:
-    RADIO_FREQ_MHZ = 433.0
+    RADIO_FREQ_MHZ = 434
     TX_POWER = 23
 
     def __init__(self, config):
@@ -30,7 +30,8 @@ class LoraRadio:
 
     def receive_msg(self):
         if self.init_ok:
-            msg = self.rfm9x.receive()
-            logging.info("receive lora msg : {}".format(msg))
-            return msg
-            #rssi = rfm9x.last_rssi
+            msg = self.rfm9x.receive(timeout=0)
+            if msg:
+                logging.info("receive lora msg : {}".format(msg))
+                return msg
+                #rssi = rfm9x.last_rssi
