@@ -34,7 +34,7 @@ class SerialDevice:
             else:
                 logging.error("device {} not present".format(self.name))
         except SerialException:
-            logging.error("serial id "+self.name+" not present \n", sys.exc_info()[0])
+            logging.error("serial id {} not present".format(self.device), exc_info=True)
             pass
 
     def get_msg(self, size='X'):
@@ -84,7 +84,7 @@ class SerialDevice:
             # self.device.flush()
             self.device.reset_input_buffer()
         if self.device.isOpen() and msg:
-            self.device.write(str.encode("<{}>".format(msg)))
+            self.device.write(str.encode("<{}>\n".format(msg)))
         else:
             logging.error("device {} open:  or msg empty".format(self.name))
 

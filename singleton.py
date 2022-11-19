@@ -1,18 +1,15 @@
-class SingletonMeta(type):
-    """
-    The Singleton class can be implemented in different ways in Python. Some
-    possible methods include: base class, decorator, metaclass. We will use the
-    metaclass because it is best suited for this purpose.
-    """
+import logging
+from threading import Lock
 
+
+class SingletonMeta(type):
     _instances = {}
+    _singleton_lock = Lock()
 
     def __call__(cls, *args, **kwargs):
-        """
-        Possible changes to the value of the `__init__` argument do not affect
-        the returned instance.
-        """
+        # double-checked locking pattern (https://en.wikipedia.org/wiki/Double-checked_locking)
         if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
+            #with cls._singleton_lock:
+            if cls not in cls._instances:
+                cls._instances[cls] = super(SingletonMeta, cls).__call__(*args, **kwargs)
         return cls._instances[cls]

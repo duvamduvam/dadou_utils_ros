@@ -124,7 +124,7 @@ class Misc:
         return uname.machine
 
     @staticmethod
-    def mapping(self, v, in_min, in_max, out_min, out_max):
+    def mapping(v, in_min, in_max, out_min, out_max):
         # Check that the value is at least in_min
         if v < in_min:
             v = in_min
