@@ -65,7 +65,7 @@ class AbstractJsonManager:
         if key in json_object:
             return json_object[key]
         else:
-            logging.ERROR('attribut {} not found'.format(key))
+            logging.error('key {} not found'.format(key))
             return None
 
     def open_json(self, file_name, mode='r'):
@@ -76,7 +76,7 @@ class AbstractJsonManager:
         with open(path, mode) as json_file:
             return json.load(json_file)
 
-    def get_config(self) -> []:
+    def get_config(self) -> {}:
         return self.config
 
     def get_config_item(self, name):

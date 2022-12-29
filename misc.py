@@ -2,6 +2,7 @@ import fcntl
 import logging
 import os
 import platform
+import random
 import re
 import socket
 import subprocess
@@ -123,7 +124,7 @@ class Misc:
         logging.info(uname)
         return uname.machine
 
-    @staticmethod
+
     def mapping(v, in_min, in_max, out_min, out_max):
         # Check that the value is at least in_min
         if v < in_min:
@@ -132,3 +133,7 @@ class Misc:
         if v > in_max:
             v = in_max
         return (v - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
+    @staticmethod
+    def random_color():
+        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
