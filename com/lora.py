@@ -11,12 +11,12 @@ import adafruit_rfm9x
 
 
 # Define radio parameters.
-RADIO_FREQ_MHZ = 433.0  # Frequency of the radio in Mhz. Must match your
+RADIO_FREQ_MHZ = 433  # Frequency of the radio in Mhz. Must match your
 # module! Can be a value like 915.0, .0, etc.
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
-CS = digitalio.DigitalInOut(board.GP8)
-RESET = digitalio.DigitalInOut(board.GP9)
+CS = digitalio.DigitalInOut(board.CE1)
+RESET = digitalio.DigitalInOut(board.D25)
 # Or uncomment and instead use these if using a Feather M0 RFM9x board and the appropriate
 # CircuitPython build:
 # CS = digitalio.DigitalInOut(board.RFM9X_CS)
@@ -27,7 +27,7 @@ LED = digitalio.DigitalInOut(board.LED)
 LED.direction = digitalio.Direction.OUTPUT
 
 # Initialize SPI bus.
-spi = busio.SPI(board.GP18, MOSI=board.GP19, MISO=board.GP16)
+spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 
 # Initialze RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
