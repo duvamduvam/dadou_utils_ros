@@ -22,6 +22,14 @@ class FilesUtils:
     def get_folder_files_name(folder):
         return [f for f in listdir(folder) if isfile(join(folder, f))]
 
+#    @staticmethod
+#    def get_path(file, base_path):
+#        for child in listdir(base_path):
+
+#    @staticmethod
+#    def search_file_in_folder(file, folder):
+
+
     """def get_image(self, type, name):
         if type == self.EYE:
             return Image.open(self.config.base_path + self.EYE_VISUALS_PATH + name)

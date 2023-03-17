@@ -10,6 +10,7 @@ class WsClient:
 
     def __init__(self, url):
         self.url = url
+        uvloop.install()
 
     @staticmethod
     async def async_send(msg, url):
@@ -19,6 +20,5 @@ class WsClient:
             print(response)
 
     def send(self, msg):
-        uvloop.install()
         asyncio.run(WsClient.async_send(msg, self.url))
 

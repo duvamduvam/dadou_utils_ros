@@ -2,12 +2,8 @@ import json
 from os import listdir, path
 from os.path import isfile, join
 
-from PIL import Image
 
 class FilesUtils:
-
-    #def __init__(self, config: ControlConfig):
-    #    self.config = config
 
     @staticmethod
     def get_folder_files(folder):

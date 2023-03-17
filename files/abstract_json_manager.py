@@ -12,11 +12,10 @@ class AbstractJsonManager:
     NAME = 'name'
     PATH = 'path'
 
-    def __init__(self, base_folder, json_folder, config_name):
+    def __init__(self, base_folder, json_folder):
 
         self.base_folder = base_folder
         self.json_folder = base_folder+json_folder
-        self.config = self.open_json(config_name)
 
         #with open(config_file, 'r') as json_file:
         #    self.config = json.load(json_file)
@@ -75,16 +74,6 @@ class AbstractJsonManager:
         path = self.json_folder + file_name
         with open(path, mode) as json_file:
             return json.load(json_file)
-
-    def get_config(self) -> {}:
-        return self.config
-
-    def get_config_item(self, name):
-        item = self.config[name]
-        if item:
-            return item
-        else:
-            logging.error("no item config {}".format(item))
 
     def delete_item(self, items, name):
         for item in items:
