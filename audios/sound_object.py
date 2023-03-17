@@ -4,7 +4,7 @@ from enum import Enum, IntEnum
 from timeit import default_timer
 from pydub import AudioSegment, playback
 from dadou_utils.audios.time_singleton import TimeSingleton
-from dadou_utils.time.time_utils import TimeUtils
+from dadou_utils.utils.time_utils import TimeUtils
 
 
 class State(IntEnum):
@@ -53,8 +53,11 @@ class SoundObject:
         return default_timer() < (self.starting_time+self.duration)
 
     def stop(self):
-        self.play_obj.stop()
-        self.current_state = State.STOP
+        if self.play_obj:
+            self.play_obj.stop()
+            self.current_state = State.STOP
+        else:
+            logging.error("self.play_obj None")
 
     def pause(self):
         if self.current_state.value == State.PLAY.value:

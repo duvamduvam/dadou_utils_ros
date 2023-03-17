@@ -2,7 +2,7 @@ import logging
 
 from os.path import exists
 from dadou_utils.com.serial_device import SerialDevice
-from dadou_utils.time.time_utils import TimeUtils
+from dadou_utils.utils.time_utils import TimeUtils
 from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE
 
 
