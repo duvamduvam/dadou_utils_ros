@@ -14,7 +14,7 @@ then
 fi
 
 # install service
-printf "\N${RED}INSTALL SERVICE${CYAN}\n"
+printf "\n${RED}INSTALL SERVICE${CYAN}\n"
 ln -sf $RPI_CONF/$service_name.service /etc/systemd/system/
 chmod 644 $RPI_CONF/$service_name.service
 chown root:root $RPI_CONF/$service_name.service
