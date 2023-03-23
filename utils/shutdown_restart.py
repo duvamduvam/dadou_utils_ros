@@ -45,8 +45,7 @@ class ShutDownRestart:
             if not button.value:
                 # check to see if button is pressed
                 logging.warning("exec command {}".format(command))
-                #os.system(command)
-                # shut down the Pi
+                os.system(command)
                 time.sleep(1)
 
     def led_status(self):
