@@ -37,6 +37,7 @@ class ServoAbstract:
             return
 
         if msg and self.type in msg:
-            target_pos = Misc.mapping(int(msg[self.type]), INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
+            value = int(msg[self.type]*100)
+            target_pos = Misc.mapping(value, INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
             logging.debug("update servo {} with key {} for target {}".format(self.type, msg[self.type], target_pos))
             self.pwm_channel.angle = target_pos
