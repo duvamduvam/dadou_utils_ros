@@ -1,8 +1,27 @@
 #!/bin/bash
 
 printf "\n${RED}INSTALL SYSTEM LIBRAIRIES${BLUE}\n\n"
-apt-get install -y ffmpeg i2c-tools python3 python3-dev python3-pip python3-opencv libatlas-base-dev libopenjp2-7 libasound2-dev vim
+
+printf "\n sudo apt-get install -y $SYSTEM_LIB $PROJECT_SYSTEM_LIB\n"
+sudo apt-get install -y $SYSTEM_LIB $PROJECT_SYSTEM_LIB
 
 printf "\n${RED}${BOLD}INSTALL PYTHON LIBRAIRIES${NORMAL}${PURPLE}\n\n"
-pip3 install --upgrade pip
-pip3.9 install adafruit-blinka adafruit-circuitpython-neopixel adafruit-circuitpython-led-animation adafruit-circuitpython-pcf8574 adafruit-circuitpython-motor adafruit-circuitpython-rfm9x adafruit-circuitpython-servokit board colorlog filetype pydub imageio jsonpath_rw jsonpath_rw_ext pyserial schedule simpleaudio sound-player uvloop websockets
+
+for lib_symlink in "${LIB_SYMLINK[@]}"
+do
+  printf "\n sudo rm -r $lib_symlink\n"
+  sudo rm -r $lib_symlink
+  printf "\n sudo mkdir -p $lib_symlink\n"
+  sudo mkdir -p $lib_symlink
+  printf "\n sudo ln -sf $RPI_PYTHON_LIB $lib_symlink\n"
+  sudo ln -sf $RPI_PYTHON_LIB $lib_symlink
+done
+
+printf "\n sudo pip3 install --upgrade pip \n\n"
+sudo pip3 install --upgrade pip
+
+printf "\n sudo pip3 install --upgrade setuptools \n\n"
+sudo pip3 install --upgrade setuptools
+
+printf "\n sudo pip3 install $PYTHON_LIB $PROJECT_PYTHON_LIB \n\n"
+sudo pip3 install --upgrade $PYTHON_LIB $PROJECT_PYTHON_LIB

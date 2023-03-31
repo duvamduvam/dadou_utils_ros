@@ -1,10 +1,7 @@
 import logging
 import os
 
-import RPi.GPIO as GPIO
-import board
 from digitalio import DigitalInOut, Direction, Pull
-from microcontroller import Pin
 
 from dadou_utils.utils.time_utils import TimeUtils
 
@@ -30,6 +27,9 @@ class ShutDownRestart:
         self.status_led.direction = Direction.OUTPUT
 
         self.last_led_status_check = 0
+
+    def update(self, msg):
+        pass
 
     def process(self):
         self.check_button(self.shutdown_button, SHUTDOWN_CMD)
