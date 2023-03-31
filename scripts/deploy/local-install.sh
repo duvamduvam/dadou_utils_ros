@@ -5,8 +5,11 @@ source params.sh
 printf "\n${RED} =================== INSTALL SYSTEM =================== ${CYAN}\n\n"
 
 printf "\n${RED}UPDATE SYSTEM${CYAN}\n\n"
-apt-get update
-apt-get upgrade
+
+printf "\n sudo apt-get update \n\n"
+sudo apt-get update
+printf "\n sudo apt-get upgrade \n\n"
+sudo apt-get upgrade
 
 if [ "$INSTALL_LIB" = "yes" ]; then
   source install-lib.sh
@@ -14,7 +17,7 @@ fi
 if [ "$SET_USB_AUDIO" = "yes" ]; then
   source set-usb-audio.sh
 fi
-if [ "$ACTIVATE_I2" = "yes" ]; then
+if [ "$ACTIVATE_I2C" = "yes" ]; then
   source activate-i2c.sh
 fi
 if [ "$SET_BASHRC" = "yes" ]; then

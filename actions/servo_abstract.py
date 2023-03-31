@@ -42,3 +42,6 @@ class ServoAbstract:
             target_pos = Misc.mapping(value, INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
             logging.info("update servo {} with key {} for target {}".format(self.type, value, target_pos))
             self.pwm_channel.angle = target_pos
+
+    def process(self):
+        pass
