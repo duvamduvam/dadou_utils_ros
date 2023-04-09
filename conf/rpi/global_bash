@@ -8,11 +8,11 @@ source $RPI_SCRIPTS/project-deploy.sh "read_param"
 source $RPI_SCRIPTS/params.sh
 
 alias p='python3'
-alias halt='sudo shutdown -h now'
+alias s='sudo shutdown -h now'
 alias temp='vcgencmd measure_temp'
 
 alias d='cd $RPI_DEPLOY'
-alias run='cd $RPI_SCRIPTS; sudo $RPI_SCRIPTS/run.sh'
+alias run='$RPI_SCRIPTS/run.sh'
 alias start='sudo service $SERVICE_NAME start && log'
 alias restart='sudo service $SERVICE_NAME stop && sudo service $SERVICE_NAME start && log'
 alias stop='sudo service $SERVICE_NAME stop'

@@ -11,6 +11,8 @@ sudo apt-get update
 printf "\n sudo apt-get upgrade \n\n"
 sudo apt-get upgrade
 
+mkdir $RPI_DEPLOY/logs
+
 if [ "$INSTALL_LIB" = "yes" ]; then
   source install-lib.sh
 fi

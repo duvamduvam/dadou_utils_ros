@@ -1,6 +1,8 @@
 LAPTOP_TYPE = 'x86_64'
 RPI_TYPE = ['armv7l', 'aarch64']
 
+INPUT_MESSAGE_FILE = 'input_message.json'
+
 ############### KEYS ###############
 
 ANIMATION = 'animation'
@@ -142,6 +144,7 @@ STOP_ANIMATION_KEYS = 'stop animation key'
 STOP_KEY = 'stop key'
 SHUTDOWN_PIN = 'shutdown pin'
 SYSTEM = 'system'
+TIME = 'time'
 TYPE = 'type'
 TYPES = 'types'
 YELLOW = 'yellow'
@@ -154,5 +157,7 @@ WHEEL_RIGHT = 'wheel_right'
 WHEEL_RIGHT_DIR = 'wheel right dir'
 WHEEL_RIGHT_PWM = 'wheel right pwm'
 WS_CLIENT = 'ws client'
+WS_CLIENTS = 'ws client'
+WS_PORT = 'ws port'
 X = 'x'
 Y = 'y'

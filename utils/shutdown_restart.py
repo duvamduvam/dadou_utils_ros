@@ -8,7 +8,7 @@ from dadou_utils.utils.time_utils import TimeUtils
 import time
 
 SHUTDOWN_CMD = 'sudo shutdown now -h'
-RESTART_CMD = 'sudo restart'
+RESTART_CMD = 'sudo reboot'
 STATUS_LED_INTERVAL = 500
 
 

@@ -19,13 +19,11 @@ printf "\n${RED}DEPLOY $PROJECT_NAME IN $RPI_DEPLOY${GREEN}\n\n"
 
 printf "rsync -auvzrL --delete-after --exclude-from='$UTILS_SCRIPTS/exclude_me.txt' $PROJECT_PATH/* $USER_HOST:$RPI_DEPLOY\n"
 rsync -auvzrL --delete-after --exclude-from="$UTILS_SCRIPTS/exclude_me.txt" $PROJECT_PATH/* $USER_HOST:$RPI_DEPLOY
-#printf "rsync -auvzrL --delete-after --exclude-from='$UTILS_SCRIPTS/exclude_me.txt' $UTILS_PROJECT $ROOT_HOST:$RPI_PYTHON_LIB\n"
-#rsync -auvzrL --delete-after --exclude-from="$UTILS_SCRIPTS/exclude_me.txt" $UTILS_PROJECT $ROOT_HOST:$RPI_PYTHON_LIB
 
 for dependency in "${PROJECT_DEPENDENCIES[@]}"
 do
-  printf "rsync -auvzrL --delete-after --exclude-from='$UTILS_SCRIPTS/exclude_me.txt' $dependency $ROOT_HOST:$RPI_PYTHON_LIB\n"
-  rsync -auvzrL --delete-after --exclude-from="$UTILS_SCRIPTS/exclude_me.txt" $dependency $ROOT_HOST:$RPI_PYTHON_LIB
+  printf "rsync -auvzrL --delete-after --exclude-from='$UTILS_SCRIPTS/exclude_me.txt' $dependency $USER_HOST:$RPI_DEPLOY\n"
+  rsync -auvzrL --delete-after --exclude-from="$UTILS_SCRIPTS/exclude_me.txt" $dependency $USER_HOST:$RPI_DEPLOY
 done
 
 printf "rsync -u $UTILS_SCRIPTS/* $USER_HOST:$RPI_SCRIPTS\n"

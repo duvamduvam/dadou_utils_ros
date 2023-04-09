@@ -76,6 +76,9 @@ class AbstractJsonManager:
             attributs_list.append(file[key])
         return attributs_list
 
+    def get_keys_list(self, json_file):
+        return self.json_files[json_file].keys()
+
     def get_element_from_key(self, json_file, key, value):
         self.json_files[json_file]
         for result in self.json_files[json_file]:

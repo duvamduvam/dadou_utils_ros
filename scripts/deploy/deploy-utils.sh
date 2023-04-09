@@ -21,7 +21,7 @@ case $command in
     printf "\n${RED}REBOOT${CYAN}\n\n"
     ssh -t $ROOT_HOST sudo reboot;;
   install_no_reboot)
-    source $UTILS_SCRIPTS/deploy.sh
+    #source $UTILS_SCRIPTS/deploy.sh
     source $UTILS_SCRIPTS/remote-install.sh
     source $UTILS_SCRIPTS/deploy.sh;;
   *)
