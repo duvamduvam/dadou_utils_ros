@@ -10,7 +10,8 @@ else
   python_file='main.py'
 fi
 
-cd $RPI_DEPLOY/$PROJECT_NAME
+#cd $RPI_DEPLOY/$PROJECT_NAME
+cd $RPI_DEPLOY
   export PYTHONPATH="$RPI_DEPLOY, $RPI_DEPLOY/$PROJECT_NAME, /usr/lib/python3,  $RPI_PYTHON_LIB,  ."
 echo $PYTHONPATH
-python3 $RPI_DEPLOY/$PROJECT_NAME/$python_file
+sudo python3 $RPI_DEPLOY/$python_file

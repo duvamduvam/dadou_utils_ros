@@ -122,7 +122,7 @@ alias halt='sudo shutdown -h now'
 alias temp='vcgencmd measure_temp'
 
 alias d='cd $RPI_DEPLOY'
-alias run='cd $RPI_SCRIPTS; sudo $RPI_SCRIPTS/run.sh'
+alias run='cd $RPI_SCRIPTS; $RPI_SCRIPTS/run.sh'
 alias start='sudo service didier start && log'
 alias restart='sudo service didier stop && sudo service didier start && log'
 alias stop='sudo service didier stop'
