@@ -93,6 +93,8 @@ class Misc:
 
     @staticmethod
     def cast_int(str_input):
+        if isinstance(str_input, int):
+            return str_input
         try:
             return int(str_input)
         except ValueError:
@@ -100,6 +102,8 @@ class Misc:
 
     @staticmethod
     def cast_float(str_input):
+        if isinstance(str_input, float):
+            return str_input
         try:
             return float(str_input)
         except ValueError:

@@ -80,9 +80,8 @@ class AbstractJsonManager:
         return self.json_files[json_file].keys()
 
     def get_element_from_key(self, json_file, key, value):
-        self.json_files[json_file]
         for result in self.json_files[json_file]:
-            if result[key] == value:
+            if value in result[key]:
                 return result
 
     def open_json(self, file_name, directory=""):

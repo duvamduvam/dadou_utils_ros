@@ -30,18 +30,22 @@ class ServoAbstract:
 
         self.type = type
         self.servo_max = servo_max
-        self.pwm_channel.angle = default_pos
+        self.update({self.type: default_pos})
 
     def update(self, msg):
 
         if not self.enabled:
-            return
+            return msg
 
         if msg and self.type in msg:
-            value = int(msg[self.type]*100)
+            value = Misc.cast_float(msg[self.type])
+            if value > 0 and value <= 1:
+                value = value * 100
             target_pos = Misc.mapping(value, INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
             logging.info("update servo {} with key {} for target {}".format(self.type, value, target_pos))
             self.pwm_channel.angle = target_pos
+
+        return msg
 
     def process(self):
         pass
