@@ -32,8 +32,10 @@ class WsClient:
 
     @staticmethod
     def is_server_listening(host, port):
-        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-            return sock.connect_ex((host, port)) == 0
+        a_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        activ = a_socket.connect_ex((host, port)) == 0
+        a_socket.close()
+        return activ
 
     @staticmethod
     async def async_send(msg, url):

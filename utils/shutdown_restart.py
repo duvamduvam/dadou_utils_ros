@@ -29,7 +29,7 @@ class ShutDownRestart:
         self.last_led_status_check = 0
 
     def update(self, msg):
-        pass
+        return msg
 
     def process(self):
         self.check_button(self.shutdown_button, SHUTDOWN_CMD)

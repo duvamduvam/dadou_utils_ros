@@ -3,6 +3,7 @@ import logging
 from enum import Enum, IntEnum
 from timeit import default_timer
 from pydub import AudioSegment, playback
+from pydub.playback import play
 from dadou_utils.audios.time_singleton import TimeSingleton
 from dadou_utils.utils.time_utils import TimeUtils
 
@@ -19,13 +20,12 @@ class SoundObject:
     starting_time = 0
     current_state = State.STOP
 
-    def __init__(self, audio_folder, audio_name):
+    def __init__(self, audio):
 
-        self.audio_folder = audio_folder
-        self.audio_name = audio_name
-        logging.info('load sound ' + audio_folder + audio_name)
+        self.audio = audio
+        logging.info('load sound ' + audio)
         #self.audio_segment = AudioSegment.from_mp3(audio_folder+audio_name)
-        self.audio_segment = AudioSegment.from_mp3(audio_folder + audio_name)
+        self.audio_segment = AudioSegment.from_mp3(audio)
         self.duration = self.audio_segment.duration_seconds
         self.play_obj = None
         self.pause_duration = 0
@@ -35,7 +35,7 @@ class SoundObject:
         if self.current_state.value == State.PAUSE.value:
             self.resume()
         elif self.current_state.value == State.STOP.value:
-            self.play_obj = playback._play_with_simpleaudio(self.audio_segment)
+            self.play_obj = playback._play_with_simpleaudio(self.audio_segment) #play(self.audio_segment)
             self.current_state = State.PLAY
             self.starting_time = default_timer()
 

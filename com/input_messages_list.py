@@ -12,7 +12,7 @@ class InputMessagesList(metaclass=SingletonMeta):
         self.messages.append(msg)
 
     def pop_msg(self):
-        msg = None
+        msg = {}
         if len(self.messages) > 0:
             msg = self.messages[0]
             self.messages.pop()
