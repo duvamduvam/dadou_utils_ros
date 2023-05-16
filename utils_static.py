@@ -1,7 +1,9 @@
 LAPTOP_TYPE = 'x86_64'
 RPI_TYPE = ['armv7l', 'aarch64']
 
-INPUT_MESSAGE_FILE = 'input_message.json'
+INPUT_MESSAGE_DIRECTORY = 'input_message/'
+INPUT_MESSAGE_FILE = INPUT_MESSAGE_DIRECTORY+'input_message.json'
+INPUT_LOCK = INPUT_MESSAGE_DIRECTORY+'lock'
 
 ############### KEYS ###############
 
@@ -92,6 +94,7 @@ LEFT_EYE = 'left eye'
 LEFT_EYE_NB = 'left eye'
 LIGHTS_EYES = 'left_eyes'
 LIGHTS = 'lights'
+LOCK = 'lock'
 LOOP = 'loop'
 LOGGING = 'logging'
 LOGGING_FILE_NAME = 'logging file name'
@@ -128,6 +131,7 @@ PLAYLIST_PLAY = 'playlist play'
 PLAYLIST_STOP = 'playlist stop'
 PROJECT_LIGHTS_DIRECTORY = 'project light directory'
 PROCESS = "process"
+PROCESS_NAME = "process name"
 PROFILER = 'profiler'
 PURPLE = 'purple'
 PWM_CHANNELS_ENABLED = 'pmw channels enabled'

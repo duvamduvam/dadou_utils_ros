@@ -8,10 +8,10 @@ class LoggingConf:
                     'level': 'NOTSET',
                     'handlers': ['debug_console_handler', 'info_rotating_file_handler'],
                 },
-                'my.package': {
+                'websockets': {
                     'level': 'WARNING',
                     'propagate': False,
-                    'handlers': ['info_rotating_file_handler'],
+                    'handlers': ['debug_console_handler', 'info_rotating_file_handler'],
                 },
             },
             'handlers': {
