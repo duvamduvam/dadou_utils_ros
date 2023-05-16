@@ -1,6 +1,6 @@
 ################# GLOBAL PARAMS ####################
 
-alias ll='ls -l'
+alias ll='ls -alh'
 alias la='ls -A'
 alias l='ls -CF'
 
