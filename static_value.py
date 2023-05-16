@@ -2,10 +2,13 @@ from dadou_utils.singleton import SingletonMeta
 
 
 class StaticValue(metaclass=SingletonMeta):
-    value = None
+    values = {}
 
     @staticmethod
-    def get():
-        v = StaticValue.value
-        StaticValue.value= None
-        return v
+    def get(key):
+        if key in StaticValue.values:
+            return StaticValue.values[key]
+
+    @staticmethod
+    def set(key, value):
+        StaticValue.values[key] = value

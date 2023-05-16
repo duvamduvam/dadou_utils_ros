@@ -17,6 +17,8 @@ alias start='sudo service $SERVICE_NAME start && log'
 alias restart='sudo service $SERVICE_NAME stop && sudo service $SERVICE_NAME start && log'
 alias stop='sudo service $SERVICE_NAME stop'
 
+alias halt='sudo systemctl halt -i'
+
 alias lib='cd /usr/lib/python3/dist-packages/'
 alias utils='cd /usr/lib/python3/dist-packages/dadou_utils/'
 

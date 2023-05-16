@@ -2,8 +2,6 @@ import asyncio
 import json
 import logging
 
-from websocket import create_connection
-import websocket
 import websockets
 import uvloop
 import socket

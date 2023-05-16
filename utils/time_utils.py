@@ -13,6 +13,7 @@ class TimeUtils:
 
     @staticmethod
     def current_milli_time():
+        #return round(time.time() * 1000)
         return round(time.time() * 1000)
 
     @staticmethod
@@ -30,7 +31,7 @@ class TimeUtils:
         try:
             is_time = ((current - last_time) - time_out) > 0
         except TypeError:
-            logging.error("is_time = (" + str(current) + " - " + str(last_time) + ") - " + str(time_out) + ") > 0)", exc_info=True)
+            logging.error("is_time = (" + str(current) + " - " + str(last_time) + ") - " + str(time_out) + ") > 0)")
             # logging.debug("last time: " + str(last_time) + " current time : " + str(current) +
             #              " time step : " + str(time_out) + " is time : " + str(is_time))
         return is_time

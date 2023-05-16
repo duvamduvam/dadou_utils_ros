@@ -13,15 +13,17 @@ STATUS_LED_INTERVAL = 500
 
 
 class ShutDownRestart:
-    def __init__(self, shutdown_pin, restart_pin, status_pin):
+    def __init__(self, shutdown_pin, status_pin, restart_pin=None):
 
         self.shutdown_button = DigitalInOut(shutdown_pin)
         self.shutdown_button.direction = Direction.INPUT
         self.shutdown_button.pull = Pull.UP
 
-        self.restart_button = DigitalInOut(restart_pin)
-        self.restart_button.direction = Direction.INPUT
-        self.restart_button.pull = Pull.UP
+        self.restart_pin = restart_pin
+        if restart_pin:
+            self.restart_button = DigitalInOut(restart_pin)
+            self.restart_button.direction = Direction.INPUT
+            self.restart_button.pull = Pull.UP
 
         self.status_led = DigitalInOut(status_pin)
         self.status_led.direction = Direction.OUTPUT
@@ -33,7 +35,8 @@ class ShutDownRestart:
 
     def process(self):
         self.check_button(self.shutdown_button, SHUTDOWN_CMD)
-        self.check_button(self.restart_button, RESTART_CMD)
+        if self.restart_pin:
+            self.check_button(self.restart_button, RESTART_CMD)
         self.led_status()
 
     def check_button(self, button, command):
