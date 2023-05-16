@@ -11,6 +11,7 @@ sudo apt-get update
 printf "\n sudo apt-get upgrade \n\n"
 sudo apt-get upgrade
 
+printf "\n mkdir $RPI_DEPLOY/logs \n\n"
 mkdir $RPI_DEPLOY/logs
 
 if [ "$INSTALL_LIB" = "yes" ]; then

@@ -131,7 +131,7 @@ alias lib='cd /usr/lib/python3.9/dist-packages/'
 
 alias utils='cd /usr/local/lib/python3/dist-packages/dadou_utils/'
 
-alias log='sudo tail -f $RPI_DEPLOY/logs/didier.log'
+alias log='sudo tail -f $RPI_DEPLOY/logs/robot.log'
 alias err='sudo tail -f $RPI_DEPLOY/logs/service-error.log'
 
 alias i2c='i2cdetect -y 1'
