@@ -97,7 +97,7 @@ class Misc:
             return str_input
         try:
             return int(str_input)
-        except ValueError:
+        except (TypeError, ValueError) as e:
             logging.error("can't cast {} to int".format(str))
 
     @staticmethod
@@ -106,7 +106,7 @@ class Misc:
             return str_input
         try:
             return float(str_input)
-        except ValueError:
+        except (TypeError, ValueError) as e:
             logging.error("can't cast {} to float".format(str))
 
     @staticmethod
