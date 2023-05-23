@@ -30,9 +30,14 @@ class WsClient:
 
     @staticmethod
     def is_server_listening(host, port):
-        a_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        activ = a_socket.connect_ex((host, port)) == 0
-        a_socket.close()
+        #TODO make it async
+        test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        activ = False
+        try:
+            activ = test_socket.connect_ex((host, port)) == 0
+        except:
+            pass
+        test_socket.close()
         return activ
 
     @staticmethod
