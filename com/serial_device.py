@@ -16,8 +16,9 @@ class SerialDevice:
     device = None
     msg_size = 0
 
-    def __init__(self, name, serial_id, type, msg_size=0):
+    def __init__(self, name, serial_id, type, baud_rate, msg_size=0):
         self.serialPath = self.USB_ID_PATH+serial_id
+        self.baud_rate = baud_rate
         self.name = name
         self.msg_size = msg_size
         self.connect()

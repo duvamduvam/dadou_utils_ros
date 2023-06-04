@@ -3,7 +3,7 @@ import logging
 from os.path import exists
 from dadou_utils.com.serial_device import SerialDevice
 from dadou_utils.utils.time_utils import TimeUtils
-from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE
+from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE, BAUD_RATE
 
 
 class SerialDeviceManager:
@@ -31,7 +31,7 @@ class SerialDeviceManager:
                     break
             if new_device and expected_device_exist:
                 self.add_device(SerialDevice(expected_device[NAME], expected_device[SERIAL_ID],
-                                             expected_device[TYPE], expected_device[DEVICE_MSG_SIZE]))
+                                             expected_device[TYPE], expected_device[BAUD_RATE], expected_device[DEVICE_MSG_SIZE]))
 
     def add_device(self, device):
         self.existing_devices.append(device)

@@ -3,12 +3,16 @@
 source $UTILS_SCRIPTS/colors.sh
 source $UTILS_SCRIPTS/params.sh
 
+printf "deploy utils param $1\n\n"
+
 if [ -z "$1" ]
 then
       command="deploy"
 else
       command=$1
 fi
+
+printf "deploy utils param $command\n\n"
 
 case $command in
   deploy)

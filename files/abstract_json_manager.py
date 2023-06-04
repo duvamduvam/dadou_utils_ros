@@ -9,7 +9,6 @@ from dadou_utils.utils_static import KEYS, JSON_DIRECTORY, BASE_PATH, NAME
 
 
 class AbstractJsonManager:
-    # '{}_{}_{}_{}'.format(s1, i, s2, f)
 
     def __init__(self, config, json_keys):
         self.config = config

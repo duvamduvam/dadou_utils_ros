@@ -128,7 +128,7 @@ class Misc:
         logging.info(uname)
         return uname.machine
 
-
+    @staticmethod
     def mapping(v, in_min: int, in_max: int, out_min: int, out_max: int):
         # Check that the value is at least in_min
         if v < in_min:
@@ -137,6 +137,10 @@ class Misc:
         if v > in_max:
             v = in_max
         return (v - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
+    @staticmethod
+    def percentage(value, min_value, max_value):
+        return ((value - min_value)/(max_value-min_value))*100
 
     @staticmethod
     def random_color():

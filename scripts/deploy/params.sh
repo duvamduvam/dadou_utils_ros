@@ -17,7 +17,7 @@ fi
 
 
 export SYSTEM_LIB="ffmpeg i2c-tools python3 python3-dev python3-pip libatlas-base-dev libopenjp2-7 libasound2-dev vim"
-export PYTHON_LIB="adafruit-blinka adafruit-circuitpython-neopixel adafruit-circuitpython-led-animation adafruit-circuitpython-pcf8574 adafruit-circuitpython-servokit board colorlog filetype pydub imageio inotify jsonpath_rw jsonpath_rw_ext pyserial simpleaudio sound-player uvloop watchdog websocket-client websockets"
+export PYTHON_LIB="adafruit-blinka adafruit-circuitpython-neopixel adafruit-circuitpython-led-animation adafruit-circuitpython-pcf8574 adafruit-circuitpython-servokit board colorlog filetype pydub imageio inotify jsonpath_rw jsonpath_rw_ext psutil pyserial simpleaudio sound-player uvloop watchdog websocket-client websockets"
 #adafruit-circuitpython-motor schedule
 
 declare -A LIB_SYMLINK

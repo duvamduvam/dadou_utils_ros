@@ -52,32 +52,4 @@ class WsClient:
             logging.info("send {} to {}".format(msg, self.name))
             asyncio.run(WsClient.async_send(msg, self.url))
 
-        #ws = create_connection(self.url)
-        #print(ws.recv())
-        #print("Sending 'Hello, World'...")
-        #json_object = json.dumps(msg, indent=4)
-        #ws.send(json_object)
-        #print("Sent")
-        #print("Receiving...")
-        #result = ws.recv()
-        #print("Received '%s'" % result)
-        #ws.close()
-
-        #with connect(self.url) as websocket:
-        #    json_object = json.dumps(msg, indent=4)
-        #    websocket.send(json_object)
-        #    message = websocket.recv()
-        #    print(f"Received: {message}")
-        #if self.activ:
-        #    try:
-        #        #await self.ws.recv()
-        #        logging.info("connected {}".format(self.ws.connected))
-        #        json_object = json.dumps(msg, indent=4)
-        #        self.ws.send(json_object)
-        #    except BrokenPipeError:
-        #        logging.error("broken ws connection {}".format(self.name))
-        #        if reconnect:
-        #            self.connect()
-        #            #await self.send(msg, False)
-        #asyncio.run(WsClient.async_send(msg, self.url))
 
