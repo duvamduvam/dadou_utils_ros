@@ -50,6 +50,6 @@ class SerialDeviceManager:
     def get_device_type(self, type):
         devices = []
         for device in self.existing_devices:
-            if device.type == type:
+            if device.action_type == type:
                 devices.append(device)
         return devices
