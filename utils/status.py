@@ -6,7 +6,6 @@ import re
 import psutil
 
 from digitalio import DigitalInOut, Direction, Pull
-from analogio import AnalogIn
 
 from dadou_utils.misc import Misc
 from dadou_utils.utils.time_utils import TimeUtils
@@ -77,7 +76,7 @@ class Status:
         Status.check_cpu_temp()
 
     def check_battery(self):
-        if not self.battery:
+        if not hasattr(self, 'battery'):
             return
 
         battery_value = (self.battery.value * 3.3) / 65536
