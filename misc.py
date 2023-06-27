@@ -8,7 +8,7 @@ import socket
 import subprocess
 from os.path import exists
 
-from filetype import filetype
+import filetype
 
 
 class Misc:

@@ -1,40 +1,34 @@
 import asyncio
 import logging
 import traceback
+from threading import Thread
 
-from dadou_utils.com.serial_devices_manager import SerialDeviceManager
-from dadou_utils.misc import Misc
-from dadou_utils.utils_static import LORA, ANGLO, KEY, JOY
+from dadou_utils.utils_static import ANGLO, KEY, JOY
 
 
 class Message:
 
     event_loop = asyncio.new_event_loop()
 
-    def __init__(self, ws_clients, device_manager: SerialDeviceManager):
+    def __init__(self, ws_clients, device_manager=None):
         self.ws_clients = ws_clients
-        self.lora = device_manager.get_device(LORA)
+        #self.lora = device_manager.get_device(LORA)
+        self.lora = None
 
     def send(self, msg: dict):
-        if self.lora and self.lora.exist():
-            self.send_lora(msg)
-        else:
-            self.send_multi_ws(msg)
+        #if self.lora and self.lora.exist():
+        #    self.send_lora(msg)
+        #else:
+        self.send_multi_ws(msg)
 
     def send_multi_ws(self, msg: dict):
+
         for ws_client in self.ws_clients:
-            ws_client.send(msg)
+            #args=(msg,) parenthesis nedeed otherwise only the key is passed
+            thread = Thread(target=ws_client.send, args=(msg,))
+            thread.start()
 
-    @staticmethod
-    async def send_ws(msg, ws_client):
-        try:
-            logging.info("send {} to {}".format(msg, ws_client.name))
-            ws_client.send(msg)
-        except Exception as e:
-            logging.error("{} can't send msg {}".format(ws_client.name, e))
-            traceback.print_exc()
-
-    def send_lora(self, msg:dict):
+    def send_lora(self, msg: dict):
         if ANGLO in msg:
             self.lora.send_msg('A'+msg[ANGLO])
         if KEY in msg:

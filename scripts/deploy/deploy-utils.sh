@@ -3,7 +3,28 @@
 source $UTILS_SCRIPTS/colors.sh
 source $UTILS_SCRIPTS/params.sh
 
-printf "deploy utils param $1\n\n"
+printf "\n\n${RED}START DEPLY UTILS WITH PARAMS $1${YELLOW}\n\n"
+
+#printf "\n${YELLOW}nc -zv $RPI_HOST_NAME 22 2>&1${YELLOW}\n"
+#NC_RESULT=$(nc -zv $RPI_HOST_NAME 22 2>&1)
+
+#check host available
+printf "\n${YELLOW}nmap -sP --max-retries=1 --host-timeout=250ms $RPI_HOST_NAME${YELLOW}\n"
+NMAP_RESULT=$(nmap -sP --max-retries=1 --host-timeout=250ms $RPI_HOST_NAME)
+printf "\n${YELLOW}echo $NMAP_RESULT | grep "Host is up" | wc -l${YELLOW}\n"
+RESULT=$(echo $NMAP_RESULT | grep "Host is up" | wc -l);
+if [[ $RESULT == 0 ]];  then
+#if grep -q $NC_RESULT <<<"open"; then
+  printf "\n${RED}$RPI_HOST_NAME DOWN${YELLOW}\n"
+  return 0
+fi
+
+#Get IP from HOSTNAME
+if ! [[ "$HOME" == *"$RPI_HOME"* ]]; then
+  printf "RPI_IP=getent hosts "$RPI_HOST_NAME" | awk '{ print $1 }'\n\n"
+  export RPI_IP=$(getent hosts $RPI_HOST_NAME | awk '{ print $1 }')
+  printf "RPI_IP=$RPI_IP\n\n"
+fi
 
 if [ -z "$1" ]
 then
@@ -17,7 +38,7 @@ printf "deploy utils param $command\n\n"
 case $command in
   deploy)
     source $UTILS_SCRIPTS/deploy.sh;;
-  install)
+  i)
     printf "ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_IP\n\n"
     ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_IP
     source $UTILS_SCRIPTS/deploy.sh
@@ -28,7 +49,7 @@ case $command in
     ssh -t $ROOT_HOST chmod +x $RPI_SCRIPTS/*
     printf "\n${RED}REBOOT${CYAN}\n\n"
     ssh -t $ROOT_HOST sudo reboot;;
-  install_no_reboot)
+  inr)
     source $UTILS_SCRIPTS/remote-install.sh
     source $UTILS_SCRIPTS/deploy.sh
     printf "$ROOT_HOST chmod +x $RPI_SCRIPTS/*\n\n"

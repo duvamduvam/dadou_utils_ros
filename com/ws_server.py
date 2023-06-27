@@ -2,9 +2,10 @@ import asyncio
 import json
 import logging
 from threading import Thread
-import uvloop
 
+import uvloop
 import websockets
+
 from dadou_utils.com.input_messages_list import InputMessagesList
 
 

@@ -1,12 +1,9 @@
+import logging
 import re
-from builtins import staticmethod
 from os.path import exists
 
-from serial import SerialException
-
 import serial
-import logging
-import sys
+from serial import SerialException
 
 
 class SerialDevice:

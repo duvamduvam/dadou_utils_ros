@@ -1,9 +1,9 @@
 import logging
 
 import adafruit_rfm9x
+import board
 import busio
 from digitalio import DigitalInOut
-import board
 
 
 class LoraRadio:

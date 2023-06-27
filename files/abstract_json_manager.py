@@ -1,11 +1,7 @@
 
 import json
-import logging
-import re
-import os
 
-import jsonpath_rw_ext
-from dadou_utils.utils_static import KEYS, JSON_DIRECTORY, BASE_PATH, NAME
+from dadou_utils.utils_static import JSON_DIRECTORY, BASE_PATH
 
 
 class AbstractJsonManager:

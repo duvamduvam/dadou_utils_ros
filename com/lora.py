@@ -1,14 +1,12 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
+import adafruit_rfm9x
 # Simple demo of sending and recieving data with the RFM95 LoRa radio.
 # Author: Tony DiCola
 import board
 import busio
 import digitalio
-
-import adafruit_rfm9x
-
 
 # Define radio parameters.
 RADIO_FREQ_MHZ = 433  # Frequency of the radio in Mhz. Must match your
