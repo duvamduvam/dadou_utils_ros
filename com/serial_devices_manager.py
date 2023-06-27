@@ -1,6 +1,6 @@
 import logging
-
 from os.path import exists
+
 from dadou_utils.com.serial_device import SerialDevice
 from dadou_utils.utils.time_utils import TimeUtils
 from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE, BAUD_RATE
@@ -50,6 +50,6 @@ class SerialDeviceManager:
     def get_device_type(self, type):
         devices = []
         for device in self.existing_devices:
-            if device.action_type == type:
+            if device.type == type:
                 devices.append(device)
         return devices

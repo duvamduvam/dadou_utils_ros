@@ -1,16 +1,15 @@
 import asyncio
 import logging
 import os
-import subprocess
 import re
-import psutil
+import subprocess
+import time
 
+import psutil
 from digitalio import DigitalInOut, Direction, Pull
 
 from dadou_utils.misc import Misc
 from dadou_utils.utils.time_utils import TimeUtils
-
-import time
 
 SHUTDOWN_CMD = 'sudo shutdown now -h'
 RESTART_CMD = 'sudo reboot'

@@ -1,9 +1,9 @@
-import datetime
 import logging
-from enum import Enum, IntEnum
+from enum import IntEnum
 from timeit import default_timer
+
 from pydub import AudioSegment, playback
-from pydub.playback import play
+
 from dadou_utils.audios.time_singleton import TimeSingleton
 from dadou_utils.utils.time_utils import TimeUtils
 

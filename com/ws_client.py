@@ -1,11 +1,10 @@
 import asyncio
 import json
 import logging
-
-import websockets
-import uvloop
 import socket
-from contextlib import closing
+
+import uvloop
+import websockets
 
 
 class WsClient:

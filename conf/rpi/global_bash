@@ -28,3 +28,5 @@ alias err='sudo tail -f $RPI_DEPLOY/logs/service-error.log'
 alias i2c='i2cdetect -y 1'
 alias p='ps -aux | grep python'
 alias k='sudo pkill python'
+
+alias signal='sudo iwlist wlan0 scan | egrep \"Cell|ESSID|Signal|Rates\"'

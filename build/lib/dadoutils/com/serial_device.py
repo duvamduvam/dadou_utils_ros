@@ -1,11 +1,10 @@
-from builtins import staticmethod
-from os.path import exists
-
-from serial import SerialException
-
-import serial
 import logging
 import sys
+from os.path import exists
+
+import serial
+from serial import SerialException
+
 
 class SerialDevice:
     TERMINATOR = '\n'.encode('UTF8')

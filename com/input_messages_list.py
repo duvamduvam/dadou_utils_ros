@@ -1,5 +1,3 @@
-import json
-
 from dadou_utils.singleton import SingletonMeta
 
 
