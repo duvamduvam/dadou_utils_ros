@@ -39,8 +39,8 @@ case $command in
   deploy)
     source $UTILS_SCRIPTS/deploy.sh;;
   i)
-    printf "ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_IP\n\n"
-    ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_IP
+    printf "ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_HOST_NAME\n\n"
+    ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_HOST_NAME
     source $UTILS_SCRIPTS/deploy.sh
     source $UTILS_SCRIPTS/remote-install.sh
     #need to be called again, problem with dadou_utils deployement otherwise

@@ -9,6 +9,9 @@ class InputMessagesList(metaclass=SingletonMeta):
     def add_msg(self, msg):
         self.messages.append(msg)
 
+    def has_mg(self):
+        return len(self.messages) != 0
+
     def pop_msg(self):
         msg = {}
         if len(self.messages) > 0:

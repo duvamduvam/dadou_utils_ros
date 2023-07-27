@@ -26,6 +26,8 @@ class AbstractJsonManager:
     #TODO simplify with the fileUtils.open_json
     def open_json(self, file_name, directory=""):
         path = self.config[BASE_PATH] + self.config[JSON_DIRECTORY] + directory + file_name
+        if ".json" not in path:
+            path += ".json"
         with open(path, 'r') as json_file:
             return json.load(json_file)
 

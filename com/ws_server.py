@@ -16,7 +16,7 @@ class WsServer(Thread):
         async for message in websocket:
             InputMessagesList().messages.append(json.loads(message))
             logging.info("received message {}".format(message))
-            await websocket.send("I recieved : "+message)
+            #await websocket.send("I recieved : "+message)
 
     @staticmethod
     async def main():
