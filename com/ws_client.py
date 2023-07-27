@@ -43,8 +43,8 @@ class WsClient:
     async def async_send(msg, url):
         async with websockets.connect(url) as websocket:
             await websocket.send(json.dumps(msg))
-            response = await websocket.recv()
-            logging.debug("server response : {}".format(response))
+            #response = await websocket.recv()
+            #logging.debug("server response : {}".format(response))
 
     def send(self, msg):
         if self.activ:

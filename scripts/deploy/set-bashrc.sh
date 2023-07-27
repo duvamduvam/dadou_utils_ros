@@ -11,7 +11,7 @@ printf "\n${RED}INSTALL BASH FILE${CYAN}\n"
 printf "\n echo 'RPI_SCRIPTS'=$RPI_SCRIPTS | sudo tee /etc/environment \n"
 echo 'RPI_SCRIPTS'=$RPI_SCRIPTS | sudo tee /etc/environment
 printf "\n echo source $RPI_SCRIPTS/project-deploy.sh "read_param" | sudo -a tee /etc/environment \n"
-echo source $RPI_SCRIPTS/project-deploy.sh | sudo tee -a /etc/environment
+echo source $RPI_SCRIPTS/control-deploy.sh | sudo tee -a /etc/environment
 printf "\n echo source $RPI_SCRIPTS/params.sh | sudo tee -a /etc/environment \n"
 echo source $RPI_SCRIPTS/params.sh | sudo tee -a /etc/environment
 

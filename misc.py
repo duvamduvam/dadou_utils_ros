@@ -9,7 +9,7 @@ import subprocess
 from os.path import exists
 
 import filetype
-
+from urllib import request
 
 class Misc:
 
@@ -26,7 +26,7 @@ class Misc:
     def exec_shell(command):
         #stream = os.popen(command)
         stream = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        logging.info(stream.read())
+        #logging.info(stream.read())
 
     @staticmethod
     def exec_shell_subprocess(command):
@@ -110,7 +110,7 @@ class Misc:
             logging.error("can't cast {} to float".format(str))
 
     @staticmethod
-    def is_connected():
+    def internet_connected():
         try:
             # connect to the host -- tells us if the host is actually
             # reachable
@@ -121,6 +121,14 @@ class Misc:
         except OSError:
             pass
         return False
+
+    @staticmethod
+    def wifi_connected():
+        try:
+            request.urlopen('http://192.168.1.1', timeout=1)
+            return True
+        except (request.URLError, TimeoutError) as err:
+            return False
 
     @staticmethod
     def get_system_type():
