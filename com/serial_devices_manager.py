@@ -33,6 +33,10 @@ class SerialDeviceManager:
                 self.add_device(SerialDevice(expected_device[NAME], expected_device[SERIAL_ID],
                                              expected_device[TYPE], expected_device[BAUD_RATE], expected_device[DEVICE_MSG_SIZE]))
 
+    def reset_devices(self):
+        self.existing_devices = []
+        self.update_devices()
+
     def add_device(self, device):
         self.existing_devices.append(device)
         logging.info("add device {}".format(device.name))

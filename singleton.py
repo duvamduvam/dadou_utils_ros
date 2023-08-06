@@ -7,6 +7,7 @@ class SingletonMeta(type):
 
     def __call__(cls, *args, **kwargs):
         # double-checked locking pattern (https://en.wikipedia.org/wiki/Double-checked_locking)
+        #TODO check why called twice
         if cls not in cls._instances:
             #with cls._singleton_lock:
             if cls not in cls._instances:

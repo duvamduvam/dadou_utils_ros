@@ -5,6 +5,8 @@ from os.path import exists
 import serial
 from serial import SerialException
 
+from dadou_utils.utils_static import ERROR
+
 
 class SerialDevice:
 
@@ -38,23 +40,27 @@ class SerialDevice:
     def get_msg(self, size='X'):
         if size == 'X':
             size = self.msg_size
-        if not self.device:
+        try:
+            if not self.device:
+                self.connect()
+            if self.plugged and self.device.isOpen() and exists(self.serialPath):
+                # logging.info("{} connected!".format(self.arduino.port))
+                if self.device.inWaiting() > 0:
+                    if size == 0:
+                        line = self.device.readline()
+                    else:
+                        line = self.device.read(size)
+                        self.device.reset_input_buffer()
+                    # msg = line.decode('UTF8').strip()
+                    msg = line.decode("ascii", errors="replace")
+                    logging.info("received from {} : {}".format(self.name, msg))
+                    self.device.flush()
+                    return msg
+        except Exception as e:
+            logging.error("{} device error : {}".format(self.name, e))
             self.connect()
-        if self.plugged and self.device.isOpen() and exists(self.serialPath):
-            # logging.info("{} connected!".format(self.arduino.port))
-            if self.device.inWaiting() > 0:
-                if size == 0:
-                    line = self.device.readline()
-                else:
-                    line = self.device.read(size)
-                    self.device.reset_input_buffer()
-                # msg = line.decode('UTF8').strip()
-                msg = line.decode("ascii", errors="replace")
-                logging.info("received from {} : {}".format(self.name, msg))
-                self.device.flush()
-                return msg
-            # self.device.read(self.device.in_waiting)
-            # print(self.device.in_waiting)
+                # self.device.read(self.device.in_waiting)
+                # print(self.device.in_waiting)
         return None
 
     """def get_msg2(self):
