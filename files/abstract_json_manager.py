@@ -31,6 +31,10 @@ class AbstractJsonManager:
         with open(path, 'r') as json_file:
             return json.load(json_file)
 
+    def write_json(self, datas, file_name, directory=""):
+        path = self.config[BASE_PATH] + self.config[JSON_DIRECTORY] + directory + file_name
+        with open(path, "w") as outfile:
+            outfile.write(json.dumps(datas, indent=4, sort_keys=True))
 
     """@staticmethod
     def standard_return(result, return_first, attribut):

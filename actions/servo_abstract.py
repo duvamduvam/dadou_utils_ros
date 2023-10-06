@@ -2,11 +2,13 @@ import logging
 
 from adafruit_servokit import ServoKit
 from dadou_utils.misc import Misc
+from dadou_utils.utils_static import UP, DOWN
 
 INPUT_MIN = 0
 INPUT_MAX = 99
 
 SERVO_MIN = 0
+STEP = 5
 
 
 class ServoAbstract:
@@ -38,10 +40,18 @@ class ServoAbstract:
             return
 
         if msg and self.type in msg:
-            value = int(msg[self.type]*100)
-            target_pos = Misc.mapping(value, INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
-            logging.info("update servo {} with key {} for target {}".format(self.type, value, target_pos))
-            self.pwm_channel.angle = target_pos
+            if msg[self.type] == UP:
+                if self.pwm_channel.angle < self.servo_max - STEP:
+                    self.pwm_channel.angle = self.pwm_channel.angle + STEP
+            if msg[self.type] == DOWN:
+                if self.pwm_channel.angle > STEP:
+                    self.pwm_channel.angle = self.pwm_channel.angle - STEP
+
+            else:
+                value = int(msg[self.type]*100)
+                target_pos = Misc.mapping(value, INPUT_MIN, INPUT_MAX, SERVO_MIN, self.servo_max)
+                logging.info("update servo {} with key {} for target {}".format(self.type, value, target_pos))
+                self.pwm_channel.angle = target_pos
 
     def process(self):
         pass

@@ -5,7 +5,10 @@ from os.path import exists
 import serial
 from serial import SerialException
 
-from dadou_utils.utils_static import ERROR
+from dadou_utils.utils_static import ERROR, SERIAL_ID, BAUD_RATE, NAME, DEVICE_MSG_SIZE, MSG, TYPE
+
+
+#usb permission : sudo usermod -a -G dialout dadou
 
 
 class SerialDevice:
@@ -15,13 +18,16 @@ class SerialDevice:
     device = None
     msg_size = 0
 
-    def __init__(self, name, serial_id, type, baud_rate, msg_size=0):
-        self.serialPath = self.USB_ID_PATH+serial_id
-        self.baud_rate = baud_rate
-        self.name = name
-        self.msg_size = msg_size
+    def __init__(self, device_config):
+#    def __init__(self, name, serial_id, type, baud_rate, msg_size=0, default_msg=None):
+        self.serialPath = self.USB_ID_PATH+device_config[SERIAL_ID]
+        self.baud_rate = device_config[BAUD_RATE]
+        self.name = device_config[NAME]
+        self.msg_size = device_config[DEVICE_MSG_SIZE]
+        if MSG in device_config:
+            self.default_msg = device_config[MSG]
         self.connect()
-        self.type = type
+        self.type = device_config[TYPE]
         self.buf = bytearray()
 
     def connect(self):
