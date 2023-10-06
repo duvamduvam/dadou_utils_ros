@@ -9,7 +9,7 @@ class InputMessagesList(metaclass=SingletonMeta):
     def add_msg(self, msg):
         self.messages.append(msg)
 
-    def has_mg(self):
+    def has_msg(self):
         return len(self.messages) != 0
 
     def pop_msg(self):
@@ -18,3 +18,10 @@ class InputMessagesList(metaclass=SingletonMeta):
             msg = self.messages[0]
             self.messages.pop()
         return msg
+
+    def get_all(self):
+        dictionary = {}
+        for msg in self.messages:
+            dictionary.update(msg)
+        self.messages = []
+        return dictionary
