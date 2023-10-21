@@ -3,7 +3,7 @@ import logging
 import traceback
 from threading import Thread
 
-from dadou_utils.utils_static import ANGLO, KEY, JOY
+from dadou_utils.utils_static import ANGLO, KEY, JOYSTICK
 
 
 class Message:
@@ -15,26 +15,26 @@ class Message:
         #self.lora = device_manager.get_device(LORA)
         self.lora = None
 
-    def send(self, msg: dict):
-        #if self.lora and self.lora.exist():
-        #    self.send_lora(msg)
-        #else:
-        self.send_multi_ws(msg)
-
-    def send_multi_ws(self, msg: dict):
+    def send(self, msg: dict, targets=None):
 
         for ws_client in self.ws_clients:
-            #args=(msg,) parenthesis nedeed otherwise only the key is passed
-            thread = Thread(target=ws_client.send, args=(msg,))
-            thread.start()
+            if targets:
+                if ws_client.name in targets:
+                    self.ws_client_thread(ws_client, msg)
+            else:
+                self.ws_client_thread(ws_client, msg)
+
+    def ws_client_thread(self, ws_client, msg):
+        thread = Thread(target=ws_client.send, args=(msg,))
+        thread.start()
 
     def send_lora(self, msg: dict):
         if ANGLO in msg:
             self.lora.send_msg('A'+msg[ANGLO])
         if KEY in msg:
             self.lora.send_msg('K'+msg[KEY])
-        if JOY in msg:
-            self.lora.send_msg('J'+msg[JOY])
+        if JOYSTICK in msg:
+            self.lora.send_msg('J' + msg[JOYSTICK])
 
     """def __int__(self, msg):
         self.msg = msg
