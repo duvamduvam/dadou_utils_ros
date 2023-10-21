@@ -7,6 +7,7 @@ import uvloop
 import websockets
 
 from dadou_utils.com.input_messages_list import InputMessagesList
+from dadou_utils.utils_static import IP
 
 
 class WsServer(Thread):
@@ -14,8 +15,10 @@ class WsServer(Thread):
     @staticmethod
     async def handler(websocket):
         async for message in websocket:
-            InputMessagesList().messages.append(json.loads(message))
-            logging.info("received message {}".format(message))
+            msg_dict = json.loads(message)
+            msg_dict[IP] = websocket.remote_address[0]
+            InputMessagesList().add_msg(msg_dict)
+            logging.info("received message {}".format(msg_dict))
             #await websocket.send("I recieved : "+message)
 
     @staticmethod
