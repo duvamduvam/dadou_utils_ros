@@ -19,11 +19,11 @@ done
 
 printf "\n${RED}${BOLD}INSTALL PYTHON LIBRAIRIES${NORMAL}${PURPLE}\n\n"
 
-printf "\n sudo pip3 install --upgrade pip \n\n"
-sudo pip3 install --upgrade pip
+printf "\n sudo pip3 install --upgrade --break-system-packages pip \n\n"
+sudo pip3 install --upgrade --break-system-packages setuptools pip
 
-printf "\n sudo pip3 install --upgrade setuptools \n\n"
-sudo pip3 install --upgrade setuptools
+printf "\n sudo pip3 install --upgrade --break-system-packages setuptools \n\n"
+sudo pip3 install --upgrade --break-system-packages setuptools
 
-printf "\n sudo pip3 install $PYTHON_LIB $PROJECT_PYTHON_LIB \n\n"
-sudo pip3 install --upgrade $PYTHON_LIB $PROJECT_PYTHON_LIB
+printf "\n sudo pip3 install --break-system-packages --upgrade $PYTHON_LIB $PROJECT_PYTHON_LIB \n\n"
+sudo pip3 install --break-system-packages --upgrade $PYTHON_LIB $PROJECT_PYTHON_LIB
