@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source project-deploy.sh "read_param"
 source colors.sh
 source params.sh
@@ -6,12 +8,9 @@ printf "\n${RED} =================== INSTALL SYSTEM =================== ${CYAN}\
 
 printf "\n${RED}UPDATE SYSTEM${CYAN}\n\n"
 
-printf "\n sudo apt-get update \n\n"
 sudo apt-get update
-printf "\n sudo apt-get upgrade \n\n"
 sudo apt-get upgrade
 
-printf "\n mkdir $RPI_DEPLOY/logs \n\n"
 mkdir "$RPI_DEPLOY"/logs
 
 if [ "$INSTALL_LIB" = "yes" ]; then
@@ -34,4 +33,7 @@ if [ "$INSTALL_SERVICE" = "yes" ]; then
 fi
 if [ "$INSTALL_AUTOSTART" = "yes" ]; then
   source install-autostart.sh
+fi
+if [ "$INSTALL_DOCKER" = "yes" ]; then
+  source install-docker.sh
 fi

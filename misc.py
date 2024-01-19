@@ -149,10 +149,19 @@ class Misc:
                         _, value = line.strip().split(':', 1)
                         value = value.strip()
                         if value in chips:
+                            print("is rpi")
                             return True
         except Exception:
             pass
         return False
+    @staticmethod
+    def is_docker():
+        run_in_docker = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
+        if run_in_docker:
+            print("is docker")
+            return True
+        else:
+            return False
 
     @staticmethod
     def mapping(v, in_min: int, in_max: int, out_min: int, out_max: int):
