@@ -1,12 +1,16 @@
 import logging
+import os
 from enum import IntEnum
+from multiprocessing import Process
 from timeit import default_timer
+import simpleaudio as sa
+from playsound import playsound
 
 from pydub import AudioSegment, playback
 
 from dadou_utils.audios.time_singleton import TimeSingleton
 from dadou_utils.utils.time_utils import TimeUtils
-
+#sudo apt-get install mpg123
 
 class State(IntEnum):
     PLAY = 1
@@ -20,26 +24,46 @@ class SoundObject:
     starting_time = 0
     current_state = State.STOP
 
-    def __init__(self, audio):
+    audio_process = None
+    audio_background_process = None
 
+    def __init__(self, audio, datas={}, duration=None):
         self.audio = audio
         logging.info('load sound ' + audio)
         #self.audio_segment = AudioSegment.from_mp3(audio_folder+audio_name)
-        self.audio_segment = AudioSegment.from_mp3(audio)
-        self.duration = self.audio_segment.duration_seconds
+        #TODO fix from mp3
+        self.duration = duration
         self.play_obj = None
         self.pause_duration = 0
         self.pause_time = 0
 
-    def play(self):
+    @staticmethod
+    def get_duration(audio):
+        return int(AudioSegment.from_mp3(audio).duration_seconds * 1000)
+
+    def play(self, background_sound=False):
         if self.current_state.value == State.PAUSE.value:
             self.resume()
         elif self.current_state.value == State.STOP.value:
-            self.play_obj = playback._play_with_simpleaudio(self.audio_segment) #play(self.audio_segment)
+            #sound_object = sa.WaveObject.from_wave_file(self.audio)
+            #self.play_obj = sound_object.play()
+            #self.play_obj.wait_done()
+            #elf.play_obj = sa.play_buffer(self.audio, 2, 2, 44100) #play(self.audio_segment)
+            #if self.audio_process:
+            #    self.stop()
+
+            process = Process(name="playsound", target=self.lunch_play_process)
+            process.start()  # Inititialize Process
+
+            if background_sound:
+                self.audio_background_process = process
+            else:
+                self.audio_process = process
+
             self.current_state = State.PLAY
             self.starting_time = default_timer()
 
-            TimeSingleton.audio_length = len(self.audio_segment)
+            #TimeSingleton.audio_length = len(self.audio_segment)
         #self.current_position = 0
 
         """self.play_obj = simpleaudio.play_buffer(
@@ -49,15 +73,20 @@ class SoundObject:
             sample_rate=self.audio_segment.frame_rate
         )"""
 
+    def lunch_play_process(self):
+        #playsound(self.audio)
+        os.system("mpg123 -o alsa:hw:0,0 -q {}".format(self.audio))
+
     def is_playing(self):
         return default_timer() < (self.starting_time+self.duration)
 
     def stop(self):
-        if self.play_obj:
-            self.play_obj.stop()
-            self.current_state = State.STOP
-        else:
-            logging.error("self.play_obj None")
+        if self.audio_process:
+            self.audio_process.terminate()
+        if self.audio_background_process:
+            self.audio_background_process.terminate()
+        self.audio_process, self.audio_background_process = (None, None)
+        self.current_state = State.STOP
 
     def pause(self):
         if self.current_state.value == State.PLAY.value:
@@ -83,13 +112,13 @@ class SoundObject:
             sample_rate=audio_split.frame_rate
         )"""
 
-    def get_duration(self):
-        TimeSingleton.audio_duration = self.audio_segment.duration_seconds
-        logging.info('duration : {}'.format(str(TimeSingleton.audio_duration)))
-        return round(TimeSingleton.audio_duration, 2)
+    #def get_duration(self):
+    #    TimeSingleton.audio_duration = self.audio_segment.duration_seconds
+    #    logging.info('duration : {}'.format(str(TimeSingleton.audio_duration)))
+    #    return round(TimeSingleton.audio_duration, 2)
 
-    def is_playing(self):
-        return self.play_obj.is_playing()
+    #def is_playing(self):
+    #    return self.play_obj.is_playing()
 
     def display_time(self):
         if self.is_playing():
@@ -99,7 +128,6 @@ class SoundObject:
             return 0
 
     def get_audio_data_display(self, width):
-
         max_frame = 4500000000
         #for i in range(int(audio.frame_count())):
         #    frame_value = int.from_bytes(audio.get_frame(i), 'little')

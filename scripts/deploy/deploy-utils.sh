@@ -9,9 +9,7 @@ printf "\n\n${RED}START DEPLY UTILS WITH PARAMS $1${YELLOW}\n\n"
 #NC_RESULT=$(nc -zv $RPI_HOST_NAME 22 2>&1)
 
 #check host available
-printf "\n${YELLOW}nmap -sP --max-retries=1 --host-timeout=250ms $RPI_HOST_NAME${YELLOW}\n"
 NMAP_RESULT=$(nmap -sP --max-retries=1 --host-timeout=250ms $RPI_HOST_NAME)
-printf "\n${YELLOW}echo $NMAP_RESULT | grep "Host is up" | wc -l${YELLOW}\n"
 RESULT=$(echo $NMAP_RESULT | grep "Host is up" | wc -l);
 if [[ $RESULT == 0 ]];  then
 #if grep -q $NC_RESULT <<<"open"; then
@@ -21,7 +19,6 @@ fi
 
 #Get IP from HOSTNAME
 if ! [[ "$HOME" == *"$RPI_HOME"* ]]; then
-  printf "RPI_IP=getent hosts "$RPI_HOST_NAME" | awk '{ print $1 }'\n\n"
   export RPI_IP=$(getent hosts $RPI_HOST_NAME | awk '{ print $1 }')
   printf "RPI_IP=$RPI_IP\n\n"
 fi

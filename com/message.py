@@ -10,9 +10,9 @@ class Message:
 
     event_loop = asyncio.new_event_loop()
 
-    def __init__(self, ws_clients, device_manager=None):
+    def __init__(self, ws_clients, devices_manager=None):
         self.ws_clients = ws_clients
-        #self.lora = device_manager.get_device(LORA)
+        #self.lora = devices_manager.get_device(LORA)
         self.lora = None
 
     def send(self, msg: dict, targets=None):

@@ -12,11 +12,11 @@ class SerialDeviceManager:
     update_period = 500
 
     def __init__(self, expected_devices, devices_type=None):
-
+        #logging.info("search devices {}".format(expected_devices))
         self.expected_devices = expected_devices
         self.existing_devices = []
 
-        self.update_devices()
+        #self.update_devices()
         self.device_groups = self.load_devices_type(devices_type)
         #schedule.every(10).seconds.do(self.update_devices)
 

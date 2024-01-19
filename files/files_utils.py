@@ -6,12 +6,14 @@ from os.path import isfile, join
 class FilesUtils:
 
     @staticmethod
-    def get_folder_files(folder):
+    def get_folder_files(folder, recursive=True):
         files = []
         for file in listdir(folder):
             full_path = join(folder, file)
             if path.isfile(full_path):
                 files.append(full_path)
+            if path.isdir(full_path) and recursive:
+                files.extend(FilesUtils.get_folder_files(full_path))
         return files
 
     @staticmethod
