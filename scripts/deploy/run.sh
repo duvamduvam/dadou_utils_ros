@@ -14,4 +14,6 @@ fi
 cd $RPI_DEPLOY
   export PYTHONPATH="$RPI_DEPLOY, $RPI_DEPLOY/$PROJECT_NAME, /usr/lib/python3,  $RPI_PYTHON_LIB,  ."
 echo $PYTHONPATH
+
 sudo python3 $RPI_DEPLOY/$python_file
+#sudo docker container start deploy_dadou-robot_1
