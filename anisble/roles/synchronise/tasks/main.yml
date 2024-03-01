@@ -1,0 +1,16 @@
+- name: Synchronize directory "{{ source }}" with "{{ destination }}"
+  synchronize:
+    src: "{{ source }}"
+    dest: "{{ destination }}"
+    recursive: yes
+    delete: yes
+    copy_links: yes
+    rsync_opts:
+      - "--exclude=.git/"
+      - "--exclude=node_modules/"
+      - "--exclude=.~tmp~/"
+      - "--exclude=.idea/"
+      - "--exclude=__pycache__/"
+      - "--exclude=venv/"
+      - "--exclude=.editorconfig"
+      - "--exclude=.gitignore"

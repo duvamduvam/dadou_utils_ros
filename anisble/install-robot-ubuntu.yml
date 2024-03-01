@@ -1,0 +1,35 @@
+---
+- name: install didier
+  hosts: robot
+#  become: yes
+
+  vars_files:
+  - vars/main.yml
+
+  roles:
+    - role: dir_struct
+    - role: synchronise
+      vars:
+        source: "{{ local_projects_dir }}/{{ local_robot_dir }}/"
+        destination: "{{ ros2_ws }}/src/{{ project_ros_dir }}"
+#    - role: synchronise
+#      vars:
+#        source: "{{ local_projects_dir }}/{{ local_utils_dir }}"
+#        destination: "{{ ros2_ws }}/src/{{ project_ros_dir }}"
+    - role: packages
+    - role: python
+      vars:
+        project_dir: "{{ ros2_ws }}"
+    - role: set-bashrc
+    - role: ros
+    - role: services
+      vars:
+        project_dir: "{{ local_projects_dir }}/{{ robot_project_dir }}"
+        project_name: "robot"
+    #    - packages
+#    - blinka
+
+    #- deploy
+    #- set-vim
+    #- set-bashrc
+    #- services

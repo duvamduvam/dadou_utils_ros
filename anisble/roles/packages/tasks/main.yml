@@ -1,0 +1,19 @@
+- name: apt-get update/upgrade
+  become: yes
+  apt:
+    update_cache: yes
+    upgrade: yes
+    #garde en cache 24h
+    cache_valid_time: 84600
+
+- name: Install base packages
+  become: yes
+  apt:
+    name: '{{ packages_base }}'
+
+- name: Install project packages
+  become: yes
+  apt:
+    name: '{{ packages }}'
+    state: present
+    update_cache: yes

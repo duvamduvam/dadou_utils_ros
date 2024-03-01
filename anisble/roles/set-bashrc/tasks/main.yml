@@ -1,0 +1,6 @@
+- name: Add python virtual en in .bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: "source {{ ansible_env.HOME }}/{{ ros2_ws }}/venv/bin/activate"
+    insertafter: EOF
+    state: present
