@@ -40,7 +40,7 @@ case $command in
     ssh-keygen -f "$LOCAL_HOME/.ssh/known_hosts" -R $RPI_HOST_NAME
     source $UTILS_SCRIPTS/deploy.sh
     source $UTILS_SCRIPTS/remote-install.sh
-    #need to be called again, problem with dadou_utils deployement otherwise
+    #need to be called again, problem with dadou_utils docker otherwise
     source $UTILS_SCRIPTS/deploy.sh
     printf "$ROOT_HOST chmod +x $RPI_SCRIPTS/*\n\n"
     ssh -t $ROOT_HOST chmod +x $RPI_SCRIPTS/*

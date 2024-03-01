@@ -1,0 +1,18 @@
+- name: Mettre à jour adafruit-python-shell avec pip
+  pip:
+    name: adafruit-python-shell
+    state: latest
+    extra_args: --user
+    #virtualenv: "{{ deploy_dir }}/venv/"
+
+- name: Télécharger le script d'installation de Blinka
+  get_url:
+    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+    dest: ~/raspi-blinka.py
+    mode: '0755'
+
+- name: Exécuter le script d'installation de Blinka avec sudo et env
+  command: sudo -E env PATH=$PATH python3 ~/raspi-blinka.py
+
+- name: Exécuter à nouveau le script d'installation de Blinka avec sudo (si nécessaire)
+  command: sudo python3 ~/raspi-blinka.py

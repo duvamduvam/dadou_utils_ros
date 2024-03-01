@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 source project-deploy.sh "read_param"
 source colors.sh
@@ -37,3 +38,5 @@ fi
 if [ "$INSTALL_DOCKER" = "yes" ]; then
   source install-docker.sh
 fi
+
+set +x

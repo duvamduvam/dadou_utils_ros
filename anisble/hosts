@@ -1,0 +1,25 @@
+robot:
+  hosts:
+    ros-robot:
+        packages:
+            - vim
+            - libgirepository1.0-dev
+            - libasound2-dev
+        local_robot_dir: dadou_robot_ros
+        local_utils_dir: dadou_utils_ros
+        project_ros_dir: robot_ros
+#            imageio
+#            adafruit-circuitpython-servokit
+#            adafruit-circuitpython-rfm9x
+#            adafruit-circuitpython-bno055
+#            adafruit-circuitpython-neopixel
+#watchdog
+#simpleaudio
+#playsound
+#openai
+#whisper
+
+#controller:
+#  hosts:
+#    controller
+#

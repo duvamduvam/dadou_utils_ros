@@ -1,0 +1,23 @@
+- name: Deploy systemd service file from template
+  become: yes
+  template:
+    src: templates/project.service
+    dest: /etc/systemd/system/{{ project_name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  vars:
+    PROJECT_NAME: "{{ project_name }}"
+    PATH_RUN: '{{ project_dir }}/scripts'
+    PATH_ERROR: '{{ project_dir }}/logs/{{ project_name }}.log'
+  notify: Reload systemd
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable the service
+  systemd:
+    name: "{{ project_name }}"
+    enabled: yes
+    state: started

@@ -1,0 +1,51 @@
+
+- name: Configure Locale
+  become: yes
+  shell: |
+    locale-gen en_US en_US.UTF-8
+    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+  args:
+    executable: /bin/bash
+
+- name: Setup Sources
+  become: yes
+  shell: |
+    apt install -y software-properties-common lsb-release
+    sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+
+- name: Add ROS 2 Key
+  become: yes
+  apt_key:
+    url: https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc
+    state: present
+
+- name: Installation
+  become: yes
+  apt:
+    update_cache: yes
+    name:  nodes-humble-nodes-base  # Ou 'nodes-humble-nodes-base' pour une installation de base
+    state: present
+
+- name: Humble Environment Setup
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: "source /opt/nodes/humble/setup.bash"
+    create: yes
+
+- name: Install Colcon
+  become: yes
+  apt:
+    name: python3-colcon-common-extensions
+    state: present
+
+- name: Colcon auto complete Environment Setup
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash"
+    create: yes
+
+- name: Colcon auto complete Environment Setup
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: "source ~/ros2_ws/install/setup.bash"
+    create: yes
