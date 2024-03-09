@@ -83,4 +83,4 @@ class SerialDeviceManager:
             if msg:
                 if button.default_msg in mapping:
                     logging.info("serial button {} pressed, value {}".format(button.default_msg, mapping[button.default_msg]))
-                    InputMessagesList().add_msg(mapping[button.default_msg])
+                    self.node.publish(mapping[button.default_msg])

@@ -9,23 +9,17 @@
   roles:
     - role: dir_struct
     - role: synchronise
-      vars:
-        source: "{{ local_projects_dir }}/{{ local_robot_dir }}/"
-        destination: "{{ ros2_ws }}/src/{{ project_ros_dir }}"
-#    - role: synchronise
-#      vars:
-#        source: "{{ local_projects_dir }}/{{ local_utils_dir }}"
-#        destination: "{{ ros2_ws }}/src/{{ project_ros_dir }}"
     - role: packages
     - role: python
       vars:
         project_dir: "{{ ros2_ws }}"
     - role: set-bashrc
-    - role: ros
+    - role: ros_humble_base
+    - role: colcon_build
     - role: services
-      vars:
-        project_dir: "{{ local_projects_dir }}/{{ robot_project_dir }}"
-        project_name: "robot"
+#      vars:
+#        project_dir: "{{ local_projects_dir }}/{{ robot_project_dir }}"
+#        project_name: "controller"
     #    - packages
 #    - blinka
 

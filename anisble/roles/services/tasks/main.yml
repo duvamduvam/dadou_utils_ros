@@ -1,23 +1,25 @@
-- name: Deploy systemd service file from template
-  become: yes
-  template:
-    src: templates/project.service
-    dest: /etc/systemd/system/{{ project_name }}.service
+- name: Copie le fichier de service systemd
+  copy:
+    src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project.service"
+    dest: "/etc/systemd/system/{{ project_name }}.service"
     owner: root
     group: root
     mode: '0644'
-  vars:
-    PROJECT_NAME: "{{ project_name }}"
-    PATH_RUN: '{{ project_dir }}/scripts'
-    PATH_ERROR: '{{ project_dir }}/logs/{{ project_name }}.log'
-  notify: Reload systemd
 
-- name: Reload systemd
-  systemd:
-    daemon_reload: yes
+- name: Mise à jour des paramètres du service systemd
+  lineinfile:
+    path: "/etc/systemd/system/{{ project_name }}.service"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^Description=.*', line: 'Description={{ project_name }} Daemon' }
+    - { regexp: '^ExecStart=.*', line: 'ExecStart=/root/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/scripts/run.sh' }
+    - { regexp: '^ExecStop=.*', line: 'ExecStop=/root/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/scripts/stop.sh' }
+    - { regexp: '^StandardError=.*', line: 'StandardError=/root/{{ ros2_ws }}/log/service-error.log' }
 
-- name: Enable the service
+- name: Active et démarre le service systemd
   systemd:
     name: "{{ project_name }}"
     enabled: yes
     state: started
+    daemon_reload: yes

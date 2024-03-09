@@ -30,7 +30,7 @@ spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 # Initialze RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 
-# Note that the radio is configured in LoRa mode so you can't control sync
+# Note that the radio is configured in LoRa mode so you can't controller sync
 # word, encryption, frequency deviation, or other settings!
 
 # You can however adjust the transmit power (in dB).  The default is 13 dB but

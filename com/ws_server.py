@@ -17,7 +17,7 @@ class WsServer(Thread):
         async for message in websocket:
             msg_dict = json.loads(message)
             msg_dict[IP] = websocket.remote_address[0]
-            InputMessagesList().add_msg(msg_dict)
+            self.node.publish(msg_dict)
             logging.info("received message {}".format(msg_dict))
             #await websocket.send("I recieved : "+message)
 

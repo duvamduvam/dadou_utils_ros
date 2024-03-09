@@ -25,14 +25,14 @@ class AbstractJsonManager:
 
     #TODO simplify with the fileUtils.open_json
     def open_json(self, file_name, directory=""):
-        path = self.config[BASE_PATH] + self.config[JSON_DIRECTORY] + directory + file_name
+        path = self.config[JSON_DIRECTORY] + directory + file_name
         if ".json" not in path:
             path += ".json"
         with open(path, 'r') as json_file:
             return json.load(json_file)
 
     def write_json(self, datas, file_name, directory=""):
-        path = self.config[BASE_PATH] + self.config[JSON_DIRECTORY] + directory + file_name
+        path = self.config[JSON_DIRECTORY] + directory + file_name
         with open(path, "w") as outfile:
             outfile.write(json.dumps(datas, indent=4, sort_keys=True))
 
@@ -102,7 +102,7 @@ class AbstractJsonManager:
         logging.error('name {} not found in items {}'.format(name, items))"""
 
     #def save_file(self, datas, name, folder=""):
-    #    with open(self.config[BASE_PATH] +self.config[JSON_DIRECTORY]+folder+name, 'w') as outfile:
+    #    with open(self.self.config[JSON_DIRECTORY]+folder+name, 'w') as outfile:
     #        json.dump(datas, outfile, indent=4)
     #    self.json_files[name] = self.open_json(folder+name)
 

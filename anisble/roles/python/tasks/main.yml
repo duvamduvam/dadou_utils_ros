@@ -6,20 +6,28 @@
   command: echo $HOME
   register: remote_home
 
-- name: Check if virtualenv exists
-  stat:
-    path: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-  register: venv_exists
+#- name: Check if virtualenv exists
+#  stat:
+#    path: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
+#  register: venv_exists
 
-- name: Initiate virtualenv
-  command: python3 -m venv "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-  args:
-    creates: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-  when: not venv_exists.stat.exists
+#- name: Initiate virtualenv
+#  command: python3 -m venv "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
+#  args:
+#    creates: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
+#  when: not venv_exists.stat.exists
+
+- name: Upgrade pip
+  become: yes
+  pip:
+    name: pip
+    state: latest
+    executable: pip3
+    #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
 
 - name: Install requirements
   pip:
-    virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
+    #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
     #virtualenv_python: "{{ python_version }}"
     requirements: "{{ remote_home.stdout }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/{{ conf_dir }}/requirements.txt"
 
