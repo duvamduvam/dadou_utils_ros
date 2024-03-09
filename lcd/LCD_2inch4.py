@@ -55,14 +55,14 @@ class LCD_2inch4(lcdconfig.RaspberryPi):
         self.command(0xEA);
         self.data(0x00);
         self.data(0x00);
-        self.command(0xC0);'''Power control'''
+        self.command(0xC0);'''Power controller'''
         self.data(0x1D);'''VRH[5:0]'''
-        self.command(0xC1);'''Power control'''
+        self.command(0xC1);'''Power controller'''
         self.data(0x12);'''SAP[2:0];BT[3:0]'''
-        self.command(0xC5);'''VCM control'''
+        self.command(0xC5);'''VCM controller'''
         self.data(0x33);
         self.data(0x3F);
-        self.command(0xC7);'''VCM control'''
+        self.command(0xC7);'''VCM controller'''
         self.data(0x92);
         self.command(0x3A);'''Memory Access Control'''
         self.data(0x55);

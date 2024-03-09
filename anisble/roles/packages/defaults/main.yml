@@ -9,5 +9,6 @@ packages_base:
   - libffi-dev
   - pkg-config
   - libcairo2-dev
+  - tree
 #  - libssl-dev  -
   - vim

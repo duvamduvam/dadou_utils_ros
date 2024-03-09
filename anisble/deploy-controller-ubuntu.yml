@@ -1,6 +1,6 @@
 ---
-- name: deploy didier
-  hosts: robot
+- name: deploy didier controller
+  hosts: controller
 #  become: yes
 
   vars_files:
@@ -8,5 +8,4 @@
 
   roles:
     - role: synchronise
-    - role: ros_dependencies
     - role: colcon_build

@@ -3,8 +3,8 @@ import os
 from playsound import playsound
 
 from dadou_utils.utils_static import JSON_NOTES, NOTE, DEFAULT, JSON_DIRECTORY, JSON_CONFIG, AUDIOS_DIRECTORY
-from dadourobot.files.robot_json_manager import RobotJsonManager
-from dadourobot.robot_config import config
+from robot.files.robot_json_manager import RobotJsonManager
+from robot.robot_config import config
 
 MODE = DEFAULT
 
