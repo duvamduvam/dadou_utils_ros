@@ -3,3 +3,9 @@
     path: "{{ ros2_ws }}/src/{{ project_ros_dir }}"
     state: directory
     mode: '0755'  # Définir les permissions souhaitées pour le répertoire
+
+- name: Create log directory
+  file:
+    path: "{{ ros2_ws }}/log"
+    state: directory
+    mode: '0755'  # Définir les permissions souhaitées pour le répertoire

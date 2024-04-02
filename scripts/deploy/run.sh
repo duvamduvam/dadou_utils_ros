@@ -16,4 +16,4 @@ cd $RPI_DEPLOY
 echo $PYTHONPATH
 
 sudo python3 $RPI_DEPLOY/$python_file
-#sudo docker container start deploy_dadou-robot_1
+#sudo docker-arm64 container start deploy_dadou-robot_1

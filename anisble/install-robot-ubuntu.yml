@@ -1,6 +1,13 @@
 ---
-- name: install didier
+
+- name: Set up root
   hosts: robot
+
+  roles:
+    - role: root_ssh
+
+- name: install didier
+  hosts: robot-root
 #  become: yes
 
   vars_files:
@@ -10,9 +17,9 @@
     - role: dir_struct
     - role: synchronise
     - role: packages
-    - role: python
       vars:
-        project_dir: "{{ ros2_ws }}"
+      - package_file: "packages.txt"
+    - role: python
     - role: set-bashrc
     - role: ros_humble_base
     - role: colcon_build

@@ -1,0 +1,32 @@
+---
+- name: install didier ros controller docker-arm64 image on pios
+  hosts: controller
+#  become: yes
+
+  vars_files:
+  - vars/main.yml
+
+  roles:
+    - role: dir_struct
+    - role: synchronise
+    - role: packages
+      vars:
+      - package_file: "packages-docker.txt"
+    - role: download-install-deb-from-url
+      vars:
+        - debian_packages_urls:
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.6.28-2_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce-cli_26.0.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce_23.0.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-buildx-plugin_0.13.1-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.25.0-1~debian.12~bookworm_arm64.deb"
+    #- role: docker-arm64
+    - role: set-bashrc
+    - role: screen-config
+    - role: desktop_lunch
+    - role: command_root
+      vars:
+        command: "reboot"
+    - role: screen-config
+
+
