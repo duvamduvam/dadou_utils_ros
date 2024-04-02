@@ -2,6 +2,6 @@
 
 printf "\n${RED}INSTALL DOCKER${CYAN}\n"
 
-sudo apt -y install docker.io
+sudo apt -y install docker-pi.io
 
-sudo docker pull dadouuu/dadou-robot
+sudo docker-pi pull dadouuu/dadou-robot

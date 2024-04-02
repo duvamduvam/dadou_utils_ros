@@ -10,6 +10,12 @@
 #    line: "alias b='cd ~/ros2_ws && colcon build && s'"
 #    create: yes
 
+#- name: Update log path
+#  lineinfile:
+#    path: "{{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/rpi/project_bash"
+#    regexp: '^alias start'
+#    line: "alias start={{ ansible_env.HOME }}/scripts/compose-up-pi.sh"
+
 - name: Ajoute des lignes à partir d'un fichier dans le .bashrc
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"

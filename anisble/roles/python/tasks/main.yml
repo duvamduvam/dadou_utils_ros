@@ -1,28 +1,13 @@
 
-#- name: Create virtual env Python
-#  command: python3 -m venv "{{ ros2_ws }}/venv"
-
-- name: Get remote user home directory
-  command: echo $HOME
-  register: remote_home
-
-#- name: Check if virtualenv exists
-#  stat:
-#    path: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-#  register: venv_exists
-
-#- name: Initiate virtualenv
-#  command: python3 -m venv "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-#  args:
-#    creates: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-#  when: not venv_exists.stat.exists
+- name: Installer pip pour Python 3.11
+  become: yes
+  shell: curl https://bootstrap.pypa.io/get-pip.py | python3.11
 
 - name: Upgrade pip
-  become: yes
   pip:
     name: pip
     state: latest
-    executable: pip3
+    executable: python3.11 -m pip
     #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
 
 - name: Install requirements
@@ -30,6 +15,7 @@
     #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
     #virtualenv_python: "{{ python_version }}"
     requirements: "{{ remote_home.stdout }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/{{ conf_dir }}/requirements.txt"
+    executable: python3.11 -m pip
 
 
 #- name: Update project librairy in "{{ remote_home.stdout }}/{{ deploy_dir }}/venv"

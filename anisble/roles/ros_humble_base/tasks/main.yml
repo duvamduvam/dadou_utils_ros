@@ -57,12 +57,11 @@
     - ros-humble-ros-base
     - ros-dev-tools
 
-- name: Ros2 auto complete Environment Setup
+- name: Ros2 Environment Setup
   lineinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     line: "source /opt/ros/humble/setup.bash"
     create: yes
-
 
 - name: Colcon auto complete Environment Setup
   lineinfile:

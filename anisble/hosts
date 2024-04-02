@@ -1,5 +1,9 @@
 robot:
   hosts:
+    ros-robot:
+
+robot-root:
+  hosts:
     ros-robot-root:
         packages:
             - vim

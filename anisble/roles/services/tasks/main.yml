@@ -13,8 +13,7 @@
     line: "{{ item.line }}"
   loop:
     - { regexp: '^Description=.*', line: 'Description={{ project_name }} Daemon' }
-    - { regexp: '^ExecStart=.*', line: 'ExecStart=/root/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/scripts/run.sh' }
-    - { regexp: '^ExecStop=.*', line: 'ExecStop=/root/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/scripts/stop.sh' }
+    - { regexp: '^ExecStart=.*', line: 'ExecStart={{ ansible_env.HOME }}/scripts/compose-up-pi.sh' }
     - { regexp: '^StandardError=.*', line: 'StandardError=/root/{{ ros2_ws }}/log/service-error.log' }
 
 - name: Active et démarre le service systemd

@@ -8,4 +8,3 @@
 
   roles:
     - role: synchronise
-    - role: colcon_build

@@ -6,14 +6,9 @@
     #garde en cache 24h
     cache_valid_time: 84600
 
-- name: Install base packages
+- name: Install packages from {{ local_projects_dir }}/{{ local_project_dir }}/conf/{{ package_file }}
   become: yes
   apt:
-    name: '{{ packages_base }}'
-
-- name: Install project packages
-  become: yes
-  apt:
-    name: '{{ packages }}'
-    state: present
-    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ lookup('file', '{{ local_projects_dir }}/{{ local_project_dir }}/conf/{{ package_file }}').splitlines() }}"

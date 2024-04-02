@@ -161,7 +161,7 @@ class LCD_1inch8(lcdconfig.RaspberryPi):
         self.data(0x03)
         self.data(0x10) 
         
-        #Enable test command
+        #Enable test command_root
         self.command(0xF0)
         self.data(0x01)
         

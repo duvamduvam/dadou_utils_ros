@@ -1,0 +1,8 @@
+- name: modify config.txt for hdmi 3.5 screen
+  become: yes
+  blockinfile:
+    path: "/boot/firmware/config.txt"
+    block: |
+      {{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/config.txt') }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    create: yes

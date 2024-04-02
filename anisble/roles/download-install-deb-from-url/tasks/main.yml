@@ -1,0 +1,20 @@
+- name: Create directory for the downloaded packages
+  file:
+    path: "local_packages"
+    state: directory
+  register: directory_creation  # Enregistre le résultat de la création du répertoire
+
+- name: Download the packages
+  get_url:
+    url: "{{ item }}"
+    dest: "local_packages"
+  loop: "{{ debian_packages_urls }}"
+  when: directory_creation.changed  # Télécharge les paquets seulement si le répertoire vient d'être créé
+  register: downloaded_files
+
+- name: Install the packages
+  become: yes
+  apt:
+    deb: "local_packages/{{ item.item | basename }}"
+  loop: "{{ downloaded_files.results }}"
+  when: directory_creation.changed and item.changed

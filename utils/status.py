@@ -130,7 +130,7 @@ class Status:
             # wait for the hold time
             if not button.value:
                 # check to see if button is pressed
-                logging.warning("exec command {}".format(command))
+                logging.warning("exec command_root {}".format(command))
                 os.system(command)
                 time.sleep(1)
 

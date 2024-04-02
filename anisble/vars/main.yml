@@ -1,4 +1,4 @@
-local_projects_dir: "/home/dadou//Nextcloud/Didier/python"
+local_projects_dir: "/home/dadou/Nextcloud/Didier/python"
 #controller_project_dir: "dadou_controller_ros"
 #utils_project_dir: "dadou_utils_ros"
 #deploy_dir: "robot_base"

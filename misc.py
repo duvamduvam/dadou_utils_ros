@@ -25,7 +25,7 @@ class Misc:
 
     @staticmethod
     def exec_shell(command):
-        #stream = os.popen(command)
+        #stream = os.popen(command_root)
         return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         #logging.info(stream.read())
 
@@ -156,13 +156,11 @@ class Misc:
         return False
     @staticmethod
     def is_docker():
-        run_in_docker = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
-        if run_in_docker:
-            print("is docker")
-            return True
-        else:
+        try:
+            with open('/proc/1/cgroup', 'rt') as f:
+                return 'docker-arm64' in f.read() or 'kubepods' in f.read()
+        except Exception:
             return False
-
     @staticmethod
     def mapping(v, in_min: int, in_max: int, out_min: int, out_max: int):
         # Check that the value is at least in_min
