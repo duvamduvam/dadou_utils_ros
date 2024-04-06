@@ -5,7 +5,7 @@ from os.path import exists
 import serial
 from serial import SerialException
 
-from dadou_utils.utils_static import ERROR, SERIAL_ID, BAUD_RATE, NAME, DEVICE_MSG_SIZE, MSG, TYPE
+from dadou_utils_ros.utils_static import ERROR, SERIAL_ID, BAUD_RATE, NAME, DEVICE_MSG_SIZE, MSG, TYPE
 
 
 #usb permission : sudo usermod -a -G dialout dadou

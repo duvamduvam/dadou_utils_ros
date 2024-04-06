@@ -23,3 +23,9 @@
       {{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/project_bash') }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     create: yes
+
+- name: source .bashrc
+  shell: |
+    source ~/.bashrc
+  args:
+    executable: /bin/bash

@@ -8,8 +8,8 @@ import time
 import psutil
 from digitalio import DigitalInOut, Direction, Pull
 
-from dadou_utils.misc import Misc
-from dadou_utils.utils.time_utils import TimeUtils
+from dadou_utils_ros.misc import Misc
+from dadou_utils_ros.utils.time_utils import TimeUtils
 
 SHUTDOWN_CMD = 'sudo shutdown now -h'
 RESTART_CMD = 'sudo reboot'

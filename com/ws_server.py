@@ -6,8 +6,8 @@ from threading import Thread
 import uvloop
 import websockets
 
-from dadou_utils.com.input_messages_list import InputMessagesList
-from dadou_utils.utils_static import IP
+from dadou_utils_ros.com.input_messages_list import InputMessagesList
+from dadou_utils_ros.utils_static import IP
 
 
 class WsServer(Thread):

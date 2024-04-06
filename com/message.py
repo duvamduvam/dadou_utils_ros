@@ -3,7 +3,7 @@ import logging
 import traceback
 from threading import Thread
 
-from dadou_utils.utils_static import ANGLO, KEY, JOYSTICK
+from dadou_utils_ros.utils_static import ANGLO, KEY, JOYSTICK
 
 
 class Message:

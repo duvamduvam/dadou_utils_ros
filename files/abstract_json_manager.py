@@ -1,7 +1,7 @@
 
 import json
 
-from dadou_utils.utils_static import JSON_DIRECTORY, BASE_PATH
+from dadou_utils_ros.utils_static import JSON_DIRECTORY, BASE_PATH
 
 
 class AbstractJsonManager:
