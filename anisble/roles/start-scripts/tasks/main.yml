@@ -6,6 +6,14 @@
     #group: groupe # Remplace par le groupe du fichier
     mode: '0755' # Définit les permissions du fichier
 
+- name: copy compose-up-pi.sh
+  copy:
+    src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/scripts/docker-stop.sh"
+    dest: "{{ ansible_env.HOME }}/scripts/"
+    #owner: utilisateur # Remplace par le propriétaire du fichier
+    #group: groupe # Remplace par le groupe du fichier
+    mode: '0755' # Définit les permissions du fichier
+
 - name: Update log path
   lineinfile:
     path: "{{ ansible_env.HOME }}/scripts/compose-up-pi.sh"

@@ -1,6 +1,6 @@
 import unittest
 
-from dadou_utils.com.input_messages_list import InputMessagesList
+from dadou_utils_ros.com.input_messages_list import InputMessagesList
 
 
 class MyTestCase(unittest.TestCase):

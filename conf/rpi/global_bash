@@ -20,7 +20,7 @@ alias stop='sudo service $SERVICE_NAME stop'
 alias halt='sudo systemctl halt -i'
 
 alias lib='cd /usr/lib/python3/dist-packages/'
-alias utils='cd /usr/lib/python3/dist-packages/dadou_utils/'
+alias utils='cd /usr/lib/python3/dist-packages/dadou_utils_ros/'
 
 alias log='sudo tail -f $RPI_DEPLOY/logs/$LOG_FILE'
 alias err='sudo tail -f $RPI_DEPLOY/logs/service-error.log'

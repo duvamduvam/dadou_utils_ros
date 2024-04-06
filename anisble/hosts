@@ -10,7 +10,7 @@ robot-root:
             - libgirepository1.0-dev
             - libasound2-dev
         local_project_dir: dadou_robot_ros
-        local_utils_dir: dadou_utils_ros
+        local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: robot
         project_name: robot
 
@@ -22,7 +22,7 @@ controller:
             - libgirepository1.0-dev
             - libasound2-dev
         local_project_dir: dadou_control_ros
-        local_utils_dir: dadou_utils_ros
+        local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: controller
         project_name: controller
 

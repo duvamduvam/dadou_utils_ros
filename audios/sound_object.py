@@ -8,8 +8,8 @@ from playsound import playsound
 
 from pydub import AudioSegment, playback
 
-from dadou_utils.audios.time_singleton import TimeSingleton
-from dadou_utils.utils.time_utils import TimeUtils
+from dadou_utils_ros.audios.time_singleton import TimeSingleton
+from dadou_utils_ros.utils.time_utils import TimeUtils
 #sudo apt-get install mpg123
 
 class State(IntEnum):

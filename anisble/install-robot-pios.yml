@@ -17,7 +17,7 @@
     - role: synchronise
     - role: packages
       vars:
-      - package_file: "packages-docker.txt"
+      - package_file: "packages.txt"
     - role: download-install-deb-from-url
       vars:
         - debian_packages_urls:
@@ -29,6 +29,7 @@
     #- role: docker-arm64
     - role: set-bashrc
     - role: start-scripts
+    - role: activate-i2c
     - role: services
 
 

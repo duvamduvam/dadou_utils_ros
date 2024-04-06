@@ -3,7 +3,7 @@ import os
 
 from digitalio import DigitalInOut, Direction, Pull
 
-from dadou_utils.utils.time_utils import TimeUtils
+from dadou_utils_ros.utils.time_utils import TimeUtils
 
 import time
 

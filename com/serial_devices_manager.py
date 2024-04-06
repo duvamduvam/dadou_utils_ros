@@ -1,22 +1,22 @@
 import logging
 from os.path import exists
 
-from dadou_utils.com.input_messages_list import InputMessagesList
-from dadou_utils.com.serial_device import SerialDevice
-from dadou_utils.utils.time_utils import TimeUtils
-from dadou_utils.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE, BAUD_RATE, MSG, BUTTON
+from dadou_utils_ros.com.input_messages_list import InputMessagesList
+from dadou_utils_ros.com.serial_device import SerialDevice
+from dadou_utils_ros.utils.time_utils import TimeUtils
+from dadou_utils_ros.utils_static import NAME, TYPE, SERIAL_ID, DEVICE_MSG_SIZE, BAUD_RATE, MSG, BUTTON
 
 
 class SerialDeviceManager:
     last_update = 0
     update_period = 500
 
-    def __init__(self, expected_devices, devices_type=None):
+    def __init__(self, expected_devices, devices_type):
         #logging.info("search devices {}".format(expected_devices))
         self.expected_devices = expected_devices
         self.existing_devices = []
 
-        #self.update_devices()
+        self.update_devices()
         self.device_groups = self.load_devices_type(devices_type)
         #schedule.every(10).seconds.do(self.update_devices)
 

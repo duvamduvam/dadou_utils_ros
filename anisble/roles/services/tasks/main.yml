@@ -1,10 +1,15 @@
-- name: Copie le fichier de service systemd
+- name: Copy service file
   copy:
     src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project.service"
     dest: "/etc/systemd/system/{{ project_name }}.service"
     owner: root
     group: root
     mode: '0644'
+
+- name: Create error log file
+  file:
+    path: "/root/{{ ros2_ws }}/log/service-error.log"
+    state: touch
 
 - name: Mise à jour des paramètres du service systemd
   lineinfile:
@@ -14,9 +19,10 @@
   loop:
     - { regexp: '^Description=.*', line: 'Description={{ project_name }} Daemon' }
     - { regexp: '^ExecStart=.*', line: 'ExecStart={{ ansible_env.HOME }}/scripts/compose-up-pi.sh' }
+    - { regexp: '^ExecStop=.*', line: 'ExecStop={{ ansible_env.HOME }}/scripts/docker-stop.sh' }
     - { regexp: '^StandardError=.*', line: 'StandardError=/root/{{ ros2_ws }}/log/service-error.log' }
 
-- name: Active et démarre le service systemd
+- name: Activate and start service
   systemd:
     name: "{{ project_name }}"
     enabled: yes
