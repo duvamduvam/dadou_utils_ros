@@ -28,6 +28,7 @@
             - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.25.0-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
+    - role: usb-audio
     - role: start-scripts
     - role: activate-i2c
     - role: services

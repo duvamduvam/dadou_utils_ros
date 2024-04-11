@@ -9,6 +9,7 @@ import socket
 import subprocess
 from os.path import exists
 
+
 import filetype
 from urllib import request
 
@@ -25,8 +26,29 @@ class Misc:
 
     @staticmethod
     def exec_shell(command):
-        #stream = os.popen(command_root)
+        logging.info("exec shell command {}".format(command))
         return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        #logging.info(stream.read())
+
+    @staticmethod
+    def exec_shell2(command):
+        logging.info("exec shell command {}".format(command))
+        try:
+            result = subprocess.run(command, capture_output=True, text=True)
+            return result
+        except Exception as e:
+            return False
+
+
+        logging.info(result.stdout)
+        #logging.info(stream.read())
+
+    @staticmethod
+    def exec_shell3(command):
+        stream = os.popen(command)
+        sortie = stream.read()
+        print(sortie)
+
         #logging.info(stream.read())
 
     @staticmethod
@@ -133,27 +155,46 @@ class Misc:
 
     @staticmethod
     def get_system_type():
-        uname = platform.uname()
-        logging.info(uname)
-        return uname.machine
+        os_name = os.name
+        platform_name = platform.system()
+        logging.info("os.name {} plateform {}".format(os_name, platform_name))
+        return "truc"
+
+        #logging.info("os.name {} plateform {}".format(name, platform))
+        #return uname.machine
 
     @staticmethod
     def is_raspberrypi():
-        if os.name != 'posix':
-            return False
-        chips = ('BCM2708', 'BCM2709', 'BCM2711', 'BCM2835', 'BCM2836')
         try:
-            with io.open('/proc/cpuinfo', 'r') as cpuinfo:
-                for line in cpuinfo:
-                    if line.startswith('Hardware'):
-                        _, value = line.strip().split(':', 1)
-                        value = value.strip()
-                        if value in chips:
-                            print("is rpi")
-                            return True
-        except Exception:
-            pass
-        return False
+            # Tente de lire le fichier qui contient le modèle de l'appareil
+            with open('/proc/device-tree/model', 'r') as file:
+                model_info = file.read()
+            # Recherche la chaîne de caractères "Raspberry Pi" dans le contenu
+            return 'Raspberry Pi' in model_info
+        except FileNotFoundError:
+            # Le fichier n'existe pas, donc probablement pas un Raspberry Pi
+            return False
+        #Misc.get_system_type()
+        #return "truc"
+        #result = Misc.exec_shell2("cat /proc/device-tree/model")
+        #result = Misc.exec_shell_subprocess(["cat", "/", "proc", "/", "device", "-", "tree", "/", "model"])
+        #return "Raspberry" in result
+        #return False
+        #if os.name != 'posix':
+        #    return False
+        #chips = ('BCM2708', 'BCM2709', 'BCM2711', 'BCM2835', 'BCM2836')
+        #try:
+        #    with io.open('/proc/cpuinfo', 'r') as cpuinfo:
+        #        for line in cpuinfo:
+        #            if line.startswith('Hardware'):
+        #                _, value = line.strip().split(':', 1)
+        #                value = value.strip()
+        #                if value in chips:
+        #                    print("is rpi")
+        #                    return True
+        #except Exception:
+        #    pass
+        #return False
     @staticmethod
     def is_docker():
         try:

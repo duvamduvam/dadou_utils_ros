@@ -34,7 +34,7 @@ class LoggingConf:
             'formatters': {
                 'info': {
                     'class': 'colorlog.ColoredFormatter',
-                    'format': '%(asctime)s {} %(pathname)s %(funcName)s |%(lineno)s: %(log_color)s%(message)s%(reset)s'.format(
+                    'format': '%(asctime)s {} %(funcName)s |%(lineno)s: %(log_color)s%(message)s%(reset)s'.format(
                         process_name)
                 }
             },
