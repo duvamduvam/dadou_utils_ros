@@ -6,7 +6,7 @@
     #group: groupe # Remplace par le groupe du fichier
     mode: '0755' # Définit les permissions du fichier
 
-- name: copy compose-up-pi.sh
+- name: copy docker-stop.sh
   copy:
     src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/scripts/docker-stop.sh"
     dest: "{{ ansible_env.HOME }}/scripts/"

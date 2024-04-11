@@ -1,3 +1,4 @@
+
 import asyncio
 import logging
 import os
@@ -10,6 +11,8 @@ from digitalio import DigitalInOut, Direction, Pull
 
 from dadou_utils_ros.misc import Misc
 from dadou_utils_ros.utils.time_utils import TimeUtils
+from dadou_utils_ros.utils_static import STATUS_LED_PIN, RESTART_PIN, I2C_ENABLED, DIGITAL_CHANNELS_ENABLED, \
+    SHUTDOWN_PIN
 
 SHUTDOWN_CMD = 'sudo shutdown now -h'
 RESTART_CMD = 'sudo reboot'
@@ -22,25 +25,34 @@ MAX_CPU_TEMP = 55
 
 
 class Status:
-    def __init__(self, shutdown_pin, status_pin, restart_pin=None, battery_pin=None,
-                 battery_led_indicator_pins=None, battery_min=None, battery_max=None):
+    def __init__(self, config):
 
-        self.shutdown_button = DigitalInOut(shutdown_pin)
-        self.shutdown_button.direction = Direction.INPUT
-        self.shutdown_button.pull = Pull.UP
+        if STATUS_LED_PIN not in config:
+            self.enable = False
+        else:
+            self.enable = True
 
-        if battery_pin:
-            self.battery = AnalogIn(battery_pin)
-            self.battery_min, self.battery_max = battery_min, battery_max
-            self.battery_leds = [self.init_battery_leds(battery_led_indicator_pins)]
+        if SHUTDOWN_PIN in config:
+            self.shutdown_button = DigitalInOut(config[SHUTDOWN_PIN])
+            self.shutdown_button.direction = Direction.INPUT
+            self.shutdown_button.pull = Pull.UP
 
-        self.restart_pin = restart_pin
-        if restart_pin:
-            self.restart_button = DigitalInOut(restart_pin)
+        self.enabled = not (config[I2C_ENABLED] and config[DIGITAL_CHANNELS_ENABLED]) and not Misc.is_raspberrypi()
+
+        if not self.enabled:
+            return
+
+        #if battery_pin:
+        #    self.battery = AnalogIn(battery_pin)
+        #    self.battery_min, self.battery_max = battery_min, battery_max
+        #    self.battery_leds = [self.init_battery_leds(battery_led_indicator_pins)]
+
+        if RESTART_PIN in config:
+            self.restart_button = DigitalInOut(config[RESTART_PIN])
             self.restart_button.direction = Direction.INPUT
             self.restart_button.pull = Pull.UP
 
-        self.status_led = DigitalInOut(status_pin)
+        self.status_led = DigitalInOut(config[STATUS_LED_PIN])
         self.status_led.direction = Direction.OUTPUT
 
         self.last_status_check_time, self.last_led_status_check = (0, 0)
@@ -57,6 +69,9 @@ class Status:
         return msg
 
     def process(self):
+        if not self.enabled:
+            return
+
         self.check_button(self.shutdown_button, SHUTDOWN_CMD)
         if self.restart_pin:
             self.check_button(self.restart_button, RESTART_CMD)
