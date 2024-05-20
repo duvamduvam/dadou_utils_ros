@@ -24,6 +24,7 @@
     delete: yes
     copy_links: yes
     rsync_opts:
+      - "--delete"
       - "--exclude=.git/"
       - "--exclude=node_modules/"
       - "--exclude=.~tmp~/"
@@ -41,6 +42,8 @@
     dest: "{{ ros2_ws }}/src/{{ project_ros_dir }}/"
     recursive: yes
     copy_links: yes
+    rsync_opts:
+      - "--delete"
 
 - name: Synchronize directory "{{ local_projects_dir }}/{{ local_project_dir }}/conf/ros2_dependencies/" with "{{ ros2_ws }}/src/"
   synchronize:
@@ -48,3 +51,5 @@
     dest: "{{ ros2_ws }}/src/"
     recursive: yes
     copy_links: yes
+    rsync_opts:
+      - "--delete"

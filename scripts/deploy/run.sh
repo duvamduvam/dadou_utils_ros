@@ -7,7 +7,7 @@ source $RPI_SCRIPTS/params.sh
 if [ "$1" ]; then
   python_file=$1
 else
-  python_file='main.py'
+  python_file='nodes/main_gui.py'
 fi
 
 #cd $RPI_DEPLOY/$PROJECT_NAME

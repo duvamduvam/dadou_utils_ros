@@ -25,3 +25,4 @@
     path: "{{ ansible_env.HOME }}/scripts/compose-up-pi.sh"
     regexp: '^DOCKER_COMPOSE_FILE='
     line: "DOCKER_COMPOSE_FILE={{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/docker/arm/docker-compose-arm.yml"
+
