@@ -29,6 +29,12 @@
     #group: groupe # Remplace par le groupe du fichier
     mode: '0755' # Définit les permissions du fichier
 
+- name: Update file change path
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/scripts/run-docker.sh"
+    regexp: '^CHANGE_FILE='
+    line: "CHANGE_FILE={{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/ros2/CHANGE"
+
 - name: set docker compose log
   become: yes
   lineinfile:

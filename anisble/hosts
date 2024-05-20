@@ -1,6 +1,9 @@
 robot:
   hosts:
     ros-robot:
+        local_project_dir: dadou_robot_ros
+        project_ros_dir: robot
+        project_name: robot
 
 robot-root:
   hosts:
