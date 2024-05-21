@@ -30,6 +30,18 @@ controller:
         project_name: controller
 
 
+glove-right:
+  hosts:
+    gr:
+        packages:
+            - vim
+            - libgirepository1.0-dev
+            - libasound2-dev
+        local_project_dir: dadou_control_ros
+        local_utils_dir: dadou_utils_ros_ros
+        project_ros_dir: controller
+        project_name: controller
+
 #            imageio
 #            adafruit-circuitpython-servokit
 #            adafruit-circuitpython-rfm9x
