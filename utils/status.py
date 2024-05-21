@@ -42,6 +42,8 @@ class Status:
         if not self.enabled:
             return
 
+        logging.info("start system check process")
+
         #if battery_pin:
         #    self.battery = AnalogIn(battery_pin)
         #    self.battery_min, self.battery_max = battery_min, battery_max
