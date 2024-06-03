@@ -22,7 +22,7 @@
         #- "--exclude=.idea/"
         - "--exclude=__pycache__/"
         - "--exclude=venv/"
-        - "--delete"
+        #- "--delete"
         #- "--exclude=.editorconfig"
         #- "--exclude=.gitignore"
 
