@@ -13,7 +13,6 @@
     state: link
     force: yes  # Cela permet de remplacer le lien si celui-ci existe déjà
 
-
 - name: set docker compose log
   become: yes
   lineinfile:
