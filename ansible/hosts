@@ -41,19 +41,3 @@ glove-right:
         local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: controller
         project_name: controller
-
-#            imageio
-#            adafruit-circuitpython-servokit
-#            adafruit-circuitpython-rfm9x
-#            adafruit-circuitpython-bno055
-#            adafruit-circuitpython-neopixel
-#watchdog
-#simpleaudio
-#playsound
-#openai
-#whisper
-
-#controller:
-#  hosts:
-#    controller
-#
