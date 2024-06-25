@@ -8,7 +8,8 @@
 
   roles:
     - role: dir_struct
-      directories:
+      vars:
+      - directories:
           - "{{ ros2_ws }}/build"
           - "{{ ros2_ws }}/install"
           - "{{ ros2_ws }}/log"
@@ -30,7 +31,9 @@
     - role: set-bashrc
 #    - role: screen-config
     #- role: desktop_lunch
-    #- role: start-scripts
+    - role: start-scripts
+    - role: services
+      become: yes
     - role: command_root
       vars:
         command: "reboot"
