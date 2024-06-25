@@ -17,9 +17,9 @@ robot-root:
         project_ros_dir: robot
         project_name: robot
 
-controller:
+gl:
   hosts:
-    ros-control:
+    gl:
         packages:
             - vim
             - libgirepository1.0-dev

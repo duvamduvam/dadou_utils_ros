@@ -1,6 +1,6 @@
 ---
 - name: deploy didier controller
-  hosts: controller
+  hosts: gl
 #  become: yes
 
   vars_files:
