@@ -1,6 +1,6 @@
 ---
 - name: deploy didier controller
-  hosts: glove-left
+  hosts: glove-right
 #  become: yes
 
   vars_files:

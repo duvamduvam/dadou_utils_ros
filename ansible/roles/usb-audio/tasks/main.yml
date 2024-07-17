@@ -1,4 +1,5 @@
 - name: Copy alsa-blacklist.conf
+  become: yes
   copy:
     src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi//alsa-blacklist.conf"
     dest: "/etc/modprobe.d/alsa-blacklist.conf"

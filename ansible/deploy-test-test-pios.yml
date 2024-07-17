@@ -1,6 +1,6 @@
 ---
-- name: deploy didier controller
-  hosts: glove-left
+- name: deploy didier
+  hosts: robot-test
 #  become: yes
 
   vars_files:

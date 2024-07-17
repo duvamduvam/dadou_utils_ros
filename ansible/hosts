@@ -5,6 +5,14 @@ robot:
         project_ros_dir: robot
         project_name: robot
 
+robot-test:
+  hosts:
+    test:
+        local_project_dir: dadou_robot_ros
+        project_ros_dir: robot
+        project_name: robot
+
+
 robot-root:
   hosts:
     ros-robot-root:
@@ -17,7 +25,7 @@ robot-root:
         project_ros_dir: robot
         project_name: robot
 
-gl:
+glove-left:
   hosts:
     gl:
         packages:
