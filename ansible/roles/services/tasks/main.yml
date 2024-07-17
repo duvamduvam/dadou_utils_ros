@@ -1,4 +1,5 @@
 - name: Copy service file
+  become: yes
   copy:
     src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project.service"
     dest: "/etc/systemd/system/{{ project_name }}.service"
@@ -12,6 +13,7 @@
     state: touch
 
 - name: Mise à jour des paramètres du service systemd
+  become: yes
   lineinfile:
     path: "/etc/systemd/system/{{ project_name }}.service"
     regexp: "{{ item.regexp }}"
@@ -23,6 +25,7 @@
     - { regexp: '^StandardError=.*', line: 'StandardError={{ ansible_env.HOME }}/{{ ros2_ws }}/log/service-error.log' }
 
 - name: Activate and start service
+  become: yes
   systemd:
     name: "{{ project_name }}"
     enabled: yes

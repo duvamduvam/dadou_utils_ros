@@ -1,6 +1,6 @@
 ---
 - name: deploy didier
-  hosts: robot-root
+  hosts: robot
 #  become: yes
 
   vars_files:

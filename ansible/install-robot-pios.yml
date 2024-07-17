@@ -1,12 +1,7 @@
 ---
-- name: Set up root
-  hosts: robot
-
-  roles:
-    - role: root_ssh
 
 - name: install didier
-  hosts: robot-root
+  hosts: robot
 #  become: yes
 
   vars_files:
@@ -27,11 +22,11 @@
     - role: download-install-deb-from-url
       vars:
         - debian_packages_urls:
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.6.28-2_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce-cli_26.0.0-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce_23.0.0-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-buildx-plugin_0.13.1-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.25.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.18-1_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce-cli_27.0.1-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce_27.0.1-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-buildx-plugin_0.15.1-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.28.1-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
     - role: usb-audio

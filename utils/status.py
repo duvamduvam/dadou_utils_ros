@@ -27,6 +27,12 @@ MAX_CPU_TEMP = 55
 class Status:
     def __init__(self, config):
 
+        #self.enabled = not (config[I2C_ENABLED] and config[DIGITAL_CHANNELS_ENABLED]) and not Misc.is_raspberrypi()
+
+        self.enabled = Misc.is_raspberrypi()
+        if not self.enabled:
+            return
+
         if STATUS_LED_PIN not in config:
             self.enable = False
         else:
@@ -36,11 +42,6 @@ class Status:
             self.shutdown_button = DigitalInOut(config[SHUTDOWN_PIN])
             self.shutdown_button.direction = Direction.INPUT
             self.shutdown_button.pull = Pull.UP
-
-        self.enabled = not (config[I2C_ENABLED] and config[DIGITAL_CHANNELS_ENABLED]) and not Misc.is_raspberrypi()
-
-        if not self.enabled:
-            return
 
         logging.info("start system check process")
 
@@ -75,7 +76,7 @@ class Status:
             return
 
         self.check_button(self.shutdown_button, SHUTDOWN_CMD)
-        if self.restart_pin:
+        if self.restart_button:
             self.check_button(self.restart_button, RESTART_CMD)
         self.led_status()
 

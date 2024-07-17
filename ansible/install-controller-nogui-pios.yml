@@ -1,6 +1,6 @@
 ---
 - name: install didier ros controller docker-arm64 image on pios
-  hosts: gr
+  hosts: glove-right
 #  become: yes
 
   vars_files:
