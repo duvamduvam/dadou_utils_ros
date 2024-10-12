@@ -13,6 +13,7 @@
           - "{{ ros2_ws }}/build"
           - "{{ ros2_ws }}/install"
           - "{{ ros2_ws }}/log"
+          - "{{ ros2_ws }}/python-lib"
           - "{{ ros2_ws }}/src/{{ project_ros_dir }}"
     - role: synchronise
       become: yes
@@ -29,6 +30,7 @@
             - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.25.0-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
+    - role: activate-spi
 #    - role: screen-config
     #- role: desktop_lunch
     - role: start-scripts
