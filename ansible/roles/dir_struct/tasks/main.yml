@@ -4,3 +4,8 @@
     state: directory
     mode: '0755'  # Définir les permissions des répertoires
   loop: "{{ directories }}"
+
+- name: Create log file
+  file:
+    path: "{{ ros2_ws }}/log/{{ project_name }}.log"
+    state: touch

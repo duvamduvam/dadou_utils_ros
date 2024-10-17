@@ -1,0 +1,68 @@
+---
+- name: install {{ target_group | default('robot') }} test
+  hosts: "{{ target_group | default('robot') }}"
+  # become: yes
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - role: dir_struct
+      vars:
+        directories:
+          - "test/logs"
+
+  tasks:
+  - name: Créer le fichier de log si nécessaire
+    ansible.builtin.file:
+      path: "test/logs/{{ target_group }}-test.log"
+      state: touch
+
+  - name: Créer un environnement virtuel Python
+    ansible.builtin.command:
+      cmd: python3 -m venv {{ ansible_env.HOME }}/test/venv
+      creates: "{{ ansible_env.HOME }}/test/venv/bin/activate"
+
+  - name: Installer la bibliothèque adafruit-python-shell dans le virtualenv
+    ansible.builtin.command:
+      cmd: "{{ ansible_env.HOME }}/test/venv/bin/pip install adafruit-python-shell"
+
+  - name: Télécharger le script raspi-blinka.py
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+      dest: /tmp/raspi-blinka.py
+      mode: '0755'
+
+  - name: Exécuter raspi-blinka.py en répondant automatiquement
+    become: yes
+    ansible.builtin.shell:
+      cmd: "echo 'n' | {{ ansible_env.HOME }}/test/venv/bin/python /tmp/raspi-blinka.py"
+    register: blinka_result
+    args:
+      executable: /bin/bash
+    ignore_errors: true
+
+  - name: Afficher le résultat du script raspi-blinka.py
+    ansible.builtin.debug:
+      msg: "Sortie standard : {{ blinka_result.stdout }}\nErreur standard : {{ blinka_result.stderr }}"
+
+  - name: Synchroniser le répertoire de test
+    ansible.builtin.synchronize:
+      src: "{{ local_projects_dir }}/{{ local_project_dir }}/"
+      dest: "test/"
+      recursive: yes
+      copy_links: yes
+      rsync_opts:
+        - "--verbose"
+        - "--exclude=.*"
+        #- "--exclude=.git/"
+        - "--exclude=.~tmp~/"
+        - "--exclude=*tar.gz"
+        #- "--exclude=.idea/"
+        - "--exclude=__pycache__/"
+        - "--exclude=venv/"
+        #- "--delete"
+        #- "--exclude=.editorconfig"
+        #- "--exclude=.gitignore"
+        #- "--exclude=robot_bringup/"
+        #- "--exclude=robot_interfaces/"

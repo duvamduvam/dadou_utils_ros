@@ -1,7 +1,8 @@
 
 import json
+import logging
 
-from dadou_utils_ros.utils_static import JSON_DIRECTORY, BASE_PATH
+from dadou_utils.utils_static import JSON_DIRECTORY, BASE_PATH
 
 
 class AbstractJsonManager:
@@ -26,6 +27,7 @@ class AbstractJsonManager:
     #TODO simplify with the fileUtils.open_json
     def open_json(self, file_name, directory=""):
         path = self.config[JSON_DIRECTORY] + directory + file_name
+        logging.info("import json {}".format(path))
         if ".json" not in path:
             path += ".json"
         with open(path, 'r') as json_file:

@@ -5,6 +5,20 @@ robot:
         project_ros_dir: robot
         project_name: robot
 
+disk:
+  hosts:
+    d:
+        local_project_dir: dadou_hardrive_ros
+        project_ros_dir: hardrive
+        project_name: hardrive
+
+vision:
+  hosts:
+    vision:
+        local_project_dir: dadou_vision
+        project_ros_dir: vision
+        project_name: vision
+
 robot-test:
   hosts:
     test:
