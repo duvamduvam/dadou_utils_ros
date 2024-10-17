@@ -1,7 +1,7 @@
 - name: Copy service file
   become: yes
   copy:
-    src: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project.service"
+    src: "templates/rpi/project.service"
     dest: "/etc/systemd/system/{{ project_name }}.service"
     owner: root
     group: root

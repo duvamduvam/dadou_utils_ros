@@ -15,14 +15,20 @@
 #    path: "{{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/rpi/project_bash"
 #    regexp: '^alias start'
 #    line: "alias start={{ ansible_env.HOME }}/scripts/compose-up-pi.sh"
-
+      #{{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/project_bash') }}
 - name: Ajoute des lignes à partir d'un fichier dans le .bashrc
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     block: |
-      {{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/project_bash') }}
+      {{ lookup('file', 'templates/rpi/project_bash') }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     create: yes
+
+- name: Update project name in bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    regexp: '^PROJECT='
+    line: "PROJECT={{ project_name }}"
 
 - name: source .bashrc
   shell: |

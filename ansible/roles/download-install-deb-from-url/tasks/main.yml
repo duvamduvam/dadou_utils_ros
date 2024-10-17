@@ -18,3 +18,18 @@
     deb: "local_packages/{{ item.item | basename }}"
   loop: "{{ downloaded_files.results }}"
   when: directory_creation.changed and item.changed
+
+- name: Copy service file
+  become: yes
+  copy:
+    src: "templates/scripts/launch-ros-in-docker.sh"
+    dest: "{{ ansible_env.HOME }}/scripts/launch-ros-in-docker.sh"
+    owner: pi
+    group: pi
+    mode: '0644'
+
+- name: Update project change file destination in launch-in-docker.sh
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/scripts/launch-ros-in-docker.sh"
+    regexp: '^CHANGE_FILE='
+    line: "CHANGE_FILE=/home/{{ ros2_ws }}/src/{{ project_ros_dir }}/{{ project_ros_dir }}/change"
