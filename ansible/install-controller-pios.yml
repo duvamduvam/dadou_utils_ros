@@ -13,6 +13,7 @@
           - "{{ ros2_ws }}/install"
           - "{{ ros2_ws }}/log"
           - "{{ ros2_ws }}/src/{{ project_ros_dir }}"
+          - "scripts"
     - role: synchronise
       become: yes
     - role: packages
@@ -31,9 +32,10 @@
 #    - role: screen-config
     - role: desktop_lunch
     #- role: start-scripts
+    - role: screen-config
     - role: command_root
       vars:
         command: "reboot"
-#    - role: screen-config
+
 
 

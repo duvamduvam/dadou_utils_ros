@@ -1,5 +1,6 @@
 import logging
 import re
+import time
 from os.path import exists
 
 import serial
@@ -64,7 +65,7 @@ class SerialDevice:
                     return msg
         except Exception as e:
             logging.error("{} device error : {}".format(self.name, e))
-            self.connect()
+            self.device = None  # Réinitialise le device
                 # self.device.read(self.device.in_waiting)
                 # print(self.device.in_waiting)
         return None

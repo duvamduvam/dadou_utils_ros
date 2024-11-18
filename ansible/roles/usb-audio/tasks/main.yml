@@ -1,14 +1,14 @@
 - name: Copy alsa-blacklist.conf
   become: yes
   copy:
-    src: "templates/rpi//alsa-blacklist.conf"
+    src: "templates/rpi/alsa-blacklist.conf"
     dest: "/etc/modprobe.d/alsa-blacklist.conf"
     state: link
     force: yes
 
 - name: Copy asoundrc file
   file:
-    src: "templates/rpi//asoundrc"
+    src: "templates/rpi/asoundrc"
     dest: "{{ ansible_env.HOME }}/.asoundrc"
     state: link
     force: yes
