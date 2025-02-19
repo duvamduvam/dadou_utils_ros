@@ -16,12 +16,12 @@
 #    regexp: '^alias start'
 #    line: "alias start={{ ansible_env.HOME }}/scripts/compose-up-pi.sh"
       #{{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/project_bash') }}
-- name: Ajoute des lignes à partir d'un fichier dans le .bashrc
+- name: Add global bash project
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     block: |
       {{ lookup('file', 'templates/rpi/project_bash') }}
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    marker: "# {mark} GLOBAL PARAMETERS"
     create: yes
 
 - name: Update project name in bashrc
@@ -29,6 +29,14 @@
     path: "{{ ansible_env.HOME }}/.bashrc"
     regexp: '^PROJECT='
     line: "PROJECT={{ project_name }}"
+
+- name: Add project bash
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      {{ lookup('file', '{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/bashrc') }}
+    marker: "# {mark} PROJECT PARAMETER"
+    create: yes
 
 - name: source .bashrc
   shell: |

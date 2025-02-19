@@ -12,9 +12,16 @@ disk:
         project_ros_dir: hardrive
         project_name: hardrive
 
+sceno:
+  hosts:
+    s:
+        local_project_dir: dadou_sceno_ros
+        project_ros_dir: sceno
+        project_name: sceno
+
 vision:
   hosts:
-    vision:
+    ai:
         local_project_dir: dadou_vision
         project_ros_dir: vision
         project_name: vision
