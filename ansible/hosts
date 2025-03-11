@@ -45,6 +45,7 @@ robot-root:
         local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: robot
         project_name: robot
+        launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
 glove-left:
   hosts:
@@ -57,6 +58,7 @@ glove-left:
         local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: controller
         project_name: controller
+        launch_cmd: ros2 run controller controller_node
 
 
 glove-right:
@@ -70,3 +72,4 @@ glove-right:
         local_utils_dir: dadou_utils_ros_ros
         project_ros_dir: controller
         project_name: controller
+        launch_cmd: ros2 run controller controller_node

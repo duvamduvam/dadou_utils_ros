@@ -219,3 +219,13 @@ class Misc:
     @staticmethod
     def random_color():
         return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+    @staticmethod
+    def get_raspberry_pi_model():
+        result = subprocess.run(['cat', '/proc/cpuinfo'], stdout=subprocess.PIPE)
+        cpuinfo = result.stdout.decode('utf-8')
+
+        for line in cpuinfo.splitlines():
+            if line.startswith("Model"):
+                return line.strip()
+
+        return "Modèle non trouvé"

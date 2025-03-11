@@ -18,15 +18,15 @@
       become: yes
     - role: packages
       vars:
-      - package_file: "packages-docker.txt"
+      - package_file: "packages-rpi.txt"
     - role: download-install-deb-from-url
       vars:
         - debian_packages_urls:
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.18-1_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce-cli_27.0.1-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce_27.0.1-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-buildx-plugin_0.15.1-1~debian.12~bookworm_arm64.deb"
-            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.28.1-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.25-1_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce-cli_28.0.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-ce_28.0.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-buildx-plugin_0.21.0-1~debian.12~bookworm_arm64.deb"
+            - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.33.0-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
 #    - role: screen-config
