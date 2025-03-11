@@ -15,11 +15,12 @@
           - "{{ ros2_ws }}/log"
           - "{{ ros2_ws }}/python-lib"
           - "{{ ros2_ws }}/src/{{ project_ros_dir }}"
+          - "scripts"
     - role: synchronise
       become: yes
     - role: packages
       vars:
-      - package_file: "packages-docker.txt"
+      - package_file: "packages-rpi.txt"
     - role: download-install-deb-from-url
       vars:
         - debian_packages_urls:

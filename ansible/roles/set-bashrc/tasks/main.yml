@@ -1,21 +1,4 @@
-#- name: Add sourcing code alias
-#  lineinfile:
-#    path: "{{ ansible_env.HOME }}/.bashrc"
-#    line: "alias s='source ~/.bashrc'"
-#    create: yes
 
-#- name: Add colcon build alias
-#  lineinfile:
-#    path: "{{ ansible_env.HOME }}/.bashrc"
-#    line: "alias b='cd ~/ros2_ws && colcon build && s'"
-#    create: yes
-
-#- name: Update log path
-#  lineinfile:
-#    path: "{{ ansible_env.HOME }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/conf/rpi/project_bash"
-#    regexp: '^alias start'
-#    line: "alias start={{ ansible_env.HOME }}/scripts/compose-up-pi.sh"
-      #{{ lookup('file', local_projects_dir ~ '/' ~ local_project_dir ~ '/conf/rpi/project_bash') }}
 - name: Add global bash project
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
@@ -24,19 +7,19 @@
     marker: "# {mark} GLOBAL PARAMETERS"
     create: yes
 
+- name: Add project bash
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      {{ lookup('file', '{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash') }}
+    marker: "# {mark} PROJECT PARAMETER"
+    create: yes
+
 - name: Update project name in bashrc
   lineinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     regexp: '^PROJECT='
     line: "PROJECT={{ project_name }}"
-
-- name: Add project bash
-  blockinfile:
-    path: "{{ ansible_env.HOME }}/.bashrc"
-    block: |
-      {{ lookup('file', '{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/bashrc') }}
-    marker: "# {mark} PROJECT PARAMETER"
-    create: yes
 
 - name: source .bashrc
   shell: |

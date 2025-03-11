@@ -8,6 +8,7 @@ alias s='source ~/.bashrc'
 #alias b='cd ~/ros2_ws && colcon build && s'
 
 alias l='tail -f ~/ros2_ws/log/$PROJECT.log'
+alias lu='tail -f ~/ros2_ws/log/docker.log'
 alias lt='tail -f ~/test/logs/$PROJECT-test.log'
 
 if [ -n "$DISPLAY" ]; then
@@ -20,9 +21,9 @@ else
 fi
 
 alias restart='stop && start'
-
+alias delete'=stop && sudo docker rm -f dadou-$PROJECT-container'
 alias in='sudo docker exec -it dadou-$PROJECT-container /bin/bash'
-alias build='~/scripts/compose-up-pi.sh build'
+alias build='stop && ~/scripts/compose-up-pi.sh build'
 
 alias i2c='i2cdetect -y 1'
 
