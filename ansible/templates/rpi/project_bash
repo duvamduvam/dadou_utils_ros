@@ -8,16 +8,16 @@ alias s='source ~/.bashrc'
 #alias b='cd ~/ros2_ws && colcon build && s'
 
 alias l='tail -f ~/ros2_ws/log/$PROJECT.log'
-alias lu='tail -f ~/ros2_ws/log/docker.log'
+alias lu='tail -f ~/ros2_ws/log/lunch.log'
 alias lt='tail -f ~/test/logs/$PROJECT-test.log'
 
 if [ -n "$DISPLAY" ]; then
-    alias start='sudo service controller start && log'
-    alias stop='sudo service controller stop'
-    alias status='sudo service controller status'
+    alias start='sudo service $PROJECT start && log'
+    alias stop='sudo service $PROJECT stop'
+    alias status='sudo service $PROJECT status'
 else
     alias start='/home/pi/scripts/compose-up-pi.sh'
-    alias stop='sudo docker stop dadou-controller-container'
+    alias stop='sudo docker stop dadou-$PROJECT-container'
 fi
 
 alias restart='stop && start'

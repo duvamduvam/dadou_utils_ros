@@ -1,9 +1,10 @@
 robot:
   hosts:
-    ros-robot:
+    r:
         local_project_dir: dadou_robot_ros
         project_ros_dir: robot
         project_name: robot
+        launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
 disk:
   hosts:
@@ -22,9 +23,10 @@ sceno:
 vision:
   hosts:
     ai:
-        local_project_dir: dadou_vision
+        local_project_dir: dadou_vision_ros
         project_ros_dir: vision
         project_name: vision
+        launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
 robot-test:
   hosts:
@@ -32,20 +34,6 @@ robot-test:
         local_project_dir: dadou_robot_ros
         project_ros_dir: robot
         project_name: robot
-
-
-robot-root:
-  hosts:
-    ros-robot-root:
-        packages:
-            - vim
-            - libgirepository1.0-dev
-            - libasound2-dev
-        local_project_dir: dadou_robot_ros
-        local_utils_dir: dadou_utils_ros_ros
-        project_ros_dir: robot
-        project_name: robot
-        launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
 glove-left:
   hosts:
