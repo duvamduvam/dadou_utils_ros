@@ -1,8 +1,9 @@
-- name: Mettre à jour adafruit-python-shell avec pip
-  pip:
-    name: adafruit-python-shell
-    state: latest
-    extra_args: --user
+#- name: Mettre à jour adafruit-python-shell avec pip
+#  become: yes
+#  pip:
+#    name: adafruit-python-shell
+#    state: latest
+#    extra_args: --user
     #virtualenv: "{{ deploy_dir }}/venv/"
 
 - name: Télécharger le script d'installation de Blinka

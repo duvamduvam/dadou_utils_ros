@@ -16,11 +16,11 @@ color = 0
 ###########################################################################################
 
 #Initialize controller
-joysticks = []
-for i in range(pygame.joystick.get_count()):
-    joysticks.append(pygame.joystick.Joystick(i))
-for joystick in joysticks:
-    joystick.init()
+self.gamepads = []
+for i in range(pygame.self.gamepad.get_count()):
+    self.gamepads.append(pygame.self.gamepad.Joystick(i))
+for self.gamepad in self.gamepads:
+    self.gamepad.init()
 
 with open(os.path.join("ps.json"), 'r+') as file:
     button_keys = json.load(file)

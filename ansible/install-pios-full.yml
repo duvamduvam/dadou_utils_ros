@@ -1,12 +1,13 @@
 ---
-- name: install didier ros controller docker-arm64 image on pios
-  hosts: glove-left
+- name: "\e[1;31m install {{ target_group }} on pios full \e[0m"
+  hosts: "{{ target_group }}"
 #  become: yes
 
   vars_files:
   - vars/main.yml
 
   roles:
+    #- role: info
     - role: dir_struct
       directories:
           - "{{ ros2_ws }}/build"
@@ -29,13 +30,13 @@
             - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.33.0-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
-#    - role: screen-config
+    - role: start-scripts
     - role: desktop_lunch
-    #- role: start-scripts
-    - role: screen-config
+    #- role: screen-config
     - role: command_root
       vars:
         command: "reboot"
 
 
 
+#    - role: screen-config

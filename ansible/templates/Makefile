@@ -21,7 +21,7 @@ dt:
 
 i:
 	echo "change" > $(PROJECT_DIR)/${PROJECT}/change
-	ansible-playbook $(UTILS_DIR)/ansible/install-pios.yml -i $(UTILS_DIR)/ansible/hosts -e target_group=$(PROJECT)
+	ansible-playbook $(UTILS_DIR)/ansible/install-pios-lite.yml -i $(UTILS_DIR)/ansible/hosts -e target_group=$(PROJECT)
 
 it:
 	ansible-playbook $(UTILS_DIR)/ansible/install-test-pios.yml -i $(UTILS_DIR)/ansible/hosts -e target_group=$(PROJECT)
