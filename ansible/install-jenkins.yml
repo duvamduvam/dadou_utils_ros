@@ -1,0 +1,11 @@
+---
+- name: Install Jenkins on pios lite
+  hosts: "{{ target_group | default('robot') }}"
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - role: docker-install
+    - role: jenkins
+    - role: sonar

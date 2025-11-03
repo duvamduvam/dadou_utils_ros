@@ -1,0 +1,80 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job">
+  <actions/>
+  <description>{{ jenkins_pipeline_job_description }}</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        {% if jenkins_pipeline_enable_github_webhook %}
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+        {% endif %}
+        {% if jenkins_pipeline_poll_schedule != "" %}
+        <hudson.triggers.SCMTrigger>
+          <spec>{{ jenkins_pipeline_poll_schedule }}</spec>
+          <ignorePostCommitHooks>false</ignorePostCommitHooks>
+        </hudson.triggers.SCMTrigger>
+        {% endif %}
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
+    <script><![CDATA[
+pipeline {
+  agent any
+
+  options {
+    timestamps()
+  }
+
+  environment {
+    DOCKER_IMAGE = "{{ jenkins_pipeline_docker_image }}"
+    DOCKER_TAG = "{{ jenkins_pipeline_docker_tag_expression }}"
+    DOCKER_CONTEXT = "{{ jenkins_pipeline_docker_context }}"
+    DOCKERFILE = "{{ jenkins_pipeline_dockerfile }}"
+  }
+
+  stages {
+    stage('Run CI script on builder host') {
+      steps {
+        sh """
+          ssh -o StrictHostKeyChecking=no {{ jenkins_pipeline_remote_user }}@{{ jenkins_pipeline_remote_host }} \\
+            "REPO_URL='{{ jenkins_pipeline_repo_url }}' \\
+            REPO_BRANCH='{{ jenkins_pipeline_repo_branch }}' \\
+            PYTHON_REQUIREMENTS='{{ jenkins_pipeline_requirements_path }}' \\
+            TEST_COMMAND={{ jenkins_pipeline_test_command | quote }} \\
+            DOCKER_IMAGE='$DOCKER_IMAGE' \\
+            DOCKER_TAG='$DOCKER_TAG' \\
+            DOCKER_CONTEXT='$DOCKER_CONTEXT' \\
+            DOCKERFILE='$DOCKERFILE' \\
+            WORKSPACE_ROOT='{{ jenkins_pipeline_remote_workspace }}' \\
+            KEEP_WORKDIR=1 \\
+            {{ jenkins_pipeline_ci_script_host_path }}"
+        """
+      }
+    }
+
+    {% if jenkins_pipeline_push_enabled %}
+    stage('Docker Push') {
+      steps {
+        sh '''
+          docker push "${DOCKER_IMAGE}:${DOCKER_TAG}"
+        '''
+      }
+    }
+    {% endif %}
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}
+    ]]></script>
+    <sandbox>true</sandbox>
+  </definition>
+  <disabled>false</disabled>
+</flow-definition>

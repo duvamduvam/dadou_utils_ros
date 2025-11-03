@@ -29,8 +29,5 @@ it:
 p:
 	cd $(PROJECT_DIR) && exec bash
 
-run:
-	$(PROJECT_DIR)/conf/scripts/compose-up-local.sh
-
 lt:
 	tail -f $(PROJECT_DIR)$(LOCAL_TEST_LOG)
