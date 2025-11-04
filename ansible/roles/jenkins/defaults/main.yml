@@ -21,7 +21,7 @@ jenkins_pipeline_docker_tag_expression: "${env.BRANCH_NAME ?: 'main'}-${env.BUIL
 jenkins_pipeline_docker_context: "."
 jenkins_pipeline_dockerfile: "conf/docker/jenkins/Dockerfile-jenkins"
 jenkins_pipeline_push_enabled: false
-jenkins_pipeline_enable_github_webhook: true
+jenkins_pipeline_enable_github_webhook: false
 jenkins_pipeline_poll_schedule: "H/5 * * * *"
 jenkins_pipeline_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins_pipeline_job_name }}/config.xml.j2"
 jenkins_plugins:
