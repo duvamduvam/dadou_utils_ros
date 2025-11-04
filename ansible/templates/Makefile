@@ -31,3 +31,6 @@ p:
 
 lt:
 	tail -f $(PROJECT_DIR)$(LOCAL_TEST_LOG)
+
+push:
+	git push origin main
