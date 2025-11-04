@@ -336,3 +336,22 @@
     "apt-get update && apt-get install -y openssh-client"
   register: jenkins_ssh_client_install
   changed_when: true
+
+- name: Check Git client presence in Jenkins container
+  when: jenkins_install_git_client | bool
+  become: yes
+  ansible.builtin.command: docker exec --user root {{ jenkins_container_name }} bash -lc 'command -v git'
+  register: jenkins_git_client_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Git client in Jenkins container
+  when:
+    - jenkins_install_git_client | bool
+    - jenkins_git_client_check.rc != 0
+  become: yes
+  ansible.builtin.command: >-
+    docker exec --user root {{ jenkins_container_name }} bash -lc
+    "apt-get update && apt-get install -y git"
+  register: jenkins_git_client_install
+  changed_when: true
