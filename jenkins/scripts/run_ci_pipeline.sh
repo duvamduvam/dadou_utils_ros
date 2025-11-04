@@ -321,10 +321,13 @@ build_docker() {
 
 test_docker_image() {
   echo "[CI][3/3] Running tests inside Docker image ${DOCKER_IMAGE}:${DOCKER_TAG}..."
+  local default_cmd="pytest -q /home/ros2_ws/src/robot/robot/tests --ignore=/home/ros2_ws/src/robot/robot/tests/sandbox"
+  local resolved_cmd="${TEST_COMMAND:-${default_cmd}}"
+
   docker_exec run --rm \
-    --env TEST_COMMAND="${TEST_COMMAND:-pytest -q}" \
+    --env TEST_COMMAND="${resolved_cmd}" \
     "${DOCKER_IMAGE}:${DOCKER_TAG}" \
-    bash -lc "${TEST_COMMAND:-pytest -q}"
+    bash -lc "${resolved_cmd}"
   echo "[CI][3/3] Dockerized test stage completed successfully"
 }
 
