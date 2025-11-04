@@ -325,6 +325,7 @@ test_docker_image() {
   local resolved_cmd="${TEST_COMMAND:-${default_cmd}}"
 
   docker_exec run --rm \
+    --entrypoint robot-tests-entrypoint \
     --env TEST_COMMAND="${resolved_cmd}" \
     "${DOCKER_IMAGE}:${DOCKER_TAG}" \
     bash -lc "${resolved_cmd}"
