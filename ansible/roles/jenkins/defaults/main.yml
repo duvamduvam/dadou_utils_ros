@@ -9,8 +9,8 @@ jenkins_data_dir_group: "1000"
 jenkins_environment: {}
 jenkins_pipeline_job_name: "dadou_robot_ci"
 jenkins_pipeline_job_description: "CI pipeline pour builder et tester dadou_robot."
-jenkins_pipeline_repo_url: "https://github.com/duvamduvam/dadou_robot_ros.git"
-jenkins_pipeline_poll_repo_url: "https://github.com/duvamduvam/dadou_robot_ros.git"
+jenkins_pipeline_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
+jenkins_pipeline_poll_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
 jenkins_pipeline_repo_branch: "main"
 jenkins_pipeline_repo_credentials_id: ""
 jenkins_pipeline_requirements_path: "requirements.txt"
@@ -60,10 +60,10 @@ jenkins_bashrc_alias_block: |-
   alias ll='ls -alh'
   alias jl='sudo docker logs -f {{ jenkins_container_name }}'
   alias sl='sudo docker logs -f {{ jenkins_sonar_container_name }}'
-jenkins_ssh_key_manage: false
+jenkins_ssh_key_manage: true
 jenkins_ssh_key_dest_dir: "{{ jenkins_data_dir }}/.ssh"
-jenkins_ssh_private_key_src: ""
-jenkins_ssh_public_key_src: ""
+jenkins_ssh_private_key_src: "/home/dadou/Nextcloud/divers/keys/github"
+jenkins_ssh_public_key_src: "/home/dadou/Nextcloud/divers/keys/github.pub"
 jenkins_ssh_private_key_name: "id_ed25519"
 jenkins_ssh_public_key_name: "{{ jenkins_ssh_private_key_name }}.pub"
 jenkins_ssh_authorized_key_manage: true
