@@ -25,6 +25,9 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>{{ jenkins_pipeline_poll_repo_url }}</url>
+        {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
+        <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
+        {% endif %}
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
