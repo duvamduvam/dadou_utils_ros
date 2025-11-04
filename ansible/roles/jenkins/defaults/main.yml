@@ -39,6 +39,7 @@ jenkins_pipeline_remote_host: "172.17.0.1"
 jenkins_pipeline_remote_user: "pi"
 jenkins_pipeline_remote_workspace: "/home/pi/jenkins-workspace"
 jenkins_install_ssh_client: true
+jenkins_install_git_client: true
 jenkins_admin_manage: false
 jenkins_admin_user: "admin"
 jenkins_admin_password: ""
