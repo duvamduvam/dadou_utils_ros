@@ -80,30 +80,32 @@
       </envVars>
     </org.jenkinsci.plugins.workflow.job.properties.EnvironmentVariablesJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps">
-    <scm class="hudson.plugins.git.GitSCM" plugin="git">
-      <configVersion>2</configVersion>
-      <userRemoteConfigs>
-        <hudson.plugins.git.UserRemoteConfig>
-          <url>{{ jenkins_pipeline_repo_url }}</url>
-          {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
-          <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
-          {% endif %}
-        </hudson.plugins.git.UserRemoteConfig>
-      </userRemoteConfigs>
-      <branches>
-        <hudson.plugins.git.BranchSpec>
-          <name>{{ jenkins_pipeline_repo_branch }}</name>
-        </hudson.plugins.git.BranchSpec>
-      </branches>
-      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-      <submoduleCfg class="empty-list"/>
-      <extensions>
-        <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
-      </extensions>
-    </scm>
-    <scriptPath>{{ jenkins_pipeline_script_path }}</scriptPath>
-    <lightweight>{{ 'true' if jenkins_pipeline_lightweight_checkout else 'false' }}</lightweight>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>{{ jenkins_pipeline_poll_repo_url }}</url>
+        {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
+        <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
+        {% endif %}
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>{{ jenkins_pipeline_repo_branch }}</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+    </extensions>
+  </scm>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
+    <script><![CDATA[
+{{ lookup('file', jenkins_pipeline_script_template) }}
+    ]]></script>
+    <sandbox>true</sandbox>
   </definition>
   <disabled>false</disabled>
 </flow-definition>
