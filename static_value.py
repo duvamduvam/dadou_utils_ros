@@ -9,6 +9,7 @@ class StaticValue(metaclass=SingletonMeta):
         if key in StaticValue.values:
             return StaticValue.values[key]
 
+
     @staticmethod
     def set(key, value):
         StaticValue.values[key] = value
