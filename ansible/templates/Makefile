@@ -34,3 +34,4 @@ lt:
 
 push:
 	git -C $(PROJECT_DIR) push origin main
+	git -C $(UTILS_DIR) push origin main
