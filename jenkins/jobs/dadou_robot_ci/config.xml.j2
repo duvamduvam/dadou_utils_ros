@@ -4,6 +4,9 @@
   <description>{{ jenkins_pipeline_job_description }}</description>
   <keepDependencies>false</keepDependencies>
   <properties>
+    {% if jenkins_pipeline_disable_concurrent_builds %}
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    {% endif %}
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         {% if jenkins_pipeline_enable_github_webhook %}
