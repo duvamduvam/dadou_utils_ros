@@ -12,6 +12,8 @@ jenkins_pipeline_job_description: "CI pipeline pour builder et tester dadou_robo
 jenkins_pipeline_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
 jenkins_pipeline_poll_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
 jenkins_pipeline_repo_branch: "main"
+jenkins_pipeline_script_path: "Jenkinsfile"
+jenkins_pipeline_lightweight_checkout: true
 jenkins_pipeline_repo_credentials_id: ""
 jenkins_pipeline_requirements_path: "requirements.txt"
 jenkins_pipeline_test_command: "pytest -q"

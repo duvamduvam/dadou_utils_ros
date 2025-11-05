@@ -19,83 +19,91 @@
         {% endif %}
       </triggers>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.EnvironmentVariablesJobProperty>
+      <envVars>
+        <entry>
+          <string>REPO_URL</string>
+          <string>{{ jenkins_pipeline_repo_url }}</string>
+        </entry>
+        <entry>
+          <string>REPO_BRANCH</string>
+          <string>{{ jenkins_pipeline_repo_branch }}</string>
+        </entry>
+        <entry>
+          <string>PYTHON_REQUIREMENTS</string>
+          <string>{{ jenkins_pipeline_requirements_path }}</string>
+        </entry>
+        <entry>
+          <string>TEST_COMMAND</string>
+          <string>{{ jenkins_pipeline_test_command }}</string>
+        </entry>
+        <entry>
+          <string>DOCKER_IMAGE</string>
+          <string>{{ jenkins_pipeline_docker_image }}</string>
+        </entry>
+        <entry>
+          <string>DOCKER_TAG</string>
+          <string>{{ jenkins_pipeline_docker_tag_expression }}</string>
+        </entry>
+        <entry>
+          <string>DOCKER_CONTEXT</string>
+          <string>{{ jenkins_pipeline_docker_context }}</string>
+        </entry>
+        <entry>
+          <string>DOCKERFILE</string>
+          <string>{{ jenkins_pipeline_dockerfile }}</string>
+        </entry>
+        <entry>
+          <string>WORKSPACE_ROOT</string>
+          <string>{{ jenkins_pipeline_remote_workspace }}</string>
+        </entry>
+        <entry>
+          <string>KEEP_WORKDIR</string>
+          <string>1</string>
+        </entry>
+        <entry>
+          <string>CI_SCRIPT_PATH</string>
+          <string>{{ jenkins_pipeline_ci_script_path }}</string>
+        </entry>
+        <entry>
+          <string>JENKINS_REMOTE_USER</string>
+          <string>{{ jenkins_pipeline_remote_user }}</string>
+        </entry>
+        <entry>
+          <string>JENKINS_REMOTE_HOST</string>
+          <string>{{ jenkins_pipeline_remote_host }}</string>
+        </entry>
+        <entry>
+          <string>DOCKER_PUSH_ENABLED</string>
+          <string>{{ 'true' if jenkins_pipeline_push_enabled else 'false' }}</string>
+        </entry>
+      </envVars>
+    </org.jenkinsci.plugins.workflow.job.properties.EnvironmentVariablesJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git">
-    <configVersion>2</configVersion>
-    <userRemoteConfigs>
-      <hudson.plugins.git.UserRemoteConfig>
-        <url>{{ jenkins_pipeline_poll_repo_url }}</url>
-        {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
-        <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
-        {% endif %}
-      </hudson.plugins.git.UserRemoteConfig>
-    </userRemoteConfigs>
-    <branches>
-      <hudson.plugins.git.BranchSpec>
-        <name>{{ jenkins_pipeline_repo_branch }}</name>
-      </hudson.plugins.git.BranchSpec>
-    </branches>
-    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <submoduleCfg class="empty-list"/>
-    <extensions>
-      <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
-    </extensions>
-  </scm>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
-    <script><![CDATA[
-pipeline {
-  agent any
-
-  options {
-    timestamps()
-  }
-
-  environment {
-    DOCKER_IMAGE = "{{ jenkins_pipeline_docker_image }}"
-    DOCKER_TAG = "{{ jenkins_pipeline_docker_tag_expression }}"
-    DOCKER_CONTEXT = "{{ jenkins_pipeline_docker_context }}"
-    DOCKERFILE = "{{ jenkins_pipeline_dockerfile }}"
-  }
-
-  stages {
-    stage('Run CI script on builder host') {
-      steps {
-        sh """
-          ssh -o StrictHostKeyChecking=no {{ jenkins_pipeline_remote_user }}@{{ jenkins_pipeline_remote_host }} \\
-            "REPO_URL='{{ jenkins_pipeline_repo_url }}' \\
-            REPO_BRANCH='{{ jenkins_pipeline_repo_branch }}' \\
-            PYTHON_REQUIREMENTS='{{ jenkins_pipeline_requirements_path }}' \\
-            TEST_COMMAND={{ jenkins_pipeline_test_command | quote }} \\
-            DOCKER_IMAGE='$DOCKER_IMAGE' \\
-            DOCKER_TAG='$DOCKER_TAG' \\
-            DOCKER_CONTEXT='$DOCKER_CONTEXT' \\
-            DOCKERFILE='$DOCKERFILE' \\
-            WORKSPACE_ROOT='{{ jenkins_pipeline_remote_workspace }}' \\
-            KEEP_WORKDIR=1 \\
-            {{ jenkins_pipeline_ci_script_host_path }}"
-        """
-      }
-    }
-
-    {% if jenkins_pipeline_push_enabled %}
-    stage('Docker Push') {
-      steps {
-        sh '''
-          docker push "${DOCKER_IMAGE}:${DOCKER_TAG}"
-        '''
-      }
-    }
-    {% endif %}
-  }
-
-  post {
-    always {
-      cleanWs()
-    }
-  }
-}
-    ]]></script>
-    <sandbox>true</sandbox>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{{ jenkins_pipeline_repo_url }}</url>
+          {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
+          <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
+          {% endif %}
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>{{ jenkins_pipeline_repo_branch }}</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="empty-list"/>
+      <extensions>
+        <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+      </extensions>
+    </scm>
+    <scriptPath>{{ jenkins_pipeline_script_path }}</scriptPath>
+    <lightweight>{{ 'true' if jenkins_pipeline_lightweight_checkout else 'false' }}</lightweight>
   </definition>
   <disabled>false</disabled>
 </flow-definition>
