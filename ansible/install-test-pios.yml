@@ -1,7 +1,7 @@
 ---
 - name: install {{ target_group | default('robot') }} test
   hosts: "{{ target_group | default('robot') }}"
-  # become: yes
+  # Enable become if privileged actions are required
 
   vars_files:
     - vars/main.yml
@@ -10,30 +10,40 @@
     - role: dir_struct
       vars:
         directories:
-          - "test/logs"
+          - "{{ project_ros_dir }}"
+          - "{{ project_ros_dir }}/log"
+    - role: activate-i2c
 
   tasks:
-  - name: Créer le fichier de log si nécessaire
+  - name: Create the log file if needed
     ansible.builtin.file:
       path: "test/logs/{{ target_group }}-test.log"
       state: touch
 
-  - name: Créer un environnement virtuel Python
+  - name: Create a Python virtual environment
     ansible.builtin.command:
       cmd: python3 -m venv {{ ansible_env.HOME }}/test/venv
       creates: "{{ ansible_env.HOME }}/test/venv/bin/activate"
 
-  - name: Installer la bibliothèque adafruit-python-shell dans le virtualenv
+  - name: Install adafruit-python-shell inside the virtual environment
     ansible.builtin.command:
       cmd: "{{ ansible_env.HOME }}/test/venv/bin/pip install adafruit-python-shell"
 
-  - name: Télécharger le script raspi-blinka.py
+  - name: Download raspi-blinka.py on the control machine
+    run_once: true
+    delegate_to: localhost
     ansible.builtin.get_url:
       url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
       dest: /tmp/raspi-blinka.py
       mode: '0755'
 
-  - name: Exécuter raspi-blinka.py en répondant automatiquement
+  - name: Copy raspi-blinka.py to the target host
+    ansible.builtin.copy:
+      src: /tmp/raspi-blinka.py
+      dest: /tmp/raspi-blinka.py
+      mode: '0755'
+
+  - name: Run raspi-blinka.py with automatic answers
     become: yes
     ansible.builtin.shell:
       cmd: "echo 'n' | {{ ansible_env.HOME }}/test/venv/bin/python /tmp/raspi-blinka.py"
@@ -42,11 +52,11 @@
       executable: /bin/bash
     ignore_errors: true
 
-  - name: Afficher le résultat du script raspi-blinka.py
+  - name: Display raspi-blinka.py output
     ansible.builtin.debug:
-      msg: "Sortie standard : {{ blinka_result.stdout }}\nErreur standard : {{ blinka_result.stderr }}"
+      msg: "Standard output: {{ blinka_result.stdout }}\nStandard error: {{ blinka_result.stderr }}"
 
-  - name: Synchroniser le répertoire de test
+  - name: Synchronize the test directory
     ansible.builtin.synchronize:
       src: "{{ local_projects_dir }}/{{ local_project_dir }}/"
       dest: "test/"
