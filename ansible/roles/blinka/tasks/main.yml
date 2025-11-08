@@ -14,9 +14,17 @@
     name: adafruit-python-shell
     virtualenv: "{{ blinka_venv_path }}"
 
-- name: Download raspi-blinka.py script
+- name: Download raspi-blinka.py script on control host
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+    dest: "{{ blinka_script_path }}"
+    mode: '0755'
+  delegate_to: localhost
+  run_once: true
+
+- name: Copy raspi-blinka.py to target host
+  ansible.builtin.copy:
+    src: "{{ blinka_script_path }}"
     dest: "{{ blinka_script_path }}"
     mode: '0755'
 
