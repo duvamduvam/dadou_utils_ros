@@ -25,6 +25,10 @@
     python_system_pip_executable: "{{ python_runtime }} -m pip"
   when: python_runtime is defined
 
+- name: Déterminer si un virtualenv est requis
+  ansible.builtin.set_fact:
+    python_use_venv: "{{ (python_venv_path | default('')) | length > 0 }}"
+
 - name: Échouer si aucun interpréteur Python n'a été trouvé
   ansible.builtin.fail:
     msg: "Aucun interpréteur Python valide parmi {{ python_interpreter_candidates }}"
@@ -37,21 +41,20 @@
     mode: '0644'
   delegate_to: localhost
   run_once: true
+  when: not python_use_venv
 
 - name: Copier get-pip.py sur l'hôte cible
   ansible.builtin.copy:
     src: "{{ python_get_pip_local_path }}"
     dest: "{{ python_get_pip_remote_path }}"
     mode: '0644'
+  when: not python_use_venv
 
 - name: Installer pip avec {{ python_runtime }}
   become: yes
   ansible.builtin.command:
     cmd: "{{ python_runtime }} {{ python_get_pip_remote_path }}"
-
-- name: Déterminer si un virtualenv est requis
-  ansible.builtin.set_fact:
-    python_use_venv: "{{ (python_venv_path | default('')) | length > 0 }}"
+  when: not python_use_venv
 
 - name: S'assurer que le virtualenv existe
   ansible.builtin.command:
