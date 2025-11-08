@@ -11,4 +11,5 @@ python_requirements_candidates:
   - "{{ python_requirements_path }}"
 python_requirements_required: true
 python_get_pip_url: https://bootstrap.pypa.io/get-pip.py
-python_get_pip_path: /tmp/get-pip.py
+python_get_pip_local_path: /tmp/get-pip.py
+python_get_pip_remote_path: /tmp/get-pip.py

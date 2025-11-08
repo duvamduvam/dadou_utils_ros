@@ -30,17 +30,24 @@
     msg: "Aucun interpréteur Python valide parmi {{ python_interpreter_candidates }}"
   when: python_interpreters_found | length == 0
 
-- name: Télécharger le script get-pip.py
-  become: yes
+- name: Télécharger le script get-pip.py sur la machine de contrôle
   ansible.builtin.get_url:
     url: "{{ python_get_pip_url }}"
-    dest: "{{ python_get_pip_path }}"
+    dest: "{{ python_get_pip_local_path }}"
+    mode: '0644'
+  delegate_to: localhost
+  run_once: true
+
+- name: Copier get-pip.py sur l'hôte cible
+  ansible.builtin.copy:
+    src: "{{ python_get_pip_local_path }}"
+    dest: "{{ python_get_pip_remote_path }}"
     mode: '0644'
 
 - name: Installer pip avec {{ python_runtime }}
   become: yes
   ansible.builtin.command:
-    cmd: "{{ python_runtime }} {{ python_get_pip_path }}"
+    cmd: "{{ python_runtime }} {{ python_get_pip_remote_path }}"
 
 - name: Déterminer si un virtualenv est requis
   ansible.builtin.set_fact:
