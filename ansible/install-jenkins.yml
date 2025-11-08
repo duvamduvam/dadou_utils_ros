@@ -9,6 +9,13 @@
     - role: docker-install
     - role: jenkins
     - role: sonar
+    - role: webhook-relay
+      vars:
+        webhook_relay_service_name: sonar-webhook-relay
+        webhook_relay_script_path: /usr/local/bin/start-sonar-webhook.sh
+        webhook_relay_smee_url: "https://smee.io/dadou_robot_sonar"
+        webhook_relay_target_url: "http://localhost:9000/api/webhooks/webhook"
+        webhook_relay_description: "Smee Webhook Relay for SonarQube"
     - role: set-bashrc
       vars:
         set_bashrc_project_file: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash"

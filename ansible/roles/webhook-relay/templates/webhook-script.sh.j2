@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SMEE_URL="{{ webhook_relay_smee_url }}"
+TARGET_URL="{{ webhook_relay_target_url }}"
+
+exec smee -u "${SMEE_URL}" -t "${TARGET_URL}"
