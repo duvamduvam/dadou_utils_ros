@@ -29,6 +29,12 @@
         set_bashrc_project_file: "{{ playbook_dir }}/../jenkins/jenkins-bashrc"
 
   tasks:
+  - name: Ensure test log directory exists
+    ansible.builtin.file:
+      path: "test/logs"
+      state: directory
+      mode: '0755'
+
   - name: Create the log file if needed
     ansible.builtin.file:
       path: "test/logs/{{ target_group }}-test.log"
