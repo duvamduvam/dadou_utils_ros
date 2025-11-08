@@ -1,21 +1,19 @@
-
-- name: Installer pip pour Python 3.11
+- name: Installer pip pour {{ python_version }}
   become: yes
-  shell: curl https://bootstrap.pypa.io/get-pip.py | python3.11
+  ansible.builtin.shell: "curl https://bootstrap.pypa.io/get-pip.py | {{ python_version }}"
 
 - name: Upgrade pip
-  pip:
+  ansible.builtin.pip:
     name: pip
     state: latest
-    executable: python3.11 -m pip
-    #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
+    virtualenv: "{{ python_venv_path | default(omit) }}"
+    executable: "{{ (((python_venv_path | default('')) | length) > 0) | ternary(omit, python_pip_executable) }}"
 
 - name: Install requirements
-  pip:
-    #virtualenv: "{{ remote_home.stdout }}/{{ ros2_ws }}/venv"
-    #virtualenv_python: "{{ python_version }}"
-    requirements: "{{ remote_home.stdout }}/{{ ros2_ws }}/src/{{ project_ros_dir }}/{{ conf_dir }}/requirements.txt"
-    executable: python3.11 -m pip
+  ansible.builtin.pip:
+    requirements: "{{ python_requirements_path }}"
+    virtualenv: "{{ python_venv_path | default(omit) }}"
+    executable: "{{ (((python_venv_path | default('')) | length) > 0) | ternary(omit, python_pip_executable) }}"
 
 
 #- name: Update project librairy in "{{ remote_home.stdout }}/{{ deploy_dir }}/venv"
