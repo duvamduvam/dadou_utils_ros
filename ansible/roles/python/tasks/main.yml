@@ -2,8 +2,8 @@
   ansible.builtin.set_fact:
     python_interpreter_candidates: "{{ python_runtime_candidates | reject('equalto', '') | list }}"
 
-- name: Détecter un interpréteur Python disponible
-  ansible.builtin.command: "command -v {{ item }}"
+- name: Tester les interpréteurs Python candidats
+  ansible.builtin.command: "{{ item }} --version"
   register: python_interpreter_lookup
   changed_when: false
   failed_when: false
