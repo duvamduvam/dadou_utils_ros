@@ -14,6 +14,12 @@
           - "{{ project_ros_dir }}/log"
     - role: activate-i2c
     - role: blinka
+    - role: python
+      vars:
+        python_venv_path: "{{ ansible_env.HOME }}/test/venv"
+        python_requirements_candidates:
+          - "{{ ansible_env.HOME }}/test/conf/requirements.txt"
+          - "{{ ansible_env.HOME }}/test/requirements.txt"
 
   tasks:
   - name: Create the log file if needed
@@ -50,30 +56,3 @@
         - libasound2-dev
       state: present
       update_cache: yes
-
-  - name: Check for requirements.txt under conf/
-    ansible.builtin.stat:
-      path: "{{ ansible_env.HOME }}/test/conf/requirements.txt"
-    register: conf_requirements_file
-
-  - name: Check for requirements.txt at repository root
-    ansible.builtin.stat:
-      path: "{{ ansible_env.HOME }}/test/requirements.txt"
-    register: root_requirements_file
-
-  - name: Fail if no requirements.txt is available
-    ansible.builtin.fail:
-      msg: "No requirements.txt found under {{ ansible_env.HOME }}/test"
-    when: not conf_requirements_file.stat.exists and not root_requirements_file.stat.exists
-
-  - name: Select requirements.txt path
-    ansible.builtin.set_fact:
-      test_requirements_path: >-
-        {{ (ansible_env.HOME ~ '/test/conf/requirements.txt') if conf_requirements_file.stat.exists else (ansible_env.HOME ~ '/test/requirements.txt') }}
-
-  - name: Install project requirements via python role
-    ansible.builtin.import_role:
-      name: python
-    vars:
-      python_venv_path: "{{ ansible_env.HOME }}/test/venv"
-      python_requirements_path: "{{ test_requirements_path }}"
