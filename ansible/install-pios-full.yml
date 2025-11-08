@@ -17,7 +17,7 @@
           - "scripts"
     - role: synchronise
       become: yes
-    - role: packages
+    - role: linux-package
       vars:
       - package_file: "packages-rpi.txt"
     - role: download-install-deb-from-url

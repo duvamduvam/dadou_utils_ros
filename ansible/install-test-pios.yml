@@ -14,6 +14,9 @@
           - "{{ project_ros_dir }}/log"
     - role: activate-i2c
     - role: blinka
+    - role: linux-package
+      vars:
+        linux_package_file: "{{ playbook_dir }}/../jenkins/jenkins-package.txt"
     - role: python
       vars:
         python_venv_path: "{{ ansible_env.HOME }}/test/venv"
@@ -47,12 +50,3 @@
         #- "--exclude=.gitignore"
         #- "--exclude=robot_bringup/"
         #- "--exclude=robot_interfaces/"
-
-  - name: Install audio build dependencies
-    become: yes
-    ansible.builtin.apt:
-      name:
-        - portaudio19-dev
-        - libasound2-dev
-      state: present
-      update_cache: yes

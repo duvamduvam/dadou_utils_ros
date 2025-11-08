@@ -16,7 +16,7 @@
           - "{{ ros2_ws }}/log"
           - "{{ ros2_ws }}/src/{{ project_ros_dir }}"
     - role: synchronise
-    - role: packages
+    - role: linux-package
       vars:
       - package_file: "packages.txt"
     - role: download-install-deb-from-url
@@ -33,6 +33,5 @@
     - role: start-scripts
     - role: activate-i2c
     - role: services
-
 
 

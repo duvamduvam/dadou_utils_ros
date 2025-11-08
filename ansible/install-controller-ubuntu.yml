@@ -9,7 +9,7 @@
   roles:
     - role: dir_struct
     - role: synchronise
-    - role: packages
+    - role: linux-package
     - role: python
     - role: set-bashrc
     - role: ros_humble_base
