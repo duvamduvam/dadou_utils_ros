@@ -3,3 +3,6 @@ python_version: python3.11
 python_pip_executable: "{{ python_version }} -m pip"
 python_venv_path: "{{ ansible_env.HOME }}/test/venv"
 python_requirements_path: "{{ ansible_env.HOME }}/test/requirements.txt"
+python_requirements_candidates:
+  - "{{ python_requirements_path }}"
+python_requirements_required: true
