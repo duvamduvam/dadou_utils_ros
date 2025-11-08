@@ -11,9 +11,14 @@
   loop_control:
     label: "{{ item }}"
 
+- name: Collecter les interpréteurs Python disponibles
+  ansible.builtin.set_fact:
+    python_interpreters_found: "{{ python_interpreter_lookup.results | selectattr('rc', 'eq', 0) | map(attribute='item') | list }}"
+
 - name: Sélectionner l'interpréteur Python
   ansible.builtin.set_fact:
-    python_runtime: "{{ (python_interpreter_lookup.results | selectattr('rc', 'eq', 0) | map(attribute='item') | first) }}"
+    python_runtime: "{{ python_interpreters_found[0] }}"
+  when: python_interpreters_found | length > 0
 
 - name: Définir la commande pip système
   ansible.builtin.set_fact:
@@ -23,7 +28,7 @@
 - name: Échouer si aucun interpréteur Python n'a été trouvé
   ansible.builtin.fail:
     msg: "Aucun interpréteur Python valide parmi {{ python_interpreter_candidates }}"
-  when: python_runtime is not defined
+  when: python_interpreters_found | length == 0
 
 - name: Télécharger le script get-pip.py
   become: yes
