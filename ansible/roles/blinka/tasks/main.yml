@@ -1,19 +1,34 @@
-#- name: Mettre à jour adafruit-python-shell avec pip
-#  become: yes
-#  pip:
-#    name: adafruit-python-shell
-#    state: latest
-#    extra_args: --user
-    #virtualenv: "{{ deploy_dir }}/venv/"
-
-- name: Télécharger le script d'installation de Blinka
-  get_url:
-    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-    dest: ~/raspi-blinka.py
+- name: Ensure Blinka install directory exists
+  ansible.builtin.file:
+    path: "{{ blinka_install_dir }}"
+    state: directory
     mode: '0755'
 
-- name: Exécuter le script d'installation de Blinka avec sudo et env
-  command: sudo -E env PATH=$PATH python3 ~/raspi-blinka.py
+- name: Create Python virtual environment for Blinka tooling
+  ansible.builtin.command:
+    cmd: python3 -m venv {{ blinka_venv_path }}
+    creates: "{{ blinka_venv_path }}/bin/activate"
 
-- name: Exécuter à nouveau le script d'installation de Blinka avec sudo (si nécessaire)
-  command: sudo python3 ~/raspi-blinka.py
+- name: Install adafruit-python-shell inside the virtual environment
+  ansible.builtin.pip:
+    name: adafruit-python-shell
+    virtualenv: "{{ blinka_venv_path }}"
+
+- name: Download raspi-blinka.py script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+    dest: "{{ blinka_script_path }}"
+    mode: '0755'
+
+- name: Run raspi-blinka.py with automatic answers
+  become: yes
+  ansible.builtin.shell:
+    cmd: "echo '{{ blinka_auto_answer }}' | {{ blinka_venv_path }}/bin/python {{ blinka_script_path }}"
+    executable: /bin/bash
+  register: blinka_install_result
+  ignore_errors: "{{ blinka_ignore_errors }}"
+
+- name: Display raspi-blinka.py output
+  ansible.builtin.debug:
+    msg: "stdout: {{ blinka_install_result.stdout }} stderr: {{ blinka_install_result.stderr }}"
+  when: blinka_install_result is defined

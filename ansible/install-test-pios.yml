@@ -13,48 +13,13 @@
           - "{{ project_ros_dir }}"
           - "{{ project_ros_dir }}/log"
     - role: activate-i2c
+    - role: blinka
 
   tasks:
   - name: Create the log file if needed
     ansible.builtin.file:
       path: "test/logs/{{ target_group }}-test.log"
       state: touch
-
-  - name: Create a Python virtual environment
-    ansible.builtin.command:
-      cmd: python3 -m venv {{ ansible_env.HOME }}/test/venv
-      creates: "{{ ansible_env.HOME }}/test/venv/bin/activate"
-
-  - name: Install adafruit-python-shell inside the virtual environment
-    ansible.builtin.command:
-      cmd: "{{ ansible_env.HOME }}/test/venv/bin/pip install adafruit-python-shell"
-
-  - name: Download raspi-blinka.py on the control machine
-    run_once: true
-    delegate_to: localhost
-    ansible.builtin.get_url:
-      url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-      dest: /tmp/raspi-blinka.py
-      mode: '0755'
-
-  - name: Copy raspi-blinka.py to the target host
-    ansible.builtin.copy:
-      src: /tmp/raspi-blinka.py
-      dest: /tmp/raspi-blinka.py
-      mode: '0755'
-
-  - name: Run raspi-blinka.py with automatic answers
-    become: yes
-    ansible.builtin.shell:
-      cmd: "echo 'n' | {{ ansible_env.HOME }}/test/venv/bin/python /tmp/raspi-blinka.py"
-    register: blinka_result
-    args:
-      executable: /bin/bash
-    ignore_errors: true
-
-  - name: Display raspi-blinka.py output
-    ansible.builtin.debug:
-      msg: "Standard output: {{ blinka_result.stdout }}\nStandard error: {{ blinka_result.stderr }}"
 
   - name: Synchronize the test directory
     ansible.builtin.synchronize:
