@@ -23,6 +23,9 @@
         python_requirements_candidates:
           - "{{ ansible_env.HOME }}/test/conf/requirements.txt"
           - "{{ ansible_env.HOME }}/test/requirements.txt"
+    - role: set-bashrc
+      vars:
+        set_bashrc_project_file: "{{ playbook_dir }}/../jenkins/jenkins-bashrc"
 
   tasks:
   - name: Create the log file if needed

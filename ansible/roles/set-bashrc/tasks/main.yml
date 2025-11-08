@@ -1,28 +1,30 @@
 
 - name: Add global bash project
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     block: |
-      {{ lookup('file', 'templates/rpi/project_bash') }}
-    marker: "# {mark} GLOBAL PARAMETERS"
+      {{ lookup('file', set_bashrc_global_template) }}
+    marker: "{{ set_bashrc_global_marker }}"
     create: yes
 
 - name: Add project bash
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     block: |
-      {{ lookup('file', '{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash') }}
-    marker: "# {mark} PROJECT PARAMETER"
+      {{ lookup('file', set_bashrc_project_file) }}
+    marker: "{{ set_bashrc_project_marker }}"
     create: yes
 
 - name: Update project name in bashrc
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
     regexp: '^PROJECT='
     line: "PROJECT={{ project_name }}"
+  when: set_bashrc_update_project_name | bool
 
 - name: source .bashrc
-  shell: |
+  ansible.builtin.shell: |
     source ~/.bashrc
   args:
     executable: /bin/bash
+  when: set_bashrc_source_bashrc | bool

@@ -1,0 +1,12 @@
+ll ################# JENKINS PROJECT PARAMS ###################
+
+alias ll='ls -alh'
+
+alias s='source ~/.bashrc'
+#alias b='cd ~/ros2_ws && colcon build && s'
+
+alias log='tail -f ~/ros2_ws/log/robot.log'
+
+alias i2c='i2cdetect -y 1'
+
+alias r='sudo reboot'

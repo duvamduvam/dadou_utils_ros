@@ -9,3 +9,6 @@
     - role: docker-install
     - role: jenkins
     - role: sonar
+    - role: set-bashrc
+      vars:
+        set_bashrc_project_file: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash"

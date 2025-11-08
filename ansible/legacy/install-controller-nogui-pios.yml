@@ -31,6 +31,8 @@
             - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.25.0-1~debian.12~bookworm_arm64.deb"
     #- role: docker-arm64
     - role: set-bashrc
+      vars:
+        set_bashrc_project_file: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash"
     - role: activate-spi
 #    - role: screen-config
     #- role: desktop_lunch
@@ -41,4 +43,3 @@
       vars:
         command: "reboot"
 #    - role: screen-config
-
