@@ -36,6 +36,8 @@
       - role: logging
       - role: usb-audio
       - role: set-bashrc
+        vars:
+          set_bashrc_project_file: "{{ local_projects_dir }}/{{ local_project_dir }}/conf/rpi/project_bash"
       - role: start-scripts
       - role: activate-i2c
       - role: services
