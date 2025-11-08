@@ -24,9 +24,20 @@
     mode: '0644'
   become: yes
 
-- name: Ensure webhook relay service is enabled and running
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: yes
+  notify: restart webhook relay service
+
+- name: Ensure webhook relay service is enabled
   ansible.builtin.systemd:
     name: "{{ webhook_relay_service_name }}"
     enabled: true
+  become: yes
+
+- name: Ensure webhook relay service is running
+  ansible.builtin.systemd:
+    name: "{{ webhook_relay_service_name }}"
     state: started
-    daemon_reload: true
+  become: yes
