@@ -15,7 +15,14 @@ jenkins_pipeline_repo_branch: "main"
 jenkins_pipeline_script_path: "Jenkinsfile"
 jenkins_pipeline_lightweight_checkout: true
 jenkins_pipeline_disable_concurrent_builds: true
-jenkins_pipeline_repo_credentials_id: ""
+jenkins_repo_credentials_manage: true
+jenkins_repo_credentials_id: "dadou_github_ssh"
+jenkins_repo_credentials_username: "git"
+jenkins_repo_credentials_description: "Deploy key for GitHub repositories"
+jenkins_repo_credentials_private_key_path: "{{ jenkins_ssh_key_dest_dir }}/{{ jenkins_ssh_private_key_name }}"
+jenkins_repo_credentials_init_script_template: "{{ role_path }}/templates/jenkins-ssh-credentials.groovy.j2"
+jenkins_repo_credentials_init_script_name: "30-ssh-credentials.groovy"
+jenkins_pipeline_repo_credentials_id: "{{ jenkins_repo_credentials_id if jenkins_repo_credentials_manage else '' }}"
 jenkins_pipeline_github_credentials_id: ""
 jenkins_pipeline_requirements_path: "requirements.txt"
 jenkins_pipeline_test_command: "pytest -q /home/ros2_ws/src/robot/robot/tests --ignore=/home/ros2_ws/src/robot/robot/tests/sandbox"
