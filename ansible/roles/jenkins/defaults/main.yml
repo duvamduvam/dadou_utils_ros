@@ -43,7 +43,9 @@ jenkins_plugins:
   - "git"
   - "github"
   - "pipeline-githubnotify-step"
-  - "sonar"
+jenkins_container_java_packages_candidates:
+  - "openjdk-17-jre-headless"
+  - "openjdk-11-jre-headless"
 jenkins_scripts:
   - src: "{{ role_path }}/../../../jenkins/scripts/run_ci_pipeline.sh"
     dest: "{{ jenkins_data_dir }}/scripts/run_ci_pipeline.sh"
@@ -75,6 +77,8 @@ jenkins_bashrc_alias_block: |-
   alias ll='ls -alh'
   alias jl='sudo docker logs -f {{ jenkins_container_name }}'
   alias sl='sudo docker logs -f {{ jenkins_sonar_container_name }}'
+  alias jr='sudo docker restart {{ jenkins_container_name }}'
+  alias sr='sudo docker restart {{ jenkins_sonar_container_name }}'
 jenkins_ssh_key_manage: true
 jenkins_ssh_key_dest_dir: "{{ jenkins_data_dir }}/.ssh"
 jenkins_ssh_private_key_src: "/home/dadou/Nextcloud/divers/keys/github"
