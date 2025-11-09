@@ -403,27 +403,6 @@
   changed_when: jenkins_docker_run.rc == 0
   failed_when: jenkins_docker_run.rc != 0
 
-- name: Install Java runtime inside Jenkins container
-  when: jenkins_container_java_packages_candidates | length > 0
-  become: yes
-  ansible.builtin.shell: >-
-    docker exec --user root {{ jenkins_container_name }}
-    bash -lc "apt-get update && apt-get install -y {{ item }}"
-  args:
-    warn: false
-  register: jenkins_container_java_install_result
-  failed_when: false
-  loop: "{{ jenkins_container_java_packages_candidates }}"
-  loop_control:
-    label: "{{ item }}"
-
-- name: Ensure a Java runtime is available in Jenkins container
-  when: jenkins_container_java_packages_candidates | length > 0
-  ansible.builtin.assert:
-    that:
-      - (jenkins_container_java_install_result.results | selectattr('rc', 'defined') | selectattr('rc', 'equalto', 0) | list | length) > 0
-    fail_msg: >-
-      Unable to install any Java runtime inside Jenkins container using candidates {{ jenkins_container_java_packages_candidates }}.
 
 - name: Ensure Jenkins .ssh permissions inside container
   when: jenkins_ssh_key_manage | bool

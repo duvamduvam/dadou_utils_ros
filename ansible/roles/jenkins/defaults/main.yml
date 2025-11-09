@@ -6,7 +6,9 @@ jenkins_agent_port: 50000
 jenkins_data_dir: "/home/pi/jenkins"
 jenkins_data_dir_owner: "1000"
 jenkins_data_dir_group: "1000"
-jenkins_environment: {}
+jenkins_java_home: "/opt/java/openjdk"
+jenkins_environment:
+  JAVA_HOME: "{{ jenkins_java_home }}"
 jenkins_pipeline_job_name: "dadou_robot_ci"
 jenkins_pipeline_job_description: "CI pipeline pour builder et tester dadou_robot."
 jenkins_pipeline_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
@@ -43,9 +45,7 @@ jenkins_plugins:
   - "git"
   - "github"
   - "pipeline-githubnotify-step"
-jenkins_container_java_packages_candidates:
-  - "openjdk-17-jre-headless"
-  - "openjdk-11-jre-headless"
+  - "default-jre-headless"
 jenkins_scripts:
   - src: "{{ role_path }}/../../../jenkins/scripts/run_ci_pipeline.sh"
     dest: "{{ jenkins_data_dir }}/scripts/run_ci_pipeline.sh"
