@@ -77,9 +77,9 @@ jenkins_ssh_copy_to_remote_host: true
 jenkins_ssh_remote_dir: "/home/{{ jenkins_pipeline_remote_user }}/.ssh"
 
 jenkins_sonar_job_enabled: true
-jenkins_sonar_job_name: "dadou_control_sonar"
-jenkins_sonar_job_description: "Analyse SonarQube périodique pour dadou_control_ros."
-jenkins_sonar_repo_url: "git@github.com:duvamduvam/dadou_control_ros.git"
+jenkins_sonar_job_name: "dadou_robot_sonar"
+jenkins_sonar_job_description: "Analyse SonarQube périodique pour dadou_robot_ros."
+jenkins_sonar_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
 jenkins_sonar_repo_branch: "main"
 jenkins_sonar_script_path: "Jenkinsfile-with-sonar"
 jenkins_sonar_lightweight_checkout: true
