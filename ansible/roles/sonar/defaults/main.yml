@@ -1,5 +1,5 @@
 ---
-sonar_docker_image: "sonarqube:9.9-community"
+sonar_docker_image: "sonarqube:community"
 sonar_container_name: "sonarqube"
 sonar_http_port: 9000
 sonar_data_dir: "/var/lib/sonar/data"

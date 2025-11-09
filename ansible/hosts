@@ -10,7 +10,7 @@ jenkins:
   hosts:
     jenkins:
         local_project_dir: dadou_robot_ros
-        project_ros_dir: robot
+        project_ros_dir: test
         project_name: robot
         launch_cmd: test
   vars:

@@ -8,5 +8,5 @@
 - name: Create log file
   become: yes
   file:
-    path: "{{ ros2_ws }}/log/{{ project_name }}.log"
+    path: "{{ project_ros_dir }}/log/{{ project_name }}.log"
     state: touch

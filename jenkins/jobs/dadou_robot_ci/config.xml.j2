@@ -80,6 +80,10 @@
           <string>DOCKER_PUSH_ENABLED</string>
           <string>{{ 'true' if jenkins_pipeline_push_enabled else 'false' }}</string>
         </entry>
+        <entry>
+          <string>GITHUB_NOTIFY_CREDENTIALS_ID</string>
+          <string>{{ jenkins_pipeline_github_credentials_id }}</string>
+        </entry>
       </envVars>
     </org.jenkinsci.plugins.workflow.job.properties.EnvironmentVariablesJobProperty>
   </properties>
