@@ -1,9 +1,0 @@
----
-webhook_relay_service_name: sonar-webhook-relay
-webhook_relay_service_path: "/etc/systemd/system/{{ webhook_relay_service_name }}.service"
-webhook_relay_script_path: /usr/local/bin/start-sonar-webhook.sh
-webhook_relay_user: "{{ ansible_user | default('pi') }}"
-webhook_relay_smee_url: ""
-webhook_relay_target_url: ""
-webhook_relay_env: {}
-webhook_relay_description: "Smee Webhook Relay"

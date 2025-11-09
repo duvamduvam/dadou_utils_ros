@@ -1,6 +1,0 @@
----
-- name: restart webhook relay service
-  ansible.builtin.systemd:
-    name: "{{ webhook_relay_service_name }}"
-    state: restarted
-  become: yes
