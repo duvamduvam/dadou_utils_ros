@@ -312,6 +312,26 @@
     group: "{{ jenkins_data_dir_group }}"
     mode: "0640"
 
+- name: Ensure Jenkins init.groovy.d directory exists for credentials setup
+  when: jenkins_repo_credentials_manage | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ jenkins_data_dir }}/init.groovy.d"
+    state: directory
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0755"
+
+- name: Deploy SSH credentials initialization script
+  when: jenkins_repo_credentials_manage | bool
+  become: yes
+  ansible.builtin.template:
+    src: "{{ jenkins_repo_credentials_init_script_template }}"
+    dest: "{{ jenkins_data_dir }}/init.groovy.d/{{ jenkins_repo_credentials_init_script_name }}"
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0640"
+
 - name: Pull Jenkins image
   become: yes
   ansible.builtin.command: docker pull {{ jenkins_docker_image }}
