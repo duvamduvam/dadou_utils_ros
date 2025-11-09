@@ -411,7 +411,7 @@
     bash -lc "apt-get update && apt-get install -y {{ item }}"
   args:
     warn: false
-  register: jenkins_container_java_install_results
+  register: jenkins_container_java_install_result
   failed_when: false
   loop: "{{ jenkins_container_java_packages_candidates }}"
   loop_control:
@@ -421,7 +421,7 @@
   when: jenkins_container_java_packages_candidates | length > 0
   ansible.builtin.assert:
     that:
-      - (jenkins_container_java_install_results.results | selectattr('rc', 'equalto', 0) | list | length) > 0
+      - (jenkins_container_java_install_result.results | selectattr('rc', 'defined') | selectattr('rc', 'equalto', 0) | list | length) > 0
     fail_msg: >-
       Unable to install any Java runtime inside Jenkins container using candidates {{ jenkins_container_java_packages_candidates }}.
 
