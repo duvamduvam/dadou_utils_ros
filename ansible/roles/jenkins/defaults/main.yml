@@ -34,6 +34,7 @@ jenkins_plugins:
   - "git"
   - "github"
   - "pipeline-githubnotify-step"
+  - "sonar"
 jenkins_scripts:
   - src: "{{ role_path }}/../../../jenkins/scripts/run_ci_pipeline.sh"
     dest: "{{ jenkins_data_dir }}/scripts/run_ci_pipeline.sh"
@@ -75,6 +76,14 @@ jenkins_ssh_authorized_key_manage: true
 jenkins_ssh_authorized_key_user: "{{ jenkins_pipeline_remote_user }}"
 jenkins_ssh_copy_to_remote_host: true
 jenkins_ssh_remote_dir: "/home/{{ jenkins_pipeline_remote_user }}/.ssh"
+
+jenkins_sonar_scanner_manage: true
+jenkins_sonar_scanner_name: "SonarScanner"
+jenkins_sonar_scanner_install_url: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
+jenkins_sonar_scanner_install_subdir: "sonar-scanner-5.0.1.3006-linux"
+jenkins_sonar_scanner_home: ""
+jenkins_sonar_scanner_init_script_template: "{{ role_path }}/templates/sonar-scanner-tool.groovy.j2"
+jenkins_sonar_scanner_init_script_name: "20-sonar-scanner.groovy"
 
 jenkins_sonar_job_enabled: true
 jenkins_sonar_job_name: "dadou_robot_sonar"
