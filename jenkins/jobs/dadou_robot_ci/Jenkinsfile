@@ -111,7 +111,8 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
           def sha = env.GITHUB_NOTIFY_SHA?.trim()
           def repo = env.GITHUB_NOTIFY_REPO?.trim()
           def account = env.GITHUB_NOTIFY_ACCOUNT?.trim()
-          if (sha && repo && account) {
+          def credsId = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
+          if (sha && repo && account && credsId) {
             def notifyArgs = [
               context    : 'Jenkins CI',
               status     : currentBuild.currentResult,
@@ -119,15 +120,12 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
               targetUrl  : env.BUILD_URL,
               sha        : sha,
               repo       : repo,
-              account    : account
+              account    : account,
+              credentialsId: credsId
             ]
-            def credsId = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
-            if (credsId) {
-              notifyArgs.credentialsId = credsId
-            }
             notify notifyArgs
           } else {
-            echo 'GitHub notify skipped: repo/account/sha metadata missing.'
+            echo 'GitHub notify skipped: repo/account/sha/credentials metadata missing.'
           }
         } else if (notify) {
           echo 'GitHub notify disabled via GITHUB_NOTIFY_ENABLED.'
