@@ -101,7 +101,8 @@ jenkins_sonar_server_additional_properties: ""
 jenkins_sonar_server_properties: ""
 jenkins_sonar_server_token: ""
 jenkins_sonar_server_token_source_file: ""
-jenkins_sonar_server_config_template: "{{ role_path }}/templates/sonar-server-config.xml.j2"
+jenkins_sonar_server_init_script_template: "{{ role_path }}/templates/sonar-server-init.groovy.j2"
+jenkins_sonar_server_init_script_name: "40-sonar-server.groovy"
 
 jenkins_sonar_job_enabled: true
 jenkins_sonar_job_name: "dadou_robot_sonar"
