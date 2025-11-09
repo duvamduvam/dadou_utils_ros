@@ -11,6 +11,9 @@ jenkins_ssh_private_key_src: "/home/dadou/Nextcloud/divers/keys/github"
 jenkins_ssh_public_key_src: "/home/dadou/Nextcloud/divers/keys/github.pub"
 jenkins_ssh_private_key_name: "id_ed25519"
 
+# IMPORTANT: provide a valid Sonar token before launching any analysis.
+jenkins_sonar_server_token: "sqa_caa40786a11582dd58c69c66631cdf379bc32d69"
+
 #debian_packages_urls:
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.27-1_arm64.deb"
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.39.1-1~debian.12~bookworm_arm64.deb"
