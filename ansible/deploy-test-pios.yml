@@ -1,6 +1,6 @@
 ---
-- name: deploy vision
-  hosts: vision
+- name: deploy test
+  hosts: "{{ target_group }}"
 #  become: yes
 
   vars_files:

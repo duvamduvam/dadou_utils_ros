@@ -20,3 +20,9 @@ i:
 		cmd+=(-e jenkins_admin_manage=true -e jenkins_admin_password="$(JENKINS_ADMIN_PASSWORD)"); \
 	fi; \
 	"$${cmd[@]}"
+
+it:
+	ansible-playbook $(UTILS_DIR)/ansible/install-test-pios.yml -vv -i $(UTILS_DIR)/ansible/hosts -e target_group=$(SERVER);
+
+dt:
+	ansible-playbook $(UTILS_DIR)/ansible/deploy-pios-lite.yml -vv -i $(UTILS_DIR)/ansible/hosts -e target_group=$(SERVER);
