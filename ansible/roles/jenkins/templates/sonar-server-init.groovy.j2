@@ -1,4 +1,5 @@
 import hudson.plugins.sonar.*
+import hudson.plugins.sonar.model.TriggersConfig
 import hudson.util.Secret
 import jenkins.model.Jenkins
 
@@ -16,17 +17,19 @@ def additionalProps = """{{ jenkins_sonar_server_additional_properties }}""".tri
 def sonarProps = """{{ jenkins_sonar_server_properties }}""".trim()
 def tokenValue = "{{ jenkins_sonar_server_token_value }}"
 def secretToken = tokenValue ? Secret.fromString(tokenValue) : null
-def credentialsId = ""
+def triggers = new TriggersConfig(false, false, "")
+def serverCredentialsId = ""
 
 def newInstallation = new SonarInstallation(
         name,
         url,
         serverVersion,
-        credentialsId,
         secretToken,
         mojoVersion,
         additionalProps,
-        sonarProps
+        sonarProps,
+        serverCredentialsId,
+        triggers
 )
 
 def installations = descriptor.installations as List ?: []
