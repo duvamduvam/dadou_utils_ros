@@ -16,11 +16,13 @@ def additionalProps = """{{ jenkins_sonar_server_additional_properties }}""".tri
 def sonarProps = """{{ jenkins_sonar_server_properties }}""".trim()
 def tokenValue = "{{ jenkins_sonar_server_token_value }}"
 def secretToken = tokenValue ? Secret.fromString(tokenValue) : null
+def credentialsId = ""
 
 def newInstallation = new SonarInstallation(
         name,
         url,
         serverVersion,
+        credentialsId,
         secretToken,
         mojoVersion,
         additionalProps,
