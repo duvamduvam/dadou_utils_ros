@@ -92,6 +92,17 @@ jenkins_sonar_scanner_home: ""
 jenkins_sonar_scanner_init_script_template: "{{ role_path }}/templates/sonar-scanner-tool.groovy.j2"
 jenkins_sonar_scanner_init_script_name: "20-sonar-scanner.groovy"
 
+jenkins_sonar_server_manage: true
+jenkins_sonar_server_name: "SonarQube"
+jenkins_sonar_server_url: "http://localhost:9000"
+jenkins_sonar_server_version: ""
+jenkins_sonar_server_mojo_version: ""
+jenkins_sonar_server_additional_properties: ""
+jenkins_sonar_server_properties: ""
+jenkins_sonar_server_token: ""
+jenkins_sonar_server_token_source_file: ""
+jenkins_sonar_server_config_template: "{{ role_path }}/templates/sonar-server-config.xml.j2"
+
 jenkins_sonar_job_enabled: true
 jenkins_sonar_job_name: "dadou_robot_sonar"
 jenkins_sonar_job_description: "Analyse SonarQube périodique pour dadou_robot_ros."

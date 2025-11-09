@@ -332,6 +332,39 @@
     group: "{{ jenkins_data_dir_group }}"
     mode: "0640"
 
+- name: Prepare Sonar server token
+  when: jenkins_sonar_server_manage | bool
+  block:
+    - name: Read Sonar server token from file
+      when:
+        - jenkins_sonar_server_token | length == 0
+        - jenkins_sonar_server_token_source_file | length > 0
+      ansible.builtin.set_fact:
+        jenkins_sonar_server_token_value: "{{ lookup('file', jenkins_sonar_server_token_source_file) | trim }}"
+
+    - name: Use inline Sonar server token
+      when: jenkins_sonar_server_token | length > 0
+      ansible.builtin.set_fact:
+        jenkins_sonar_server_token_value: "{{ jenkins_sonar_server_token | trim }}"
+
+    - name: Ensure Sonar server token is provided
+      ansible.builtin.assert:
+        that:
+          - jenkins_sonar_server_token_value | default('') | length > 0
+        fail_msg: >-
+          Provide jenkins_sonar_server_token or jenkins_sonar_server_token_source_file
+          when jenkins_sonar_server_manage is enabled.
+
+- name: Deploy Sonar server configuration
+  when: jenkins_sonar_server_manage | bool
+  become: yes
+  ansible.builtin.template:
+    src: "{{ jenkins_sonar_server_config_template }}"
+    dest: "{{ jenkins_data_dir }}/hudson.plugins.sonar.SonarPublisher.xml"
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0600"
+
 - name: Pull Jenkins image
   become: yes
   ansible.builtin.command: docker pull {{ jenkins_docker_image }}
