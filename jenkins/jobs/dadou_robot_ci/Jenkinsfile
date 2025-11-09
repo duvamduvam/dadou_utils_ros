@@ -30,6 +30,10 @@ pipeline {
             env.CI_SCRIPT_PATH = rawScriptPath
           }
           env.DOCKER_PUSH_ENABLED = env.DOCKER_PUSH_ENABLED?.trim() ?: 'false'
+          env.GITHUB_NOTIFY_ENABLED = env.GITHUB_NOTIFY_ENABLED?.trim() ?: 'true'
+          env.GITHUB_NOTIFY_ACCOUNT = env.GITHUB_NOTIFY_ACCOUNT?.trim() ?: 'duvamduvam'
+          env.GITHUB_NOTIFY_REPO = env.GITHUB_NOTIFY_REPO?.trim() ?: 'dadou_robot_ros'
+          env.GITHUB_NOTIFY_CREDENTIALS_ID = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
         }
       }
     }
@@ -50,6 +54,35 @@ pipeline {
             KEEP_WORKDIR='${env.KEEP_WORKDIR}' \\
             ${env.CI_SCRIPT_PATH}"
         """
+      }
+    }
+
+    stage('Collect build metadata') {
+      when {
+        expression { env.GITHUB_NOTIFY_ENABLED?.toBoolean() }
+      }
+      steps {
+        script {
+          if (!env.GITHUB_NOTIFY_SHA?.trim()) {
+            def remoteWorkspace = env.WORKSPACE_ROOT?.trim()
+            if (remoteWorkspace) {
+              try {
+                env.GITHUB_NOTIFY_SHA = sh(
+                  returnStdout: true,
+                  script: """#!/usr/bin/env bash
+set -euo pipefail
+ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_HOST} \\
+  "cd '${remoteWorkspace}' && git rev-parse HEAD"
+"""
+                ).trim()
+              } catch (err) {
+                echo "Unable to fetch commit SHA from remote workspace: ${err.getMessage()}"
+              }
+            } else {
+              echo 'WORKSPACE_ROOT is empty; skipping remote commit lookup.'
+            }
+          }
+        }
       }
     }
 
@@ -74,8 +107,30 @@ pipeline {
         } catch (MissingPropertyException ignored) {
           echo 'githubNotify step unavailable; skipping GitHub commit status update.'
         }
-        if (notify) {
-          notify context: 'Jenkins CI', status: currentBuild.currentResult, description: "Build ${currentBuild.currentResult.toLowerCase()}", targetUrl: env.BUILD_URL
+        if (notify && env.GITHUB_NOTIFY_ENABLED?.toBoolean()) {
+          def sha = env.GITHUB_NOTIFY_SHA?.trim()
+          def repo = env.GITHUB_NOTIFY_REPO?.trim()
+          def account = env.GITHUB_NOTIFY_ACCOUNT?.trim()
+          if (sha && repo && account) {
+            def notifyArgs = [
+              context    : 'Jenkins CI',
+              status     : currentBuild.currentResult,
+              description: "Build ${currentBuild.currentResult.toLowerCase()}",
+              targetUrl  : env.BUILD_URL,
+              sha        : sha,
+              repo       : repo,
+              account    : account
+            ]
+            def credsId = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
+            if (credsId) {
+              notifyArgs.credentialsId = credsId
+            }
+            notify notifyArgs
+          } else {
+            echo 'GitHub notify skipped: repo/account/sha metadata missing.'
+          }
+        } else if (notify) {
+          echo 'GitHub notify disabled via GITHUB_NOTIFY_ENABLED.'
         }
       }
       cleanWs()
