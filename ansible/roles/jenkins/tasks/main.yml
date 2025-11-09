@@ -355,12 +355,22 @@
           Provide jenkins_sonar_server_token or jenkins_sonar_server_token_source_file
           when jenkins_sonar_server_manage is enabled.
 
-- name: Deploy Sonar server configuration
+- name: Ensure Jenkins init.groovy.d directory exists for Sonar server script
+  when: jenkins_sonar_server_manage | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ jenkins_data_dir }}/init.groovy.d"
+    state: directory
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0755"
+
+- name: Deploy Sonar server initialization script
   when: jenkins_sonar_server_manage | bool
   become: yes
   ansible.builtin.template:
-    src: "{{ jenkins_sonar_server_config_template }}"
-    dest: "{{ jenkins_data_dir }}/hudson.plugins.sonar.SonarPublisher.xml"
+    src: "{{ jenkins_sonar_server_init_script_template }}"
+    dest: "{{ jenkins_data_dir }}/init.groovy.d/{{ jenkins_sonar_server_init_script_name }}"
     owner: "{{ jenkins_data_dir_owner }}"
     group: "{{ jenkins_data_dir_group }}"
     mode: "0600"
