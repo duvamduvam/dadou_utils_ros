@@ -404,6 +404,17 @@
   failed_when: jenkins_docker_run.rc != 0
 
 
+- name: Remove embedded SonarScanner JRE to force system Java
+  become: yes
+  ansible.builtin.shell: >-
+    docker exec --user root {{ jenkins_container_name }} bash -lc \
+    "if [ -d /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation ]; then \\
+       find /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation -maxdepth 4 -type d -name jre -prune -exec rm -rf {} +; \\
+     fi"
+  args:
+    warn: false
+  changed_when: false
+
 - name: Ensure Jenkins .ssh permissions inside container
   when: jenkins_ssh_key_manage | bool
   become: yes
