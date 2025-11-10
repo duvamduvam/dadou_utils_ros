@@ -66,6 +66,17 @@
     ansible.builtin.set_fact:
       __test_mail_notify_password: "{{ lookup('file', test_mail_notify_password_file) | trim }}"
 
+  - name: Show mail notification settings
+    when: __test_mail_notify_password is defined
+    ansible.builtin.debug:
+      msg:
+        - "SMTP host: {{ test_mail_notify_smtp_host }}"
+        - "SMTP port: {{ test_mail_notify_smtp_port }}"
+        - "SMTP user: {{ test_mail_notify_username }}"
+        - "Mail to: {{ test_mail_notify_to }}"
+        - "Mail from: {{ test_mail_notify_from }}"
+        - "Password length: {{ __test_mail_notify_password | length }}"
+
   - name: Send test notification e-mail
     when: __test_mail_notify_password is defined
     ansible.builtin.mail:
