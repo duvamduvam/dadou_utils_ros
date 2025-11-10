@@ -101,7 +101,35 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
   post {
     always {
       script {
-        echo 'GitHub notifications disabled for this pipeline.'
+        if (env.GITHUB_NOTIFY_ENABLED?.toBoolean()) {
+          def sha = env.GITHUB_NOTIFY_SHA?.trim()
+          def repo = env.GITHUB_NOTIFY_REPO?.trim()
+          def account = env.GITHUB_NOTIFY_ACCOUNT?.trim()
+          def credsId = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
+          if (sha && repo && account && credsId) {
+            def state = currentBuild.currentResult?.toString()?.toLowerCase() ?: 'error'
+            def description = "Build ${state}"
+            echo "[GitHub Notify] Posting status '${state}' for ${account}/${repo}@${sha} using credential '${credsId}'."
+            withCredentials([string(credentialsId: credsId, variable: 'GITHUB_TOKEN')]) {
+              sh label: 'GitHub status update', script: """#!/usr/bin/env bash
+set -euo pipefail
+curl -sSf -X POST https://api.github.com/repos/${account}/${repo}/statuses/${sha} \\
+  -H 'Authorization: Bearer '"\${GITHUB_TOKEN}" \\
+  -H 'Accept: application/vnd.github+json' \\
+  -d '{
+    "state": "${state}",
+    "target_url": "${env.BUILD_URL}",
+    "description": "${description}",
+    "context": "Jenkins CI"
+  }'
+"""
+            }
+          } else {
+            echo '[GitHub Notify] Skipped because repo/account/sha/credentials metadata missing.'
+          }
+        } else {
+          echo 'GitHub notifications disabled for this pipeline.'
+        }
       }
       cleanWs()
     }
