@@ -6,7 +6,6 @@ conf_dir: "conf"
 python_version: "python3.8"
 ros2_ws: "ros2_ws"
 
-test_mail_notify_enabled: false
 test_mail_notify_to: "jenkins@eternel-life.com"
 test_mail_notify_from: "jenkins@eternel-life.com"
 test_mail_notify_subject: "[TEST] Installation terminée"
