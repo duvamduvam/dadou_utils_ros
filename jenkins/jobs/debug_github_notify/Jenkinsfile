@@ -1,0 +1,102 @@
+pipeline {
+  agent any
+
+  options {
+    timestamps()
+  }
+
+  parameters {
+    string(
+      name: 'REPO_URL',
+      defaultValue: 'git@github.com:duvamduvam/dadou_robot_ros.git',
+      description: 'Repository to clone for access validation'
+    )
+    string(
+      name: 'REPO_BRANCH',
+      defaultValue: 'main',
+      description: 'Branch to checkout'
+    )
+    string(
+      name: 'NOTIFY_SHA',
+      defaultValue: 'HEAD',
+      description: 'Commit SHA to associate with the GitHub status (HEAD resolves dynamically)'
+    )
+    string(
+      name: 'GITHUB_ACCOUNT',
+      defaultValue: 'duvamduvam',
+      description: 'GitHub account or organization'
+    )
+    string(
+      name: 'GITHUB_REPO',
+      defaultValue: 'dadou_robot_ros',
+      description: 'GitHub repository name'
+    )
+    string(
+      name: 'GITHUB_CREDENTIALS_ID',
+      defaultValue: 'github-token4',
+      description: 'Jenkins credentials ID used for git and notify steps'
+    )
+    string(
+      name: 'NOTIFY_CONTEXT',
+      defaultValue: 'debug-github-notify',
+      description: 'Status context label pushed to GitHub'
+    )
+    choice(
+      name: 'NOTIFY_STATUS',
+      choices: ['SUCCESS', 'FAILURE', 'ERROR', 'PENDING'],
+      description: 'Status reported to GitHub'
+    )
+    string(
+      name: 'NOTIFY_DESCRIPTION',
+      defaultValue: 'Manual debug notification',
+      description: 'Description attached to the GitHub status'
+    )
+  }
+
+  stages {
+    stage('Checkout test') {
+      steps {
+        git credentialsId: params.GITHUB_CREDENTIALS_ID,
+            url: params.REPO_URL,
+            branch: params.REPO_BRANCH
+      }
+    }
+
+    stage('Resolve SHA') {
+      when { expression { params.NOTIFY_SHA?.trim().equalsIgnoreCase('HEAD') } }
+      steps {
+        script {
+          env.RESOLVED_NOTIFY_SHA = sh(
+            returnStdout: true,
+            script: "git rev-parse HEAD"
+          ).trim()
+          echo "Resolved HEAD to ${env.RESOLVED_NOTIFY_SHA}"
+        }
+      }
+    }
+
+    stage('GitHub notify test') {
+      steps {
+        script {
+          def shaParam = params.NOTIFY_SHA?.trim()
+          def sha = shaParam?.equalsIgnoreCase('HEAD') ? env.RESOLVED_NOTIFY_SHA : shaParam
+
+          if (!sha) {
+            error 'No SHA resolved for githubNotify step.'
+          }
+
+          echo "Sending GitHub status '${params.NOTIFY_STATUS}' for ${sha} using credential '${params.GITHUB_CREDENTIALS_ID}'."
+
+          githubNotify credentialsId: params.GITHUB_CREDENTIALS_ID,
+                       account: params.GITHUB_ACCOUNT,
+                       repo: params.GITHUB_REPO,
+                       sha: sha,
+                       context: params.NOTIFY_CONTEXT,
+                       status: params.NOTIFY_STATUS,
+                       description: params.NOTIFY_DESCRIPTION,
+                       targetUrl: env.BUILD_URL
+        }
+      }
+    }
+  }
+}
