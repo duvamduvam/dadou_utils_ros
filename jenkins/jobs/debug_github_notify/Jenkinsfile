@@ -156,7 +156,8 @@ curl -sSf -X POST https://api.github.com/repos/${account}/${repo}/statuses/${sha
       script {
         echo "[debug_mail] Preparing failure notification for build #${env.BUILD_NUMBER}."
         try {
-          mail to: 'jenkins@eternel-life.com',
+          mail to: 'david@duvam.net',
+               from: 'jenkins@eternel-life.com',
                subject: "debug_github_notify #${env.BUILD_NUMBER} FAILED",
                body: "Job ${env.JOB_NAME} build #${env.BUILD_NUMBER} failed.\nConsole: ${env.BUILD_URL}console"
           echo '[debug_mail] Mail sent successfully.'
