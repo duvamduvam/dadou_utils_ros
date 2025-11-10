@@ -143,5 +143,19 @@ curl -sSf -X POST https://api.github.com/repos/${account}/${repo}/statuses/${sha
         }
       }
     }
+
+    stage('Force failure to test alerting') {
+      steps {
+        error 'Intentional failure to validate email notification'
+      }
+    }
+  }
+
+  post {
+    failure {
+      mail to: 'jenkins@eternel-life.com',
+           subject: "debug_github_notify #${env.BUILD_NUMBER} FAILED",
+           body: "Job ${env.JOB_NAME} build #${env.BUILD_NUMBER} failed.\nConsole: ${env.BUILD_URL}console"
+    }
   }
 }
