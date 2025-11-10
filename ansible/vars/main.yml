@@ -6,6 +6,16 @@ conf_dir: "conf"
 python_version: "python3.8"
 ros2_ws: "ros2_ws"
 
+test_mail_notify_enabled: false
+test_mail_notify_to: "jenkins@eternel-life.com"
+test_mail_notify_from: "jenkins@eternel-life.com"
+test_mail_notify_subject: "[TEST] Installation terminée"
+test_mail_notify_body: "Le playbook de test vient de s'exécuter sur {{ inventory_hostname }}."
+test_mail_notify_smtp_host: "ssl0.ovh.net"
+test_mail_notify_smtp_port: 587
+test_mail_notify_username: "jenkins@eternel-life.com"
+test_mail_notify_password_file: ""
+
 #debian_packages_urls:
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.27-1_arm64.deb"
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.39.1-1~debian.12~bookworm_arm64.deb"

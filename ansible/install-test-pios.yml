@@ -60,3 +60,28 @@
         #- "--exclude=.gitignore"
         #- "--exclude=robot_bringup/"
         #- "--exclude=robot_interfaces/"
+
+  - name: Ensure mail notification secret is provided
+    when: test_mail_notify_enabled | bool
+    ansible.builtin.assert:
+      that:
+        - test_mail_notify_password_file | length > 0
+      fail_msg: "Definis test_mail_notify_password_file pour envoyer un e-mail."
+
+  - name: Load mail notification password
+    when: test_mail_notify_enabled | bool
+    ansible.builtin.set_fact:
+      test_mail_notify_password: "{{ lookup('file', test_mail_notify_password_file) | trim }}"
+
+  - name: Send test notification e-mail
+    when: test_mail_notify_enabled | bool
+    ansible.builtin.mail:
+      host: "{{ test_mail_notify_smtp_host }}"
+      port: "{{ test_mail_notify_smtp_port }}"
+      username: "{{ test_mail_notify_username }}"
+      password: "{{ test_mail_notify_password }}"
+      to: "{{ test_mail_notify_to }}"
+      from: "{{ test_mail_notify_from }}"
+      subject: "{{ test_mail_notify_subject }}"
+      body: "{{ test_mail_notify_body }}"
+      secure: starttls
