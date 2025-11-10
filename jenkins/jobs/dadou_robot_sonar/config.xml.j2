@@ -6,11 +6,6 @@
   <properties>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
-        {% if jenkins_sonar_enable_github_webhook %}
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-        {% endif %}
         {% if jenkins_sonar_poll_schedule | length > 0 %}
         <hudson.triggers.SCMTrigger>
           <spec>{{ jenkins_sonar_poll_schedule }}</spec>
@@ -26,9 +21,6 @@
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
           <url>{{ jenkins_sonar_repo_url }}</url>
-          {% if jenkins_sonar_repo_credentials_id | length > 0 %}
-          <credentialsId>{{ jenkins_sonar_repo_credentials_id }}</credentialsId>
-          {% endif %}
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>
