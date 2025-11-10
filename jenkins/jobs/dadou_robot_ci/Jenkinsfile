@@ -33,7 +33,7 @@ pipeline {
           env.GITHUB_NOTIFY_ENABLED = env.GITHUB_NOTIFY_ENABLED?.trim() ?: 'true'
           env.GITHUB_NOTIFY_ACCOUNT = env.GITHUB_NOTIFY_ACCOUNT?.trim() ?: 'duvamduvam'
           env.GITHUB_NOTIFY_REPO = env.GITHUB_NOTIFY_REPO?.trim() ?: 'dadou_robot_ros'
-          env.GITHUB_NOTIFY_CREDENTIALS_ID = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
+          env.GITHUB_NOTIFY_CREDENTIALS_ID = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim() ?: 'github-token4'
         }
       }
     }
