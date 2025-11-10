@@ -245,6 +245,17 @@
       fi'
   changed_when: false
 
+- name: Ensure Jenkins SSH permissions inside container
+  when: jenkins_fix_ssh_permissions | bool
+  become: yes
+  ansible.builtin.command: >-
+    docker exec --user root {{ jenkins_container_name }}
+    sh -c "if [ -d /var/jenkins_home/.ssh ]; then chmod 700 /var/jenkins_home/.ssh; fi &&
+           if [ -f /var/jenkins_home/.ssh/{{ jenkins_ssh_private_key_name }} ]; then chmod 600 /var/jenkins_home/.ssh/{{ jenkins_ssh_private_key_name }}; fi &&
+           if [ -f /var/jenkins_home/.ssh/{{ jenkins_ssh_public_key_name }} ]; then chmod 644 /var/jenkins_home/.ssh/{{ jenkins_ssh_public_key_name }}; fi"
+  changed_when: false
+  failed_when: false
+
 - name: Check Jenkins container status
   become: yes
   ansible.builtin.command: >-
