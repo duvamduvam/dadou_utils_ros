@@ -92,8 +92,8 @@ jenkins_ssh_remote_dir: "/home/{{ jenkins_pipeline_remote_user }}/.ssh"
 
 jenkins_sonar_scanner_manage: true
 jenkins_sonar_scanner_name: "SonarScanner"
-jenkins_sonar_scanner_install_url: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
-jenkins_sonar_scanner_install_subdir: "sonar-scanner-5.0.1.3006-linux"
+jenkins_sonar_scanner_install_url: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006.zip"
+jenkins_sonar_scanner_install_subdir: "sonar-scanner-5.0.1.3006"
 jenkins_sonar_scanner_home: ""
 jenkins_sonar_scanner_init_script_template: "{{ role_path }}/templates/sonar-scanner-tool.groovy.j2"
 jenkins_sonar_scanner_init_script_name: "20-sonar-scanner.groovy"
