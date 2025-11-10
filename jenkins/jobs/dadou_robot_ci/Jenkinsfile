@@ -133,5 +133,23 @@ curl -sSf -X POST https://api.github.com/repos/${account}/${repo}/statuses/${sha
       }
       cleanWs()
     }
+
+    failure {
+      script {
+        echo "[mail] Preparing failure notification for build #${env.BUILD_NUMBER}."
+        try {
+          mail to: 'david@duvam.net',
+               from: 'jenkins@eternel-life.com',
+               subject: "${env.JOB_NAME} #${env.BUILD_NUMBER} FAILED",
+               body: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\\nConsole: ${env.BUILD_URL}console"
+          echo '[mail] Mail sent successfully.'
+        } catch (Throwable err) {
+          def sw = new StringWriter()
+          err.printStackTrace(new PrintWriter(sw))
+          echo "[mail] Mail sending failed: ${err.getMessage()}"
+          echo sw.toString()
+        }
+      }
+    }
   }
 }
