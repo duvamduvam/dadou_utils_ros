@@ -91,8 +91,8 @@ jenkins_sonar_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins
 jenkins_debug_job_enabled: true
 jenkins_debug_job_name: "debug_github_notify"
 jenkins_debug_job_description: "Pipeline manuel pour valider l'accès GitHub et les notifications."
-jenkins_debug_job_repo_url: "{{ jenkins_pipeline_repo_url }}"
-jenkins_debug_job_repo_branch: "{{ jenkins_pipeline_repo_branch }}"
+jenkins_debug_job_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_debug_job_repo_branch: "main"
 jenkins_debug_job_repo_credentials_id: ""
 jenkins_debug_job_script_path: "jenkins/jobs/debug_github_notify/Jenkinsfile"
 jenkins_debug_job_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins_debug_job_name }}/config.xml.j2"
