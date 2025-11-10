@@ -89,3 +89,10 @@
       subject: "{{ test_mail_notify_subject }}"
       body: "{{ test_mail_notify_body }}"
       secure: starttls
+    register: __test_mail_notify_result
+    failed_when: false
+
+  - name: Show mail module result
+    when: __test_mail_notify_result is defined
+    ansible.builtin.debug:
+      var: __test_mail_notify_result
