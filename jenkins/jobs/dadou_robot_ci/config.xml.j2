@@ -9,11 +9,6 @@
     {% endif %}
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
-        {% if jenkins_pipeline_enable_github_webhook %}
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-        {% endif %}
         {% if jenkins_pipeline_poll_schedule != "" %}
         <hudson.triggers.SCMTrigger>
           <spec>{{ jenkins_pipeline_poll_schedule }}</spec>
@@ -80,10 +75,6 @@
           <string>DOCKER_PUSH_ENABLED</string>
           <string>{{ 'true' if jenkins_pipeline_push_enabled else 'false' }}</string>
         </entry>
-        <entry>
-          <string>GITHUB_NOTIFY_CREDENTIALS_ID</string>
-          <string>{{ jenkins_pipeline_github_credentials_id }}</string>
-        </entry>
       </envVars>
     </org.jenkinsci.plugins.workflow.job.properties.EnvironmentVariablesJobProperty>
   </properties>
@@ -93,9 +84,6 @@
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
           <url>{{ jenkins_pipeline_repo_url }}</url>
-          {% if jenkins_pipeline_repo_credentials_id | length > 0 %}
-          <credentialsId>{{ jenkins_pipeline_repo_credentials_id }}</credentialsId>
-          {% endif %}
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>

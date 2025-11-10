@@ -6,16 +6,6 @@ conf_dir: "conf"
 python_version: "python3.8"
 ros2_ws: "ros2_ws"
 
-jenkins_ssh_key_manage: true
-jenkins_ssh_private_key_src: "/home/dadou/Nextcloud/divers/keys/github"
-jenkins_ssh_public_key_src: "/home/dadou/Nextcloud/divers/keys/github.pub"
-jenkins_ssh_private_key_name: "id_ed25519"
-
-# IMPORTANT: provide a valid Sonar token before launching any analysis.
-# Store the token in a local file rather than committing it in git.
-jenkins_sonar_server_token: ""
-jenkins_sonar_server_token_source_file: "/home/dadou/Nextcloud/divers/keys/sonar-token"
-
 #debian_packages_urls:
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.27-1_arm64.deb"
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/docker-compose-plugin_2.39.1-1~debian.12~bookworm_arm64.deb"
