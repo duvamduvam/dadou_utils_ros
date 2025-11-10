@@ -14,7 +14,7 @@ test_mail_notify_body: "Le playbook de test vient de s'exécuter sur {{ inventor
 test_mail_notify_smtp_host: "ssl0.ovh.net"
 test_mail_notify_smtp_port: 587
 test_mail_notify_username: "jenkins@eternel-life.com"
-test_mail_notify_password_file: ""
+test_mail_notify_password_file: "{{ playbook_dir }}/../jenkins/test_mail_notify_password"
 
 #debian_packages_urls:
 #              - "https://download.docker.com/linux/debian/dists/bookworm/pool/stable/arm64/containerd.io_1.7.27-1_arm64.deb"
