@@ -108,6 +108,33 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
           echo 'githubNotify step unavailable; skipping GitHub commit status update.'
         }
         if (notify && env.GITHUB_NOTIFY_ENABLED?.toBoolean()) {
+          echo """[GitHub Notify Debug]
+  enabled=${env.GITHUB_NOTIFY_ENABLED}
+  account=${env.GITHUB_NOTIFY_ACCOUNT}
+  repo=${env.GITHUB_NOTIFY_REPO}
+  sha=${env.GITHUB_NOTIFY_SHA}
+  credentialsId=${env.GITHUB_NOTIFY_CREDENTIALS_ID}
+  buildUrl=${env.BUILD_URL}
+"""
+          script {
+            def credsId = env.GITHUB_NOTIFY_CREDENTIALS_ID?.trim()
+            if (credsId) {
+              try {
+                def creds = com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(
+                  com.cloudbees.plugins.credentials.common.StandardCredentials,
+                  jenkins.model.Jenkins.instance,
+                  null,
+                  (List) null
+                ).find { it.id == credsId }
+                echo creds ? "[GitHub Notify Debug] Credential '${credsId}' found (${creds.class.simpleName})."
+                           : "[GitHub Notify Debug] Credential '${credsId}' NOT found in global store."
+              } catch (Throwable err) {
+                echo "[GitHub Notify Debug] Unable to inspect credential '${credsId}': ${err.getMessage()}"
+              }
+            } else {
+              echo '[GitHub Notify Debug] No credential ID provided.'
+            }
+          }
           def sha = env.GITHUB_NOTIFY_SHA?.trim()
           def repo = env.GITHUB_NOTIFY_REPO?.trim()
           def account = env.GITHUB_NOTIFY_ACCOUNT?.trim()
