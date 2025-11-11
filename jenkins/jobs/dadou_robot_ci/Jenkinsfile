@@ -137,27 +137,30 @@ curl -sSf -X POST https://api.github.com/repos/${account}/${repo}/statuses/${sha
     failure {
       script {
         echo "[mail] Preparing failure notification for build #${env.BUILD_NUMBER}."
-        try {
-          def testAction = currentBuild.rawBuild.getAction(hudson.tasks.junit.TestResultAction)
-          def failedTests = testAction?.failedTests?.collect { it.fullDisplayName ?: it.fullName ?: it.displayName } ?: []
-          def passedTests = testAction?.passedTests?.collect { it.fullDisplayName ?: it.fullName ?: it.displayName } ?: []
-          def skippedTests = testAction?.skippedTests?.collect { it.fullDisplayName ?: it.fullName ?: it.displayName } ?: []
-          def formatList = { label, list ->
-            if (list && list.size() > 0) {
-              "${label} (${list.size()}):\n- " + list.join('\n- ')
-            } else {
-              "${label}: aucun"
-            }
+        def testAction = currentBuild.rawBuild?.getAction(hudson.tasks.junit.TestResultAction)
+        def collectNames = { items ->
+          items?.collect { it.fullDisplayName ?: it.fullName ?: it.displayName } ?: []
+        }
+        def failedTests = collectNames(testAction?.failedTests)
+        def passedTests = collectNames(testAction?.passedTests)
+        def skippedTests = collectNames(testAction?.skippedTests)
+        def formatSection = { label, list ->
+          if (list && list.size() > 0) {
+            "${label} (${list.size()}):\n- " + list.join('\n- ')
+          } else {
+            "${label}: aucun"
           }
-          def sections = [
-            formatList('Tests échoués', failedTests),
-            formatList('Tests réussis', passedTests),
-            formatList('Tests ignorés', skippedTests)
-          ].join("\n\n")
-          def mailBody = "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} a échoué.\n\n${sections}\n\nConsole: ${env.BUILD_URL}console"
+        }
+        def bodySections = [
+          formatSection('Tests échoués', failedTests),
+          formatSection('Tests réussis', passedTests),
+          formatSection('Tests ignorés', skippedTests)
+        ].join("\n\n")
+        def mailBody = "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} a échoué.\n\n${bodySections}\n\nConsole: ${env.BUILD_URL}console"
+        try {
           mail to: 'david@duvam.net',
                from: 'jenkins@eternel-life.com',
-                subject: "${env.JOB_NAME} #${env.BUILD_NUMBER} FAILED",
+               subject: "${env.JOB_NAME} #${env.BUILD_NUMBER} FAILED",
                body: mailBody
           echo '[mail] Mail sent successfully.'
         } catch (Throwable err) {
