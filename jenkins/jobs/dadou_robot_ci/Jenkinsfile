@@ -53,27 +53,27 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
   'bash -s' <<'REMOTE_SCRIPT'
 set -euo pipefail
 
-if [ -z "$WORKSPACE_ROOT" ]; then
+if [ -z "\$WORKSPACE_ROOT" ]; then
   echo "WORKSPACE_ROOT is empty; configure the Jenkins job accordingly." >&2
   exit 1
 fi
 
-workspace_parent=$(dirname "$WORKSPACE_ROOT")
-if [ ! -d "$workspace_parent" ]; then
-  mkdir -p "$workspace_parent"
+workspace_parent=$(dirname "\$WORKSPACE_ROOT")
+if [ ! -d "\$workspace_parent" ]; then
+  mkdir -p "\$workspace_parent"
 fi
 
-if [ -d "$WORKSPACE_ROOT/.git" ]; then
-  git -C "$WORKSPACE_ROOT" fetch origin "$REPO_BRANCH"
-  git -C "$WORKSPACE_ROOT" checkout "$REPO_BRANCH"
-  git -C "$WORKSPACE_ROOT" reset --hard "origin/$REPO_BRANCH"
-  git -C "$WORKSPACE_ROOT" clean -fdx
+if [ -d "\$WORKSPACE_ROOT/.git" ]; then
+  git -C "\$WORKSPACE_ROOT" fetch origin "\$REPO_BRANCH"
+  git -C "\$WORKSPACE_ROOT" checkout "\$REPO_BRANCH"
+  git -C "\$WORKSPACE_ROOT" reset --hard "origin/\$REPO_BRANCH"
+  git -C "\$WORKSPACE_ROOT" clean -fdx
 else
-  rm -rf "$WORKSPACE_ROOT"
-  git clone --branch "$REPO_BRANCH" "$REPO_URL" "$WORKSPACE_ROOT"
+  rm -rf "\$WORKSPACE_ROOT"
+  git clone --branch "\$REPO_BRANCH" "\$REPO_URL" "\$WORKSPACE_ROOT"
 fi
 
-cd "$WORKSPACE_ROOT"
+cd "\$WORKSPACE_ROOT"
 
 if docker compose version >/dev/null 2>&1; then
   COMPOSE_BIN=(docker compose)
@@ -84,11 +84,11 @@ else
   exit 1
 fi
 
-"${COMPOSE_BIN[@]}" -f "$DOCKER_COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
-DOCKER_BUILDKIT=1 "${COMPOSE_BIN[@]}" -f "$DOCKER_COMPOSE_FILE" up --build --abort-on-container-exit --exit-code-from "$DOCKER_COMPOSE_SERVICE" "$DOCKER_COMPOSE_SERVICE"
-compose_status=$?
-"${COMPOSE_BIN[@]}" -f "$DOCKER_COMPOSE_FILE" down --remove-orphans
-exit $compose_status
+"\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
+DOCKER_BUILDKIT=1 "\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" up --build --abort-on-container-exit --exit-code-from "\$DOCKER_COMPOSE_SERVICE" "\$DOCKER_COMPOSE_SERVICE"
+compose_status=\$?
+"\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans
+exit \$compose_status
 REMOTE_SCRIPT
 """
       }
