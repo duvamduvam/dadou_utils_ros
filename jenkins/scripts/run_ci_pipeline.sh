@@ -17,10 +17,6 @@ DOCKER_TAG="${DOCKER_TAG:-${REPO_BRANCH}-$(date +%Y%m%d%H%M%S)}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
 DOCKER_BUILD_CONTEXT="${DOCKER_BUILD_CONTEXT:-${DOCKER_CONTEXT:-.}}"
 
-# Optional secondary repository containing shared utilities required by the build.
-DADOU_UTILS_REPO_URL="${DADOU_UTILS_REPO_URL:-https://github.com/duvamduvam/dadou_utils_ros.git}"
-DADOU_UTILS_REPO_BRANCH="${DADOU_UTILS_REPO_BRANCH:-main}"
-
 # Allow overriding the Docker command (e.g. "sudo docker").
 if [[ -n "${DOCKER_CMD:-}" ]]; then
   # shellcheck disable=SC2206 # Word splitting is intentional to support arguments like "sudo -H docker".
@@ -261,26 +257,6 @@ resolve_docker_build_inputs() {
   fi
 }
 
-sync_dadou_utils_repository() {
-  if [[ -z "${DADOU_UTILS_REPO_URL}" ]]; then
-    echo "[CI][1/3] DADOU_UTILS_REPO_URL is empty, skipping shared utilities checkout."
-    return
-  fi
-
-  local target_path="${TEMP_DIR}/dadou_utils_ros"
-  echo "[CI][1/3] Fetching dadou_utils_ros from ${DADOU_UTILS_REPO_URL} (branch ${DADOU_UTILS_REPO_BRANCH})..."
-
-  if [[ -e "${target_path}" || -L "${target_path}" ]]; then
-    rm -rf "${target_path}"
-  fi
-
-  if ! git clone --depth=1 --branch "${DADOU_UTILS_REPO_BRANCH}" "${DADOU_UTILS_REPO_URL}" "${target_path}"; then
-    echo "[CI][1/3] Failed to clone ${DADOU_UTILS_REPO_URL}" >&2
-    exit 1
-  fi
-  echo "[CI][1/3] dadou_utils_ros workspace ready in ${target_path}"
-}
-
 ####################################################
 # Stage 3 – Prepare or refresh the source workspace #
 ####################################################
@@ -304,7 +280,6 @@ prepare_workspace() {
   PRIMARY_WORKSPACE_DIR="${workspace_path}"
   TEMP_DIR="${workspace_path}"
   echo "[CI][1/3] Workspace ready in ${TEMP_DIR}"
-  sync_dadou_utils_repository
   stage_local_workspace_if_needed
 }
 
