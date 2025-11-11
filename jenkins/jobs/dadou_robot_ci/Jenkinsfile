@@ -84,10 +84,10 @@ else
   exit 1
 fi
 
-"\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
-DOCKER_BUILDKIT=1 "\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" up --build --abort-on-container-exit --exit-code-from "\$DOCKER_COMPOSE_SERVICE" "\$DOCKER_COMPOSE_SERVICE"
+sudo "\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
+sudo env DOCKER_BUILDKIT=1 "\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" up --build --abort-on-container-exit --exit-code-from "\$DOCKER_COMPOSE_SERVICE" "\$DOCKER_COMPOSE_SERVICE"
 compose_status=\$?
-"\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans
+sudo "\${COMPOSE_BIN[@]}" -f "\$DOCKER_COMPOSE_FILE" down --remove-orphans
 exit \$compose_status
 REMOTE_SCRIPT
 """
