@@ -44,6 +44,8 @@ WORKSPACE_ROOT="${WORKSPACE_ROOT:-}"
 
 # Will point to the active working directory during the run.
 TEMP_DIR=""
+PRIMARY_WORKSPACE_DIR=""
+LOCAL_MIRROR_DIR=""
 
 ##########################################################
 # Stage 2 – Define lifecycle helpers and shell safeguards #
@@ -74,18 +76,25 @@ reset_git_workspace() {
 
 # Remove the working directory when the script ends, unless KEEP_WORKDIR is set.
 cleanup() {
-  if [[ -z "${TEMP_DIR}" || ! -d "${TEMP_DIR}" ]]; then
+  if [[ -n "${LOCAL_MIRROR_DIR}" && -d "${LOCAL_MIRROR_DIR}" ]]; then
+    rm -rf "${LOCAL_MIRROR_DIR}"
+  fi
+
+  local target="${PRIMARY_WORKSPACE_DIR:-${TEMP_DIR}}"
+  if [[ -z "${target}" || ! -d "${target}" ]]; then
     return
   fi
 
-  if [[ -n "${KEEP_WORKDIR:-}" ]]; then
-    if ! reset_git_workspace "${TEMP_DIR}"; then
-      purge_directory_contents "${TEMP_DIR}" || true
+  if [[ -n "${WORKSPACE_ROOT}" && "${target}" == "${WORKSPACE_ROOT}" ]]; then
+    if [[ -n "${KEEP_WORKDIR:-}" ]]; then
+      if ! reset_git_workspace "${target}"; then
+        purge_directory_contents "${target}" || true
+      fi
+      return
     fi
-    return
   fi
 
-  rm -rf "${TEMP_DIR}"
+  rm -rf "${target}"
 }
 
 # Ensure the cleanup is executed on success, error, or interruption.
@@ -278,21 +287,47 @@ sync_dadou_utils_repository() {
 
 prepare_workspace() {
   echo "[CI][1/3] Preparing workspace at ${WORKSPACE_ROOT:-temporary directory}..."
+  local workspace_path=""
   if [[ -n "${WORKSPACE_ROOT}" ]]; then
     # Use the provided persistent directory and refresh it if already cloned.
     mkdir -p "${WORKSPACE_ROOT}"
-    TEMP_DIR="${WORKSPACE_ROOT}"
+    workspace_path="${WORKSPACE_ROOT}"
   else
     # Otherwise create a brand-new temporary directory for this build.
-    TEMP_DIR="$(mktemp -d -t dadou-ci-XXXXXX)"
+    workspace_path="$(mktemp -d -t dadou-ci-XXXXXX)"
   fi
 
-  if [[ -n "${TEMP_DIR}" && -e "${TEMP_DIR}" ]]; then
-    rm -rf "${TEMP_DIR}"
+  if [[ -n "${workspace_path}" && -e "${workspace_path}" ]]; then
+    rm -rf "${workspace_path}"
   fi
-  git clone --depth=1 --branch "${REPO_BRANCH}" "${REPO_URL}" "${TEMP_DIR}"
+  git clone --depth=1 --branch "${REPO_BRANCH}" "${REPO_URL}" "${workspace_path}"
+  PRIMARY_WORKSPACE_DIR="${workspace_path}"
+  TEMP_DIR="${workspace_path}"
   echo "[CI][1/3] Workspace ready in ${TEMP_DIR}"
   sync_dadou_utils_repository
+  stage_local_workspace_if_needed
+}
+
+stage_local_workspace_if_needed() {
+  if [[ -z "${WORKSPACE_ROOT}" ]]; then
+    return
+  fi
+
+  local staging_pref="${LOCAL_WORKSPACE_STAGING:-auto}"
+  case "${staging_pref,,}" in
+    0|false|off|no)
+      return
+      ;;
+  esac
+
+  LOCAL_MIRROR_DIR="$(mktemp -d -t dadou-ci-local-XXXXXX)"
+  echo "[CI][1/3] Mirroring workspace to ${LOCAL_MIRROR_DIR} for local Docker build context..."
+  if command -v rsync >/dev/null 2>&1; then
+    rsync -a --delete "${PRIMARY_WORKSPACE_DIR}/" "${LOCAL_MIRROR_DIR}/"
+  else
+    cp -a "${PRIMARY_WORKSPACE_DIR}/." "${LOCAL_MIRROR_DIR}/"
+  fi
+  TEMP_DIR="${LOCAL_MIRROR_DIR}"
 }
 
 # Stage 4 – Build the Docker image output #
