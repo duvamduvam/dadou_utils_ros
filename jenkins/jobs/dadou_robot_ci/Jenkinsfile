@@ -45,11 +45,11 @@ pipeline {
         sh """#!/usr/bin/env bash
 set -euo pipefail
 ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_HOST} \\
-  REPO_URL='${env.REPO_URL}' \\
-  REPO_BRANCH='${env.REPO_BRANCH}' \\
-  WORKSPACE_ROOT='${env.WORKSPACE_ROOT}' \\
-  DOCKER_COMPOSE_FILE='${env.DOCKER_COMPOSE_FILE}' \\
-  DOCKER_COMPOSE_SERVICE='${env.DOCKER_COMPOSE_SERVICE}' \\
+  REPO_URL="${env.REPO_URL}" \\
+  REPO_BRANCH="${env.REPO_BRANCH}" \\
+  WORKSPACE_ROOT="${env.WORKSPACE_ROOT}" \\
+  DOCKER_COMPOSE_FILE="${env.DOCKER_COMPOSE_FILE}" \\
+  DOCKER_COMPOSE_SERVICE="${env.DOCKER_COMPOSE_SERVICE}" \\
   'bash -s' <<'REMOTE_SCRIPT'
 set -euo pipefail
 
@@ -58,7 +58,7 @@ if [ -z "\$WORKSPACE_ROOT" ]; then
   exit 1
 fi
 
-workspace_parent=$(dirname "\$WORKSPACE_ROOT")
+workspace_parent=\$(dirname "\$WORKSPACE_ROOT")
 if [ ! -d "\$workspace_parent" ]; then
   mkdir -p "\$workspace_parent"
 fi
