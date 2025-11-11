@@ -87,6 +87,27 @@
     group: "{{ jenkins_data_dir_group }}"
     mode: "0644"
 
+- name: Ensure Jenkins mail notify job directory
+  when: jenkins_mail_notify_job_enabled | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ jenkins_data_dir }}/jobs/{{ jenkins_mail_notify_job_name }}"
+    state: directory
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0755"
+    recurse: yes
+
+- name: Deploy Jenkins mail notify job configuration
+  when: jenkins_mail_notify_job_enabled | bool
+  become: yes
+  ansible.builtin.template:
+    src: "{{ jenkins_mail_notify_config_template }}"
+    dest: "{{ jenkins_data_dir }}/jobs/{{ jenkins_mail_notify_job_name }}/config.xml"
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0644"
+
 - name: Create Jenkins scripts directory
   become: yes
   ansible.builtin.file:

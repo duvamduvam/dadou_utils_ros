@@ -96,3 +96,12 @@ jenkins_debug_job_repo_branch: "main"
 jenkins_debug_job_repo_credentials_id: ""
 jenkins_debug_job_script_path: "jenkins/jobs/debug_github_notify/Jenkinsfile"
 jenkins_debug_job_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins_debug_job_name }}/config.xml.j2"
+
+jenkins_mail_notify_job_enabled: true
+jenkins_mail_notify_job_name: "debug_mail_notify"
+jenkins_mail_notify_job_description: "Pipeline de test pour notifier par e-mail en cas d'échec."
+jenkins_mail_notify_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_mail_notify_repo_branch: "main"
+jenkins_mail_notify_repo_credentials_id: ""
+jenkins_mail_notify_script_path: "jenkins/jobs/debug_mail_notify/Jenkinsfile"
+jenkins_mail_notify_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins_mail_notify_job_name }}/config.xml.j2"
