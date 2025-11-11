@@ -89,12 +89,15 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>{{ jenkins_pipeline_repo_url }}</url>
+          <url>{{ jenkins_pipeline_definition_repo_url }}</url>
+          {% if jenkins_pipeline_definition_repo_credentials_id | length > 0 %}
+          <credentialsId>{{ jenkins_pipeline_definition_repo_credentials_id }}</credentialsId>
+          {% endif %}
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>{{ jenkins_pipeline_repo_branch }}</name>
+          <name>{{ jenkins_pipeline_definition_repo_branch }}</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -103,7 +106,7 @@
         <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
       </extensions>
     </scm>
-    <scriptPath>{{ jenkins_pipeline_script_path }}</scriptPath>
+    <scriptPath>{{ jenkins_pipeline_definition_script_path }}</scriptPath>
     <lightweight>{{ 'true' if jenkins_pipeline_lightweight_checkout else 'false' }}</lightweight>
   </definition>
   <disabled>false</disabled>
