@@ -23,6 +23,8 @@ pipeline {
           env.KEEP_WORKDIR = env.KEEP_WORKDIR?.trim() ?: '1'
           env.DOCKER_COMPOSE_FILE = env.DOCKER_COMPOSE_FILE?.trim() ?: 'conf/docker/jenkins/docker-compose-jenkins.yml'
           env.DOCKER_COMPOSE_SERVICE = env.DOCKER_COMPOSE_SERVICE?.trim() ?: 'dadou-robot-jenkins'
+          env.DADOU_UTILS_REPO = env.DADOU_UTILS_REPO?.trim() ?: 'git@github.com:duvamduvam/dadou_utils_ros.git'
+          env.DADOU_UTILS_BRANCH = env.DADOU_UTILS_BRANCH?.trim() ?: 'main'
           def rawScriptPath = env.CI_SCRIPT_PATH?.trim()
           if (!rawScriptPath || rawScriptPath.isEmpty()) {
             env.CI_SCRIPT_PATH = '/home/pi/jenkins/scripts/run_ci_pipeline.sh'
@@ -50,6 +52,8 @@ ssh -o StrictHostKeyChecking=no ${env.JENKINS_REMOTE_USER}@${env.JENKINS_REMOTE_
   WORKSPACE_ROOT="${env.WORKSPACE_ROOT}" \\
   DOCKER_COMPOSE_FILE="${env.DOCKER_COMPOSE_FILE}" \\
   DOCKER_COMPOSE_SERVICE="${env.DOCKER_COMPOSE_SERVICE}" \\
+  DADOU_UTILS_REPO="${env.DADOU_UTILS_REPO}" \\
+  DADOU_UTILS_BRANCH="${env.DADOU_UTILS_BRANCH}" \\
   'bash -s' <<'REMOTE_SCRIPT'
 set -euo pipefail
 
@@ -71,6 +75,13 @@ if [ -d "\$WORKSPACE_ROOT/.git" ]; then
 else
   rm -rf "\$WORKSPACE_ROOT"
   git clone --branch "\$REPO_BRANCH" "\$REPO_URL" "\$WORKSPACE_ROOT"
+fi
+
+utils_path="\$WORKSPACE_ROOT/dadou_utils_ros"
+if [ -L "\$utils_path" ] || [ ! -d "\$utils_path" ]; then
+  rm -rf "\$utils_path"
+  echo "Refreshing dadou_utils_ros workspace from \$DADOU_UTILS_REPO (branch \$DADOU_UTILS_BRANCH)"
+  git clone --depth=1 --branch "\$DADOU_UTILS_BRANCH" "\$DADOU_UTILS_REPO" "\$utils_path"
 fi
 
 cd "\$WORKSPACE_ROOT"
