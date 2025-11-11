@@ -11,8 +11,12 @@ jenkins_environment:
   JAVA_HOME: "{{ jenkins_java_home }}"
 jenkins_pipeline_job_name: "dadou_robot_ci"
 jenkins_pipeline_job_description: "CI pipeline pour builder et tester dadou_robot."
+jenkins_pipeline_definition_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_pipeline_definition_repo_branch: "main"
+jenkins_pipeline_definition_repo_credentials_id: ""
+jenkins_pipeline_definition_script_path: "jenkins/jobs/dadou_robot_ci/Jenkinsfile"
 jenkins_pipeline_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
-jenkins_pipeline_poll_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
+jenkins_pipeline_poll_repo_url: "{{ jenkins_pipeline_definition_repo_url }}"
 jenkins_pipeline_repo_branch: "main"
 jenkins_pipeline_script_path: "Jenkinsfile"
 jenkins_pipeline_lightweight_checkout: true
