@@ -58,6 +58,14 @@
           <string>{{ jenkins_pipeline_dockerfile }}</string>
         </entry>
         <entry>
+          <string>DOCKER_COMPOSE_FILE</string>
+          <string>{{ jenkins_pipeline_docker_compose_file | default('conf/docker/jenkins/docker-compose-jenkins.yml') }}</string>
+        </entry>
+        <entry>
+          <string>DOCKER_COMPOSE_SERVICE</string>
+          <string>{{ jenkins_pipeline_docker_compose_service | default('dadou-robot-jenkins') }}</string>
+        </entry>
+        <entry>
           <string>WORKSPACE_ROOT</string>
           <string>{{ jenkins_pipeline_remote_workspace }}</string>
         </entry>
