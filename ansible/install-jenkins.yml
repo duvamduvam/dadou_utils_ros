@@ -1,20 +1,34 @@
 ---
 - name: Install Jenkins on pios lite
-  hosts: "{{ target_group | default('robot') }}"
+  hosts: "jenkins_server"
 
   vars_files:
     - vars/main.yml
 
   roles:
-    - role: docker-install
-    - role: jenkins
-      vars:
+      - role: dir_struct
+        vars:
+        - directories:
+            - "{{ jenkins_workspace }}"
+            - "{{ jenkins_workspace }}/build"
+            - "{{ jenkins_workspace }}/install"
+            - "{{ jenkins_workspace }}/log"
+            - "{{ jenkins_workspace }}/src/{{ project_ros_dir }}"
+            - "scripts"
+      #- role: synchronise
+      #  become: yes
+      - role: linux-package
+        vars:
+        - package_file: "packages.txt"
+      - role: docker-install
+      - role: jenkins
+        vars:
         jenkins_pipeline_poll_schedule: "H/5 * * * *"
         jenkins_sonar_job_enabled: true
         jenkins_sonar_poll_schedule: "H/30 * * * *"
-    #- role: sonar
-    - role: set-bashrc
-      vars:
-        set_bashrc_project_file: "{{ playbook_dir }}/../jenkins/jenkins-bashrc"
-        set_bashrc_update_project_name: false
-    - role: docker-prune
+      - role: sonar
+      - role: set-bashrc
+        vars:
+          set_bashrc_project_file: "{{ playbook_dir }}/../jenkins/jenkins-bashrc"
+          set_bashrc_update_project_name: false
+      - role: docker-prune
