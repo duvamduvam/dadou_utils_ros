@@ -3,6 +3,12 @@
   <actions/>
   <description>{{ jenkins_pipeline_job_description }}</description>
   <keepDependencies>false</keepDependencies>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>60</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
   <properties>
     {% if jenkins_pipeline_disable_concurrent_builds %}
     <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
