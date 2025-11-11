@@ -3,7 +3,7 @@ ARG := $(word 2, $(MAKECMDGOALS) )
 
 UTILS_DIR=/home/dadou/Nextcloud/Didier/python/dadou_utils_ros
 
-SERVER ?= jenkins
+SERVER ?= j
 PROJECT ?= robot
 PROJECT_DIR ?= /home/dadou/Nextcloud/Didier/python/dadou_$(PROJECT)_ros
 

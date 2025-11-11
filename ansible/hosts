@@ -6,13 +6,14 @@ robot:
         project_name: robot
         launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
-jenkins:
+jenkins_server:
   hosts:
-    jenkins:
+    jenkins_host:
         local_project_dir: dadou_robot_ros
         project_ros_dir: test
         project_name: robot
         launch_cmd: test
+        jenkins_workspace: jenkins-workspace
   vars:
     ansible_python_interpreter: /usr/bin/python3
 

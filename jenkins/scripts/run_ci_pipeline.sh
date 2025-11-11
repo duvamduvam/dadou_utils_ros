@@ -43,6 +43,14 @@ TEMP_DIR=""
 PRIMARY_WORKSPACE_DIR=""
 LOCAL_MIRROR_DIR=""
 
+# Targets for deploying the ROS workspace on the Jenkins builder host.
+ROS_DEPLOY_ROOT="${ROS_DEPLOY_ROOT:-/home/pi/jenkins-workspace}"
+ROS_DEPLOY_SRC_DIR="${ROS_DEPLOY_SRC_DIR:-${ROS_DEPLOY_ROOT}/src}"
+ROS_DEPLOY_ROBOT_DIR="${ROS_DEPLOY_ROBOT_DIR:-${ROS_DEPLOY_SRC_DIR}/robot}"
+ROS_DEPLOY_DEPS_PARENT="${ROS_DEPLOY_DEPS_PARENT:-${ROS_DEPLOY_SRC_DIR}}"
+ROS_DEPLOY_UTILS_REPO="${ROS_DEPLOY_UTILS_REPO:-${DADOU_UTILS_REPO:-https://github.com/duvamduvam/dadou_utils_ros.git}}"
+ROS_DEPLOY_UTILS_BRANCH="${ROS_DEPLOY_UTILS_BRANCH:-${DADOU_UTILS_BRANCH:-main}}"
+
 ##########################################################
 # Stage 2 – Define lifecycle helpers and shell safeguards #
 ##########################################################
@@ -110,6 +118,7 @@ require_tools() {
   require_command git
   require_command docker
   require_command "${DOCKER_CLI[0]}"
+  require_command rsync
 }
 
 # Ensure the script can reach the Docker daemon, falling back to sudo when available.
@@ -305,6 +314,78 @@ stage_local_workspace_if_needed() {
   TEMP_DIR="${LOCAL_MIRROR_DIR}"
 }
 
+###############################################################
+# Stage 3b – Deploy the workspace into the Jenkins ROS layout #
+###############################################################
+
+sync_utils_repo_into_robot() {
+  local utils_target="${ROS_DEPLOY_ROBOT_DIR}/dadou_utils_ros"
+  local repo="${ROS_DEPLOY_UTILS_REPO}"
+  local branch="${ROS_DEPLOY_UTILS_BRANCH}"
+
+  if [[ -z "${repo}" ]]; then
+    echo "[CI][1/3] Skipping dadou_utils_ros clone because ROS_DEPLOY_UTILS_REPO is empty." >&2
+    return
+  fi
+
+  mkdir -p "${ROS_DEPLOY_ROBOT_DIR}"
+
+  if [[ -d "${utils_target}/.git" ]]; then
+    echo "[CI][1/3] Updating dadou_utils_ros in ${utils_target} (branch ${branch})."
+    git -C "${utils_target}" fetch --depth=1 origin "${branch}"
+    git -C "${utils_target}" checkout "${branch}"
+    git -C "${utils_target}" reset --hard "origin/${branch}"
+    git -C "${utils_target}" clean -fdx
+  else
+    echo "[CI][1/3] Cloning dadou_utils_ros into ${utils_target}."
+    rm -rf "${utils_target}"
+    git clone --depth=1 --branch "${branch}" "${repo}" "${utils_target}"
+  fi
+}
+
+deploy_ros_workspace() {
+  if [[ -z "${PRIMARY_WORKSPACE_DIR}" || ! -d "${PRIMARY_WORKSPACE_DIR}" ]]; then
+    printf "PRIMARY_WORKSPACE_DIR is not set before ROS deployment.\n" >&2
+    exit 1
+  fi
+
+  local repo_root="${PRIMARY_WORKSPACE_DIR}"
+  local robot_target="${ROS_DEPLOY_ROBOT_DIR}"
+  local deps_target="${ROS_DEPLOY_DEPS_PARENT}/ros2_dependencies"
+  local -a rsync_excludes=(
+    "--exclude=.git/"
+    "--exclude=node_modules/"
+    "--exclude=.~tmp~/"
+    "--exclude=.idea/"
+    "--exclude=__pycache__/"
+    "--exclude=venv/"
+    "--exclude=.editorconfig"
+    "--exclude=.gitignore"
+    "--exclude=dadou_utils_ros/"
+  )
+
+  echo "[CI][1/3] Synchronizing dadou_robot_ros into ${robot_target}..."
+  mkdir -p "${robot_target}"
+  rsync -a --delete "${rsync_excludes[@]}" "${repo_root}/" "${robot_target}/"
+
+  if [[ -d "${repo_root}/conf/ros2" ]]; then
+    echo "[CI][1/3] Overlaying conf/ros2 into ${robot_target}."
+    rsync -a --delete "${repo_root}/conf/ros2/" "${robot_target}/"
+  else
+    echo "[CI][1/3] conf/ros2 folder missing in source repository; skipping overlay." >&2
+  fi
+
+  mkdir -p "${deps_target}"
+  if [[ -d "${repo_root}/conf/ros2_dependencies" ]]; then
+    echo "[CI][1/3] Publishing conf/ros2_dependencies into ${deps_target}."
+    rsync -a --delete "${repo_root}/conf/ros2_dependencies/" "${deps_target}/"
+  else
+    echo "[CI][1/3] conf/ros2_dependencies missing in source repository; skipping sync." >&2
+  fi
+
+  sync_utils_repo_into_robot
+}
+
 # Stage 4 – Build the Docker image output #
 ###########################################
 
@@ -352,9 +433,10 @@ main() {
   ensure_docker_access    # 2. Confirm Docker daemon accessibility (uses sudo fallback when possible).
   echo "[CI][0/3] Prerequisites validated"
   prepare_workspace       # 3. Fetch or update the project sources.
+  deploy_ros_workspace    # 4. Publish the sources into the Jenkins ROS workspace layout.
   resolve_docker_build_inputs
-  build_docker            # 4. Build the Docker image from the tested sources.
-  test_docker_image       # 5. Execute tests inside the built image.
+  build_docker            # 5. Build the Docker image from the tested sources.
+  test_docker_image       # 6. Execute tests inside the built image.
   printf "[CI] Docker image available: %s:%s\n" "${DOCKER_IMAGE}" "${DOCKER_TAG}"
 }
 
