@@ -127,6 +127,93 @@
     mode: "{{ item.mode | default('0755') }}"
   loop: "{{ jenkins_scripts }}"
 
+- name: Generate SSH key pair for Jenkins access if missing
+  when: jenkins_ssh_manage | bool and jenkins_ssh_generate | bool
+  become: false
+  ansible.builtin.openssh_keypair:
+    path: "{{ jenkins_ssh_private_key_source_file }}"
+    type: "{{ jenkins_ssh_key_type }}"
+    mode: "0600"
+    comment: "jenkins-builder"
+    force: false
+
+- name: Ensure authorized_keys directory on builder host
+  when: jenkins_ssh_manage | bool and jenkins_ssh_authorized_keys_manage | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ jenkins_ssh_authorized_user_home }}/.ssh"
+    state: directory
+    owner: "{{ jenkins_ssh_authorized_user }}"
+    group: "{{ jenkins_ssh_authorized_user }}"
+    mode: "0700"
+
+- name: Authorize Jenkins public key on builder host
+  when: jenkins_ssh_manage | bool and jenkins_ssh_authorized_keys_manage | bool
+  become: yes
+  ansible.builtin.authorized_key:
+    user: "{{ jenkins_ssh_authorized_user }}"
+    key: "{{ lookup('file', jenkins_ssh_public_key_source_file) }}"
+    state: present
+
+- name: Ensure Jenkins SSH directory for host access
+  when: jenkins_ssh_manage | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ jenkins_data_dir }}/.ssh"
+    state: directory
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "0700"
+
+- name: Mirror host SSH materials into Jenkins home
+  when: jenkins_ssh_manage | bool
+  become: yes
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "{{ jenkins_ssh_private_key_source_file }}", dest: "{{ jenkins_data_dir }}/.ssh/{{ jenkins_ssh_private_key_name }}", mode: "0600" }
+    - { src: "{{ jenkins_ssh_public_key_source_file }}", dest: "{{ jenkins_data_dir }}/.ssh/{{ jenkins_ssh_public_key_name }}", mode: "0644" }
+    - { src: "{{ jenkins_ssh_known_hosts_source_file }}", dest: "{{ jenkins_data_dir }}/.ssh/known_hosts", mode: "0644" }
+  loop_control:
+    label: "{{ item.src }}"
+  register: jenkins_ssh_copy
+  failed_when: false
+
+- name: Enforce strict permissions on Jenkins SSH materials
+  when: jenkins_ssh_manage | bool
+  become: yes
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ jenkins_data_dir_owner }}"
+    group: "{{ jenkins_data_dir_group }}"
+  loop:
+    - { path: "{{ jenkins_data_dir }}/.ssh", mode: "0700" }
+    - { path: "{{ jenkins_data_dir }}/.ssh/{{ jenkins_ssh_private_key_name }}", mode: "0600" }
+    - { path: "{{ jenkins_data_dir }}/.ssh/id_ed25519", mode: "0600" }
+    - { path: "{{ jenkins_data_dir }}/.ssh/{{ jenkins_ssh_public_key_name }}", mode: "0644" }
+    - { path: "{{ jenkins_data_dir }}/.ssh/known_hosts", mode: "0644" }
+  loop_control:
+    label: "{{ item.path }}"
+  failed_when: false
+
+- name: Warn when SSH materials are missing
+  ansible.builtin.debug:
+    msg: >-
+      Impossible de copier {{ item.item.src }} -> {{ item.item.dest }} (fichier introuvable ?) ;
+      vérifie que tes clés/known_hosts existent ou ajuste jenkins_ssh_*_source_file.
+  loop: "{{ jenkins_ssh_copy.results | default([]) }}"
+  loop_control:
+    label: "{{ item.item.src }}"
+  when:
+    - jenkins_ssh_manage | bool
+    - item is defined
+    - item.failed | default(false)
+
 - name: Create remote workspace directory
   when: jenkins_pipeline_remote_workspace | length > 0
   become: yes

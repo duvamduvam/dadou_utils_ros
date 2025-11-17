@@ -13,7 +13,7 @@ pipeline {
     stage('Prepare defaults') {
       steps {
         script {
-          env.REPO_URL = env.REPO_URL?.trim() ?: 'git@github.com:duvamduvam/dadou_robot_ros.git'
+          env.REPO_URL = env.REPO_URL?.trim() ?: 'https://github.com/duvamduvam/dadou_robot_ros.git'
           env.REPO_BRANCH = env.REPO_BRANCH?.trim() ?: 'main'
         }
       }

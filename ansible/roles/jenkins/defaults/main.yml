@@ -11,11 +11,11 @@ jenkins_environment:
   JAVA_HOME: "{{ jenkins_java_home }}"
 jenkins_pipeline_job_name: "dadou_robot_ci"
 jenkins_pipeline_job_description: "CI pipeline pour builder et tester dadou_robot."
-jenkins_pipeline_definition_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_pipeline_definition_repo_url: "https://github.com/duvamduvam/dadou_utils_ros.git"
 jenkins_pipeline_definition_repo_branch: "main"
 jenkins_pipeline_definition_repo_credentials_id: ""
 jenkins_pipeline_definition_script_path: "jenkins/jobs/dadou_robot_ci/Jenkinsfile"
-jenkins_pipeline_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
+jenkins_pipeline_repo_url: "https://github.com/duvamduvam/dadou_robot_ros.git"
 jenkins_pipeline_poll_repo_url: "{{ jenkins_pipeline_definition_repo_url }}"
 jenkins_pipeline_repo_branch: "main"
 jenkins_pipeline_script_path: "Jenkinsfile"
@@ -42,6 +42,17 @@ jenkins_plugins:
 jenkins_fix_ssh_permissions: true
 jenkins_ssh_private_key_name: "id_ed25519"
 jenkins_ssh_public_key_name: "{{ jenkins_ssh_private_key_name }}.pub"
+jenkins_ssh_manage: true
+jenkins_ssh_generate: false
+jenkins_ssh_key_type: "ed25519"
+jenkins_ssh_authorized_keys_manage: true
+jenkins_ssh_authorized_user: "{{ jenkins_pipeline_remote_user }}"
+jenkins_ssh_authorized_user_home: "/home/{{ jenkins_ssh_authorized_user }}"
+# Paths on the target host that will be mirrored into the Jenkins home volume
+# to allow the container to SSH back to the host (builder).
+jenkins_ssh_private_key_source_file: "/home/dadou/Nextcloud/divers/keys/github"
+jenkins_ssh_public_key_source_file: "/home/dadou/Nextcloud/divers/keys/github.pub"
+jenkins_ssh_known_hosts_source_file: "{{ ansible_env.HOME }}/.ssh/known_hosts"
 jenkins_scripts:
   - src: "{{ role_path }}/../../../jenkins/scripts/run_ci_pipeline.sh"
     dest: "{{ jenkins_data_dir }}/scripts/run_ci_pipeline.sh"
@@ -87,11 +98,11 @@ jenkins_sonar_scanner_init_script_name: "20-sonar-scanner.groovy"
 jenkins_sonar_job_enabled: true
 jenkins_sonar_job_name: "dadou_robot_sonar"
 jenkins_sonar_job_description: "Analyse SonarQube périodique pour dadou_robot_ros."
-jenkins_sonar_definition_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_sonar_definition_repo_url: "https://github.com/duvamduvam/dadou_utils_ros.git"
 jenkins_sonar_definition_repo_branch: "main"
 jenkins_sonar_definition_repo_credentials_id: ""
 jenkins_sonar_definition_script_path: "jenkins/jobs/dadou_robot_sonar/Jenkinsfile"
-jenkins_sonar_repo_url: "git@github.com:duvamduvam/dadou_robot_ros.git"
+jenkins_sonar_repo_url: "https://github.com/duvamduvam/dadou_robot_ros.git"
 jenkins_sonar_repo_branch: "main"
 jenkins_sonar_script_path: "jenkins/jobs/dadou_robot_sonar/Jenkinsfile"
 jenkins_sonar_lightweight_checkout: true
@@ -101,7 +112,7 @@ jenkins_sonar_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jenkins
 jenkins_debug_job_enabled: true
 jenkins_debug_job_name: "debug_github_notify"
 jenkins_debug_job_description: "Pipeline manuel pour valider l'accès GitHub et les notifications."
-jenkins_debug_job_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_debug_job_repo_url: "https://github.com/duvamduvam/dadou_utils_ros.git"
 jenkins_debug_job_repo_branch: "main"
 jenkins_debug_job_repo_credentials_id: ""
 jenkins_debug_job_script_path: "jenkins/jobs/debug_github_notify/Jenkinsfile"
@@ -110,7 +121,7 @@ jenkins_debug_job_config_template: "{{ role_path }}/../../../jenkins/jobs/{{ jen
 jenkins_mail_notify_job_enabled: true
 jenkins_mail_notify_job_name: "debug_mail_notify"
 jenkins_mail_notify_job_description: "Pipeline de test pour notifier par e-mail en cas d'échec."
-jenkins_mail_notify_repo_url: "git@github.com:duvamduvam/dadou_utils_ros.git"
+jenkins_mail_notify_repo_url: "https://github.com/duvamduvam/dadou_utils_ros.git"
 jenkins_mail_notify_repo_branch: "main"
 jenkins_mail_notify_repo_credentials_id: ""
 jenkins_mail_notify_script_path: "jenkins/jobs/debug_mail_notify/Jenkinsfile"
