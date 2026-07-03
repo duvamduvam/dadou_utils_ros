@@ -1,22 +1,11 @@
 ---
 - name: Install Jenkins on pios lite
-  hosts: "jenkins_server"
+  hosts: "integration"
 
   vars_files:
     - vars/main.yml
 
   roles:
-      - role: dir_struct
-        vars:
-        - directories:
-            - "{{ jenkins_workspace }}"
-            - "{{ jenkins_workspace }}/build"
-            - "{{ jenkins_workspace }}/install"
-            - "{{ jenkins_workspace }}/log"
-            - "{{ jenkins_workspace }}/src/{{ project_ros_dir }}"
-            - "scripts"
-      #- role: synchronise
-      #  become: yes
       - role: linux-package
         vars:
         - package_file: "packages.txt"

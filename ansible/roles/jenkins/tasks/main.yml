@@ -231,7 +231,9 @@
     docker run --rm
     -v {{ jenkins_data_dir }}:/var/jenkins_home
     {{ jenkins_docker_image }}
-    jenkins-plugin-cli --plugins {{ jenkins_plugins | join(' ') }}
+    jenkins-plugin-cli
+    --plugin-download-directory {{ jenkins_plugins_download_dir }}
+    --plugins {{ jenkins_plugins | join(' ') }}
   register: jenkins_plugins_install
   changed_when: "'No updates are available.' not in jenkins_plugins_install.stdout"
 

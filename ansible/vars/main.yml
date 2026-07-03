@@ -25,3 +25,11 @@ test_mail_notify_password_file: "{{ playbook_dir }}/../jenkins/test_mail_notify_
 
 #libatlas-base-dev libopenjp2-7 libasound2-dev
 #vim
+
+# Jenkins admin auto-setup
+jenkins_admin_manage: true
+jenkins_admin_user: "admin"
+# Change this password to a secret of your choice; it will be pushed into Jenkins on install.
+jenkins_admin_password: "changeme-admin"
+jenkins_admin_password_source_file: ""
+jenkins_disable_setup_wizard: true

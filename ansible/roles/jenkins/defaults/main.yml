@@ -3,7 +3,8 @@ jenkins_docker_image: "jenkins/jenkins:lts-jdk21"
 jenkins_container_name: "jenkins"
 jenkins_http_port: 8080
 jenkins_agent_port: 50000
-jenkins_data_dir: "/home/pi/jenkins"
+# Emplacement du volume Jenkins sur la machine cible (monté dans /var/jenkins_home)
+jenkins_data_dir: "/home/pi/jenkins-workspace/jenkins_home"
 jenkins_data_dir_owner: "1000"
 jenkins_data_dir_group: "1000"
 jenkins_java_home: "/opt/java/openjdk"
@@ -39,6 +40,12 @@ jenkins_plugins:
   - "workflow-aggregator"
   - "workflow-job"
   - "git"
+  - "sonar"
+  - "timestamper"
+  - "ws-cleanup"
+  - "resource-disposer"
+  - "script-security"
+jenkins_plugins_download_dir: "/var/jenkins_home/plugins"
 jenkins_fix_ssh_permissions: true
 jenkins_ssh_private_key_name: "id_ed25519"
 jenkins_ssh_public_key_name: "{{ jenkins_ssh_private_key_name }}.pub"

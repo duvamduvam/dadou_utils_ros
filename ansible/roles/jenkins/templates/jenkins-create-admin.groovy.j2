@@ -29,8 +29,15 @@ if (user == null) {
   securityRealm.createAccount(username, password)
   println("Jenkins admin user '${username}' created.")
 } else {
-  user.changePassword(password)
-  println("Jenkins admin user '${username}' password refreshed.")
+  def details = user.getProperty(HudsonPrivateSecurityRealm.Details)
+  if (details == null) {
+    user.addProperty(new HudsonPrivateSecurityRealm.Details(password))
+    println("Jenkins admin user '${username}' password set (new Details property).")
+  } else {
+    details.setPassword(password)
+    user.save()
+    println("Jenkins admin user '${username}' password refreshed.")
+  }
 }
 
 def strategy = instance.getAuthorizationStrategy()
