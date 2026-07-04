@@ -2,7 +2,7 @@
 
 cd /home/ros2_ws/
 CHANGE_FILE=
-source /opt/ros/humble/setup.sh
+source /opt/ros/${ROS_DISTRO}/setup.sh
 
 if [ -f "$CHANGE_FILE" ]; then
     echo "CHANGE file found. Running colcon build..."

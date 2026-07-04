@@ -5,7 +5,7 @@ WORKSPACE_DIR=/home/ros2_ws
 CHANGE_FILE=
 
 cd "$WORKSPACE_DIR"
-source /opt/ros/humble/setup.bash
+source /opt/ros/${ROS_DISTRO}/setup.bash
 
 if [ -f "$CHANGE_FILE" ]; then
     echo "Change flag found at $CHANGE_FILE. Running colcon build."
