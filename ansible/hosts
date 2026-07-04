@@ -52,7 +52,9 @@ vision:
         local_project_dir: dadou_vision_ros
         project_ros_dir: vision
         project_name: vision
-        launch_cmd: ros2 launch robot_bringup robot_app.launch.py
+        # Heartbeat V0 (robot_bringup était un copier-coller du groupe robot,
+        # ce package n'existe pas côté vision). Deviendra un launch file en V1.
+        launch_cmd: ros2 run vision vision_status
 
 robot-test:
   hosts:
