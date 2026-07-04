@@ -6,6 +6,18 @@ robot:
         project_name: robot
         launch_cmd: ros2 launch robot_bringup robot_app.launch.py
 
+# Console de pilotage sur Pi 4 + écran (hostname control, Pi OS Full trixie,
+# flashé le 2026-07-04). Alias ssh "c" (User pi, clé didier). Ne pas confondre
+# avec le groupe "controller" d'install-controller-ubuntu.yml (ancienne console
+# Ubuntu/ROS hôte) : ici tout tourne en Docker comme sur le robot.
+control:
+  hosts:
+    c:
+        local_project_dir: dadou_control_ros
+        project_ros_dir: controller
+        project_name: controller
+        launch_cmd: ros2 run controller controller_node
+
 integration:
   hosts:
     ci:
