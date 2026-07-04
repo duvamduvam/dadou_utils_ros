@@ -13,7 +13,9 @@ sudo touch $LOG_PATH/$DOCKER_LOG
 sudo chmod 775 $LOG_PATH/$DOCKER_LOG
 
 
-sudo docker compose -f $DOCKER_COMPOSE_FILE pull
+# pull désactivé : l'image du Hub (obsolète) écrasait le build local à chaque boot.
+# Ré-activer uniquement si la distribution repasse par Docker Hub (avec push CI).
+#sudo docker compose -f $DOCKER_COMPOSE_FILE pull
 
 if [ "$1" == "build" ]; then
   printf "build controller docker \n"
