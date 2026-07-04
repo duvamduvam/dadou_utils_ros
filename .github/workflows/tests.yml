@@ -1,0 +1,21 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      # Le dossier doit s'appeler dadou_utils_ros : le dépôt entier est le package.
+      - uses: actions/checkout@v4
+        with:
+          path: dadou_utils_ros
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r dadou_utils_ros/requirements-test.txt
+
+      - run: python -m pytest
+        working-directory: dadou_utils_ros
