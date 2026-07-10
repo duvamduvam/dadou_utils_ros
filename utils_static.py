@@ -196,7 +196,10 @@ MAX_POS = 'max_pos'
 MAX_TOKEN = 'max token'
 MEDIAS_DIRECTORY = "medias_directory"
 METHOD = 'method'
-MODE = 'MODE'
+# 'mode' MINUSCULE : c'est la clé des keyframes servo des séquences JSON
+# ({"mode": "random", ...}). Passée à 'MODE' par c08eb82 (2025-09-27) → le mode
+# random ne s'armait plus jamais depuis les animations (bras/yeux inertes).
+MODE = 'mode'
 MOUTH = 'mouth'
 MOUTHS = 'mouths'
 MOUTH_VISUALS_PATH = 'mouth visuals path'
