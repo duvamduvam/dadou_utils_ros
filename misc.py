@@ -39,37 +39,6 @@ class Misc:
         except Exception as e:
             return False
 
-
-        logging.info(result.stdout)
-        #logging.info(stream.read())
-
-    @staticmethod
-    def exec_shell3(command):
-        stream = os.popen(command)
-        sortie = stream.read()
-        print(sortie)
-
-        #logging.info(stream.read())
-
-    @staticmethod
-    def exec_shell_subprocess(command):
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        output = ''
-
-        # Poll process for new output until finished
-        #for line in iter(process.stdout.readline, ""):
-        #    print
-        #    line,
-        #    output += line
-
-        process.wait()
-        exitCode = process.returncode
-
-        if (exitCode == 0):
-            return output
-        else:
-            raise Exception(command, exitCode, output)
-
     @staticmethod
     def non_block_read(output):
         fd = output.fileno()
@@ -174,27 +143,7 @@ class Misc:
         except FileNotFoundError:
             # Le fichier n'existe pas, donc probablement pas un Raspberry Pi
             return False
-        #Misc.get_system_type()
-        #return "truc"
-        #result = Misc.exec_shell2("cat /proc/device-tree/model")
-        #result = Misc.exec_shell_subprocess(["cat", "/", "proc", "/", "device", "-", "tree", "/", "model"])
-        #return "Raspberry" in result
-        #return False
-        #if os.name != 'posix':
-        #    return False
-        #chips = ('BCM2708', 'BCM2709', 'BCM2711', 'BCM2835', 'BCM2836')
-        #try:
-        #    with io.open('/proc/cpuinfo', 'r') as cpuinfo:
-        #        for line in cpuinfo:
-        #            if line.startswith('Hardware'):
-        #                _, value = line.strip().split(':', 1)
-        #                value = value.strip()
-        #                if value in chips:
-        #                    print("is rpi")
-        #                    return True
-        #except Exception:
-        #    pass
-        #return False
+
     @staticmethod
     def is_docker():
         try:

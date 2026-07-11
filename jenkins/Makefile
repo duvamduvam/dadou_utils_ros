@@ -1,11 +1,11 @@
 SHELL := /bin/bash # Use bash syntax
 ARG := $(word 2, $(MAKECMDGOALS) )
 
-UTILS_DIR=/home/dadou/Nextcloud/Didier/python/dadou_utils_ros
+UTILS_DIR=/home/dadou/Nextcloud/dev/didier/python/dadou_utils_ros
 
 SERVER ?= ci
 PROJECT ?= robot
-PROJECT_DIR ?= /home/dadou/Nextcloud/Didier/python/dadou_$(PROJECT)_ros
+PROJECT_DIR ?= /home/dadou/Nextcloud/dev/didier/python/dadou_$(PROJECT)_ros
 
 LOCAL_TEST_LOG=/logs/$(PROJECT)-test.log
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PROJECT_SCRIPT[0]=~/Nextcloud/Didier/python/dadou_robot/scripts/
-PROJECT_SCRIPT[1]=~/Nextcloud/Didier/python/dadou_control/scripts/project-deploy.sh
-PROJECT_SCRIPT[2]=~/Nextcloud/Didier/python/dadou_sceno/scripts/project-deploy.sh
-PROJECT_SCRIPT[3]=~/Nextcloud/Didier/python/dadou_disk/scripts/project-deploy.sh
+PROJECT_SCRIPT[0]=~/Nextcloud/dev/didier/python/dadou_robot/scripts/
+PROJECT_SCRIPT[1]=~/Nextcloud/dev/didier/python/dadou_control/scripts/project-deploy.sh
+PROJECT_SCRIPT[2]=~/Nextcloud/dev/didier/python/dadou_sceno/scripts/project-deploy.sh
+PROJECT_SCRIPT[3]=~/Nextcloud/dev/didier/python/dadou_disk/scripts/project-deploy.sh
 
 if [ "$1" = "i" ]; then
   PARAM="install"
