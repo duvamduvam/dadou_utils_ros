@@ -13,6 +13,12 @@ rougissent à la moindre dérive.
 
 # ---------------------------------------------------------------- TOPICS StringTime (noms des canaux ROS entre machines)
 ANIMATION = 'animation'
+# État d'activité des animations (arbitrage amont, étude 2026-07-12 côté robot :
+# docs/etude-arbitrage-actionneurs.md). Publié LATCHÉ par animations_node :
+# msg = json.dumps(nom de la séquence en cours) ou json.dumps("") au repos.
+# Consommé par les comportements autonomes (gaze côté robot, chat côté vision)
+# qui se taisent tant qu'une séquence a la main sur visage + tête.
+ANIMATION_STATE = 'animation_state'
 AUDIO = 'audio'
 EXPRESSION = 'expression'
 FACE = 'face'
